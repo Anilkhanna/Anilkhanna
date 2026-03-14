@@ -130,6 +130,16 @@
     },
     {
       "number": "02",
+      "title": "RMT Secure Portal",
+      "category": "FinTech",
+      "tools": "React, Next.js, TypeScript, API Integration",
+      "description": "Secure web portal for Ria Money Transfer enabling international fund transfers with real-time exchange rates and transparent fee calculations. Built the frontend architecture for a seamless, compliant money transfer experience across 165+ countries.",
+      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "liveUrl": "https://secure.riamoneytransfer.com/",
+      "githubUrl": "#"
+    },
+    {
+      "number": "03",
       "title": "MyGate",
       "category": "PropTech",
       "tools": "iOS, Swift, API Integration",
@@ -139,7 +149,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "03",
+      "number": "04",
       "title": "EXP Suite",
       "category": "Enterprise EH&S",
       "tools": "iOS, Swift, Objective-C",
@@ -149,7 +159,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "04",
+      "number": "05",
       "title": "1-800-Flowers",
       "category": "E-Commerce",
       "tools": "iOS, Swift",
@@ -159,7 +169,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "05",
+      "number": "06",
       "title": "Performix",
       "category": "Fitness",
       "tools": "iOS, Swift",
@@ -169,7 +179,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "06",
+      "number": "07",
       "title": "CoFetch",
       "category": "Social Network",
       "tools": "iOS, Swift",
@@ -179,7 +189,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "07",
+      "number": "08",
       "title": "CES Official App",
       "category": "Events",
       "tools": "iOS, Objective-C",
@@ -189,7 +199,7 @@
       "githubUrl": "#"
     },
     {
-      "number": "08",
+      "number": "09",
       "title": "Eventa",
       "category": "Events Management",
       "tools": "iOS, Swift",
