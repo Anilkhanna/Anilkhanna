@@ -108,7 +108,7 @@ An automated job scheduler integrated into the portfolio site at `anilkhanna.dev
 | `work_mode` | TEXT | remote, hybrid, onsite |
 | `match_score` | NUMERIC(5,2) | 0-100 |
 | `matched_skills` | TEXT[] | |
-| `status` | TEXT | new, reviewed, saved, applied, rejected |
+| `status` | TEXT | new, reviewed, saved, applied, rejected, expired |
 | `notes` | TEXT | Nullable |
 | `posted_at` | TIMESTAMPTZ | |
 | `discovered_at` | TIMESTAMPTZ | Default now() |
@@ -238,7 +238,7 @@ Reads all config from the `profile_config` database table.
 | Seniority match | 5 | Contains "senior", "lead", "10+ years" |
 | Negative keywords | -15 each | From config.negative_keywords |
 
-Score clamped to 0-100. Jobs below `config.min_score` (default 15) are discarded.
+Theoretical maximum exceeds 100 (positive factors sum to 110); score is clamped to 0-100 to allow partial overlap between categories. Jobs below `config.min_score` (default 15) are discarded.
 
 ---
 
@@ -259,12 +259,14 @@ Reuses existing admin auth. If logged in to admin panel, already authenticated f
 
 **Stats Bar:**
 - 5 stat cards: Total, New, Saved, Applied, Rejected
+- "Total" includes all statuses (reviewed, expired, etc.)
 - Color-coded per status
 
 **Filter Bar:**
 - Search input (title, company, description)
 - Status dropdown (All, New, Reviewed, Saved, Applied, Rejected)
 - Sort dropdown (Match Score, Newest, Company)
+- Platform filter omitted in v1 (Indeed-only); add when second fetcher ships
 
 **Job Cards (expandable):**
 
@@ -274,6 +276,7 @@ Collapsed:
 - Discovered time (relative)
 - Status badge
 - Quick action buttons on hover (save, reject)
+- Pagination: 20 jobs per page, numbered page controls at bottom
 
 Expanded (click to toggle):
 - Full description (scrollable)
@@ -338,10 +341,23 @@ src/
 │   ├── matcher.ts                 # Profile matching engine
 │   ├── db.ts                      # Vercel Postgres client + queries
 │   └── types.ts                   # Shared types
-vercel.json                         # Cron schedule (0 */8 * * *)
-schema.sql                          # Database schema
+vercel.json                         # Cron schedule config (see below)
+schema.sql                          # Database schema (run once)
 .env.example                        # Environment variables reference
 ```
+
+**vercel.json cron config:**
+```json
+{
+  "crons": [
+    {
+      "path": "/api/jobs/cron",
+      "schedule": "0 */8 * * *"
+    }
+  ]
+}
+```
+Merge with any existing vercel.json config if present.
 
 ---
 
@@ -358,7 +374,7 @@ schema.sql                          # Database schema
 
 ## 10. Security
 
-- Dashboard protected by existing admin auth (password + HTTP-only cookie)
+- Dashboard protected by existing admin auth (password + HTTP-only cookie). Note: current admin auth validates token presence only, not value — acceptable for a single-user private dashboard. Can be hardened later by storing token hash server-side.
 - Page has `robots: { index: false, follow: false }` meta tags
 - Cron endpoint protected by CRON_SECRET bearer token
 - Vercel Postgres credentials managed by Vercel (never in client code)
