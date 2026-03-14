@@ -1,0 +1,533 @@
+# Product Requirements Document: Job Scheduler
+
+**Author:** Anil Khanna  
+**Date:** March 14, 2026  
+**Status:** Draft  
+**Version:** 1.0  
+**Branch:** `feature/job-scheduler`
+
+---
+
+## 1. Overview
+
+### 1.1 Problem Statement
+
+Job hunting as a senior developer in Munich requires monitoring multiple platforms (Indeed, LinkedIn, StepStone) daily, manually filtering through irrelevant listings, and tracking application status across spreadsheets or notes. This is time-consuming and leads to missed opportunities.
+
+### 1.2 Solution
+
+Build an automated job scheduler integrated into the existing portfolio site (`anilkhanna.dev/jobs`) that fetches job listings every 4 hours from multiple platforms, scores them against a personal profile, and provides a private dashboard to review, save, and track applications — all within the existing Next.js + Vercel infrastructure.
+
+### 1.3 Goals
+
+- Automate job discovery across Indeed, LinkedIn, and StepStone
+- Match jobs against skills, role preferences, and location
+- Provide a clean, private dashboard to review and manage job opportunities
+- Eliminate manual searching and reduce missed opportunities
+- Zero recurring costs (all free-tier services)
+
+### 1.4 Non-Goals
+
+- Auto-applying to jobs (user reviews and applies manually)
+- Resume generation or cover letter writing
+- Public-facing features (dashboard is private)
+- Mobile app (web dashboard is mobile-responsive)
+
+---
+
+## 2. User Profile
+
+### 2.1 Target User
+
+**Solo user:** Anil Khanna — Senior Full Stack Developer, 14+ years experience, based in Gräfelfing, Munich, Germany.
+
+### 2.2 Target Roles
+
+| Role | Priority |
+|------|----------|
+| Senior Flutter Developer | High |
+| Senior iOS Developer | High |
+| Senior Full Stack Developer | High |
+| Senior React/Frontend Developer | Medium |
+| Mobile Lead / Engineering Manager | Medium |
+
+### 2.3 Location Preferences
+
+| Preference | Accepted |
+|------------|----------|
+| Munich area (onsite) | Yes |
+| Hybrid roles (Germany) | Yes |
+| Remote (worldwide) | Yes |
+| Onsite outside Munich | No |
+
+### 2.4 Primary Tech Stack
+
+**Primary (high match weight):** Flutter, Dart, iOS, Swift, React, Next.js, TypeScript, JavaScript, .NET Core, C#, Node.js
+
+**Secondary (lower weight):** Objective-C, React Native, Tailwind CSS, PostgreSQL, MongoDB, Firebase, REST APIs, GraphQL, Docker, AWS, CI/CD, GitHub Actions
+
+---
+
+## 3. Architecture
+
+### 3.1 System Overview
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   Job Sources                        │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐     │
+│  │  Indeed   │  │ LinkedIn  │  │  StepStone   │     │
+│  │ (JSearch) │  │ (SerpAPI) │  │ (SerpAPI +   │     │
+│  │          │  │           │  │  Direct)     │     │
+│  └────┬─────┘  └─────┬─────┘  └──────┬───────┘     │
+└───────┼──────────────┼───────────────┼──────────────┘
+        │              │               │
+        ▼              ▼               ▼
+┌─────────────────────────────────────────────────────┐
+│          Vercel Cron Job (every 4 hours)             │
+│          POST /api/jobs/cron                         │
+│          ┌──────────────────────┐                    │
+│          │   Profile Matcher    │                    │
+│          │   (score 0-100)      │                    │
+│          └──────────┬───────────┘                    │
+└─────────────────────┼───────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│              Supabase (PostgreSQL)                    │
+│  ┌──────────────┐  ┌─────────────────┐              │
+│  │  jobs table   │  │  cron_logs table │              │
+│  └──────────────┘  └─────────────────┘              │
+└─────────────────────┬───────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│         anilkhanna.dev/jobs (Dashboard)               │
+│  ┌──────────┐ ┌──────────┐ ┌───────────────┐       │
+│  │  Stats   │ │ Job List │ │ Detail Panel  │       │
+│  │  Bar     │ │ (cards)  │ │ (actions)     │       │
+│  └──────────┘ └──────────┘ └───────────────┘       │
+└─────────────────────────────────────────────────────┘
+```
+
+### 3.2 Tech Stack
+
+| Layer | Technology | Reason |
+|-------|-----------|--------|
+| Frontend | Next.js 15, React, TypeScript, Tailwind CSS | Existing portfolio stack |
+| Backend | Next.js API Routes (serverless) | Same codebase, zero infra |
+| Database | Supabase (PostgreSQL, free tier) | Full SQL, 500MB free, existing project |
+| Scheduler | Vercel Cron | Built-in, free on Hobby plan |
+| Job APIs | RapidAPI JSearch + SerpAPI | Free tiers, broad coverage |
+| Auth | Cookie-based with `admin_password` env | Reuses existing admin auth |
+| Deployment | Vercel (auto-deploy from GitHub) | Existing CI/CD pipeline |
+
+### 3.3 Database Schema
+
+**Table: `jobs`**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID (PK) | Auto-generated |
+| `external_id` | TEXT | Platform-specific job ID |
+| `platform` | TEXT | `indeed`, `linkedin`, `stepstone` |
+| `title` | TEXT | Job title |
+| `company` | TEXT | Company name |
+| `location` | TEXT | Job location |
+| `job_url` | TEXT | Direct link to apply |
+| `description` | TEXT | Job description (truncated to 5000 chars) |
+| `salary_range` | TEXT | Salary info if available |
+| `job_type` | TEXT | `full-time`, `part-time`, `contract` |
+| `work_mode` | TEXT | `remote`, `hybrid`, `onsite` |
+| `match_score` | NUMERIC(5,2) | Profile match score (0-100) |
+| `matched_skills` | TEXT[] | Skills that matched |
+| `status` | TEXT | `new`, `reviewed`, `saved`, `applied`, `rejected`, `expired` |
+| `notes` | TEXT | Personal notes |
+| `posted_at` | TIMESTAMPTZ | When the job was posted |
+| `discovered_at` | TIMESTAMPTZ | When we found it |
+| `updated_at` | TIMESTAMPTZ | Auto-updated on changes |
+
+**Unique constraint:** `(external_id, platform)` — prevents duplicate entries.
+
+**Table: `cron_logs`**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID (PK) | Auto-generated |
+| `ran_at` | TIMESTAMPTZ | When the cron ran |
+| `jobs_found` | INTEGER | Total raw jobs fetched |
+| `jobs_new` | INTEGER | New jobs inserted |
+| `jobs_updated` | INTEGER | Existing jobs updated |
+| `errors` | TEXT[] | Error messages from fetchers |
+| `duration_ms` | INTEGER | Total execution time |
+| `status` | TEXT | `success`, `partial`, `failed` |
+
+---
+
+## 4. Feature Specifications
+
+### 4.1 Job Fetchers
+
+#### 4.1.1 Indeed Fetcher (via JSearch API on RapidAPI)
+
+- **API:** `https://jsearch.p.rapidapi.com/search`
+- **Free tier:** 500 requests/month
+- **Queries per run:** 4 (limited to conserve quota)
+- **Filters:** Country = Germany, date_posted = week
+- **Delay between requests:** 500ms
+
+#### 4.1.2 LinkedIn Fetcher (via SerpAPI Google Jobs)
+
+- **API:** `https://serpapi.com/search.json` with `engine=google_jobs`
+- **Free tier:** 100 searches/month
+- **Queries per run:** 3 (limited to conserve quota)
+- **Filters:** Location = Munich, Bavaria, Germany, date_posted = week
+- **Delay between requests:** 600ms
+
+#### 4.1.3 StepStone Fetcher (SerpAPI + Direct Fallback)
+
+- **Primary:** SerpAPI Google Jobs filtered to `site:stepstone.de`
+- **Fallback:** Direct HTTP fetch of StepStone search results, parsing JSON-LD structured data
+- **Queries per run:** 2
+- **Filters:** Location = Munich, radius = 30km, age = 7 days
+- **Delay between requests:** 600-800ms
+
+#### 4.1.4 Deduplication
+
+Jobs are deduplicated by `platform + external_id` before insertion. Existing jobs with status `new` get their match score and description updated; jobs with any other status are not overwritten.
+
+### 4.2 Profile Matcher
+
+Scoring algorithm (0-100 scale):
+
+| Factor | Max Points | Logic |
+|--------|-----------|-------|
+| Primary skills match | 40 | 5 points per matched skill |
+| Role title match | 20 | Exact target role match |
+| Title keywords | 10 | 3 points per keyword (senior, lead, flutter, etc.) |
+| Secondary skills match | 15 | 2 points per matched skill |
+| Location match | 10 | Remote=10, Munich onsite=10, Germany hybrid=7 |
+| Bonus keywords | 10 | 2 points per keyword (fintech, mobile, startup, etc.) |
+| Seniority match | 5 | Contains "senior" or "10+ years" |
+| Negative keywords | -15 each | junior, intern, php, wordpress, etc. |
+
+**Minimum threshold:** 15 points (jobs below this are discarded).
+
+### 4.3 Cron Job
+
+- **Endpoint:** `GET /api/jobs/cron`
+- **Schedule:** Every 4 hours (`0 */4 * * *`)
+- **Max duration:** 60 seconds
+- **Authentication:** `CRON_SECRET` bearer token (Vercel sends this automatically)
+- **Flow:**
+  1. Fetch jobs from all 3 platforms in parallel
+  2. Match and rank against profile (minimum score: 15)
+  3. Upsert into Supabase (skip existing non-`new` jobs)
+  4. Log the run to `cron_logs`
+  5. Return stats JSON
+
+### 4.4 Authentication
+
+- **Method:** Password-based with HTTP-only cookie session
+- **Password source:** `admin_password` environment variable (already exists)
+- **Session duration:** 7 days
+- **Token:** SHA-256 hash stored in cookie + server-side Set
+- **Endpoints:**
+  - `POST /api/jobs/auth` — Login (sets cookie)
+  - `DELETE /api/jobs/auth` — Logout (clears cookie)
+- **Protection:** All `/api/jobs/*` endpoints (except cron) verify auth cookie
+
+### 4.5 Dashboard UI
+
+#### 4.5.1 Login Screen
+
+- Password input with error shake animation
+- Matching portfolio dark theme (#0a0a0a background, #64ffda accent)
+- Back link to main portfolio
+
+#### 4.5.2 Top Bar (sticky)
+
+- Back arrow to portfolio
+- Job Scheduler logo + title
+- "Fetch Now" button (manual cron trigger)
+- Last cron run timestamp
+- Logout button
+
+#### 4.5.3 Stats Bar
+
+- 5 stat cards: Total, New, Saved, Applied, Rejected
+- Platform pills with color-coded dots: Indeed (blue), LinkedIn (blue), StepStone (orange)
+
+#### 4.5.4 Filter Bar
+
+- Search input (searches title, company, description)
+- Status dropdown: All, New, Reviewed, Saved, Applied, Rejected
+- Platform dropdown: All, Indeed, LinkedIn, StepStone
+- Sort dropdown: Match Score, Newest, Company, Title
+
+#### 4.5.5 Job List (left panel)
+
+- Card-based layout with:
+  - Match score badge (color-coded: green ≥70, yellow ≥50, gray ≥30)
+  - Platform indicator dot
+  - Status badge
+  - Job title (2-line clamp) + company
+  - Location, work mode, salary (if available)
+  - Discovered time (relative: "2h ago", "3d ago")
+  - Matched skills pills (max 5 shown)
+  - Quick action buttons on hover (save, reject)
+- Pagination: 20 jobs per page
+
+#### 4.5.6 Job Detail (right panel)
+
+- Full job title + company
+- Meta: location, work mode, job type, salary
+- Match score bar with percentage + label ("Strong match", "Good match", etc.)
+- Matched skills pills
+- Status action buttons: New → Reviewed → Saved → Applied → Rejected
+- "Open Job Posting" button (opens external URL in new tab)
+- Notes textarea (auto-saves on blur)
+- Full job description (scrollable)
+- Footer: discovered date + platform
+
+#### 4.5.7 Responsive Behavior
+
+- Desktop: side-by-side list + detail panels
+- Tablet/Mobile: list view, detail opens as full-screen overlay
+- Selected card gets highlighted border
+
+---
+
+## 5. File Structure
+
+```
+src/
+├── app/
+│   ├── api/jobs/
+│   │   ├── auth/route.ts          # Login/logout endpoints
+│   │   ├── cron/route.ts          # Cron job (every 4 hours)
+│   │   ├── stats/route.ts         # Dashboard stats summary
+│   │   └── route.ts               # Jobs CRUD (GET, PATCH, DELETE)
+│   └── jobs/
+│       ├── components/
+│       │   ├── JobCard.tsx         # Job listing card
+│       │   ├── JobDetail.tsx       # Detail panel with actions
+│       │   ├── JobsDashboard.tsx   # Main dashboard component
+│       │   ├── LoginScreen.tsx     # Password auth gate
+│       │   └── StatsBar.tsx        # Stats overview bar
+│       ├── layout.tsx              # Page metadata (noindex)
+│       └── page.tsx                # Entry point (auth routing)
+├── lib/jobs/
+│   ├── fetchers/
+│   │   ├── index.ts               # Fetcher aggregator + dedup
+│   │   ├── indeed.ts              # Indeed via JSearch API
+│   │   ├── linkedin.ts            # LinkedIn via SerpAPI
+│   │   └── stepstone.ts           # StepStone via SerpAPI + direct
+│   ├── matcher.ts                 # Profile matching engine
+│   ├── profile-config.ts          # Profile data + preferences
+│   └── supabase.ts                # DB client + types
+vercel.json                         # Cron schedule config
+supabase-schema.sql                 # Database schema (run once)
+.env.example                        # Environment variables reference
+```
+
+---
+
+## 6. Environment Variables
+
+| Variable | Required | Source | Notes |
+|----------|----------|--------|-------|
+| `admin_password` | Yes | Existing | Already in Vercel env |
+| `SUPABASE_URL` | Yes | Supabase Dashboard → Settings → API | Reuse existing: `https://gddixepkakojiuapcvbr.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Supabase Dashboard → Settings → API | Secret key (never expose publicly) |
+| `CRON_SECRET` | Yes | Generate with `openssl rand -hex 32` | Protects cron endpoint |
+| `RAPIDAPI_KEY` | Optional | [RapidAPI JSearch](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch) | For Indeed jobs |
+| `SERPAPI_KEY` | Optional | [SerpAPI](https://serpapi.com) | For LinkedIn + StepStone |
+
+At least one of `RAPIDAPI_KEY` or `SERPAPI_KEY` is recommended.
+
+---
+
+## 7. Dependencies
+
+### 7.1 New npm Package
+
+```bash
+npm install @supabase/supabase-js
+```
+
+### 7.2 External Services (all free tier)
+
+| Service | Free Tier Limit | Expected Monthly Usage |
+|---------|----------------|----------------------|
+| Supabase | 500MB database, 50K API requests | ~5MB, ~2K requests |
+| RapidAPI JSearch | 500 requests/month | ~720 (4 queries × 6 runs/day × 30 days) |
+| SerpAPI | 100 searches/month | ~450 (5 queries × 6 runs/day × ~15 days) |
+| Vercel Cron | Included in Hobby plan | 6 runs/day |
+
+**Note:** RapidAPI usage may exceed free tier. Options: reduce to 2 queries per run, or upgrade to $10/month Basic plan. SerpAPI will exceed free tier — reduce to 1 query per run or use only the StepStone direct fetcher as fallback.
+
+---
+
+## 8. Setup Steps
+
+### Phase 1: Database Setup
+1. Open Supabase SQL Editor for existing project
+2. Run `supabase-schema.sql` to create `jobs` and `cron_logs` tables
+3. Copy `SUPABASE_SERVICE_ROLE_KEY` from Settings → API
+
+### Phase 2: API Keys
+1. Sign up for RapidAPI (free) → subscribe to JSearch → copy key
+2. Sign up for SerpAPI (free) → copy key
+3. Generate `CRON_SECRET`: `openssl rand -hex 32`
+
+### Phase 3: Environment Variables
+1. Add all variables to Vercel Dashboard → Settings → Environment Variables
+
+### Phase 4: Code Integration
+1. Create `feature/job-scheduler` branch
+2. Run `npm install @supabase/supabase-js`
+3. Copy all files from the file structure above into the repo
+4. Merge `vercel.json` cron config with existing (if any)
+5. Commit and push
+
+### Phase 5: Deploy & Verify
+1. Vercel auto-deploys the branch (preview URL)
+2. Test login at `preview-url/jobs`
+3. Click "Fetch Now" to trigger first cron run
+4. Verify jobs appear in dashboard
+5. Merge to master for production deploy
+
+---
+
+## 9. API Endpoints
+
+### 9.1 Authentication
+
+**POST `/api/jobs/auth`**
+- Body: `{ "password": "string" }`
+- Response: `{ "success": true }` + sets `jobs_auth` cookie
+- Error: `401` if password incorrect
+
+**DELETE `/api/jobs/auth`**
+- Response: `{ "success": true }` + clears cookie
+
+### 9.2 Jobs CRUD
+
+**GET `/api/jobs`** (auth required)
+- Query params: `status`, `platform`, `search`, `sort`, `order`, `page`, `limit`
+- Response: `{ "jobs": [...], "total": N, "page": N, "totalPages": N }`
+
+**PATCH `/api/jobs`** (auth required)
+- Body: `{ "id": "uuid", "status": "string", "notes": "string" }`
+- Response: `{ "job": {...} }`
+
+**DELETE `/api/jobs?id=uuid`** (auth required)
+- Response: `{ "success": true }`
+
+### 9.3 Stats
+
+**GET `/api/jobs/stats`** (auth required)
+- Response: `{ "stats": { total, new, saved, applied, ... }, "lastRun": {...} }`
+
+### 9.4 Cron
+
+**GET `/api/jobs/cron`** (CRON_SECRET auth)
+- Response: `{ "success": true, "stats": { total_fetched, matched, new_jobs, ... } }`
+
+---
+
+## 10. Design Specifications
+
+### 10.1 Theme (matches existing portfolio)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| Background | `#0a0a0a` | Page background |
+| Surface | `#0a0f1c` | Cards, panels |
+| Surface raised | `#112240` | Inputs, hover states |
+| Border | `#1d2d50` | Card borders, dividers |
+| Border hover | `#233554` | Hover borders |
+| Text primary | `#ccd6f6` | Headings, titles |
+| Text secondary | `#8892b0` | Body text, labels |
+| Text muted | `#4a5568` | Hints, meta, timestamps |
+| Accent | `#64ffda` | Primary actions, links, highlights |
+| Accent bg | `#64ffda/10` | Accent backgrounds |
+
+### 10.2 Platform Colors
+
+| Platform | Color | Hex |
+|----------|-------|-----|
+| Indeed | Blue | `#2164f3` |
+| LinkedIn | Blue | `#0077b5` |
+| StepStone | Orange | `#ff6b35` |
+
+### 10.3 Status Colors
+
+| Status | Text Color | Background |
+|--------|-----------|------------|
+| New | `#64ffda` | `#64ffda/10` |
+| Reviewed | `#8892b0` | `#8892b0/10` |
+| Saved | `yellow-400` | `yellow-400/10` |
+| Applied | `blue-400` | `blue-400/10` |
+| Rejected | `#4a5568` | `#4a5568/10` |
+
+### 10.4 Match Score Colors
+
+| Range | Color | Label |
+|-------|-------|-------|
+| ≥ 70 | `#64ffda` | Strong match |
+| ≥ 50 | `yellow-400` | Good match |
+| ≥ 30 | `#8892b0` | Partial match |
+| < 30 | `#4a5568` | Weak match |
+
+---
+
+## 11. Security Considerations
+
+- Dashboard is password-protected (reuses `admin_password`)
+- Page has `robots: { index: false, follow: false }` meta tags
+- Supabase uses service role key (server-side only, never exposed to client)
+- Cron endpoint is protected by `CRON_SECRET` bearer token
+- HTTP-only cookies prevent XSS token theft
+- Row Level Security enabled on Supabase tables
+- No sensitive data stored in the repo (all env variables)
+
+---
+
+## 12. Future Enhancements (out of scope for v1)
+
+- Email/push notifications when high-score jobs are found
+- AI-powered job description analysis (using Claude API)
+- Auto-generate tailored cover letters per job
+- Track response rates and interview pipeline
+- Add more platforms (Glassdoor, XING, We Work Remotely)
+- Analytics dashboard with match score trends over time
+- Browser extension to save jobs from any platform
+- Salary comparison and market rate insights
+
+---
+
+## 13. Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Jobs discovered per day | 20-50 |
+| Match score accuracy (relevant jobs ≥50%) | >70% |
+| Time saved vs manual search | 2+ hours/week |
+| Dashboard load time | <2 seconds |
+| Cron execution time | <30 seconds |
+| Zero recurring cost | All free tiers |
+
+---
+
+## 14. Risks & Mitigations
+
+| Risk | Impact | Mitigation |
+|------|--------|-----------|
+| API rate limits exceeded | Missed job listings | Reduce queries per run, stagger fetchers |
+| StepStone blocks scraping | Lose one source | SerpAPI fallback, respect rate limits |
+| Supabase free tier fills up | Database full | Periodically archive old rejected/expired jobs |
+| Job URLs expire | Broken "Apply" links | Mark as expired during next cron run |
+| False positive matches | Noise in dashboard | Tune matcher weights, add negative keywords |
+| Vercel cold starts | Slow cron execution | `maxDuration: 60` config, parallel fetching |
