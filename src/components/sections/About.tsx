@@ -36,7 +36,7 @@ export function About() {
               src="/images/profile.jpg"
               alt="Anil Khanna"
               fill
-              className="object-cover"
+              className="object-cover saturate-[0.85] contrast-[1.1] brightness-[1.05]"
               sizes="260px"
             />
           </div>
