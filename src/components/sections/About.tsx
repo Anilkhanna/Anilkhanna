@@ -36,7 +36,7 @@ export function About() {
               src="/images/profile.jpg"
               alt="Anil Khanna"
               fill
-              className="object-cover saturate-[0.85] contrast-[1.1] brightness-[1.05]"
+              className="object-cover grayscale transition-all duration-500 hover:grayscale-0"
               sizes="260px"
             />
           </div>
