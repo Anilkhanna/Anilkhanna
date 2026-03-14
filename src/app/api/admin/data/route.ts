@@ -47,6 +47,7 @@ export async function PUT(request: NextRequest) {
       "siteConfig",
       "navLinks",
       "socialLinks",
+      "sectionHeadings",
       "aboutData",
       "techStack",
       "whatIDo",

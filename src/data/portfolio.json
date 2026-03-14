@@ -15,21 +15,56 @@
     "resumeUrl": "/resume"
   },
   "navLinks": [
-    { "label": "About", "href": "#about" },
-    { "label": "Work", "href": "#work" },
-    { "label": "Contact", "href": "#contact" }
+    {
+      "label": "About",
+      "href": "#about"
+    },
+    {
+      "label": "Work",
+      "href": "#work"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
   ],
   "socialLinks": [
-    { "name": "GitHub", "url": "https://github.com/Anilkhanna", "icon": "FaGithub" },
-    { "name": "LinkedIn", "url": "https://www.linkedin.com/in/anil-khanna-07299b23/", "icon": "FaLinkedin" }
+    {
+      "name": "GitHub",
+      "url": "https://github.com/Anilkhanna",
+      "icon": "FaGithub"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/in/anil-khanna-07299b23/",
+      "icon": "FaLinkedin"
+    }
   ],
   "sectionHeadings": {
-    "about": { "label": "01. ABOUT", "title": "Who I Am" },
-    "whatIDo": { "label": "02. WHAT I DO", "title": "What I Bring to the Table" },
-    "career": { "label": "03. CAREER", "title": "Career & Milestones" },
-    "projects": { "label": "04. PROJECTS", "title": "Featured Work" },
-    "techStack": { "label": "05. TECH STACK", "title": "Tools & Technologies" },
-    "contact": { "label": "06. CONTACT", "title": "Get In Touch" }
+    "about": {
+      "label": "01. ABOUT",
+      "title": "Who I Am"
+    },
+    "whatIDo": {
+      "label": "02. WHAT I DO",
+      "title": "What I Bring to the Table"
+    },
+    "career": {
+      "label": "03. CAREER",
+      "title": "Career & Milestones"
+    },
+    "projects": {
+      "label": "04. PROJECTS",
+      "title": "Featured Work"
+    },
+    "techStack": {
+      "label": "05. TECH STACK",
+      "title": "Tools & Technologies"
+    },
+    "contact": {
+      "label": "06. CONTACT",
+      "title": "Get In Touch"
+    }
   },
   "aboutData": {
     "heading": "About Me",
@@ -39,38 +74,93 @@
     ]
   },
   "techStack": [
-    "Swift", "Objective-C", "Dart", "JavaScript", "TypeScript", "C#",
-    "Flutter", "React", "React Native", "Next.js", "Node.js",
-    "Dotnet Core", "Ionic",
-    "Tailwind CSS", "HTML5", "CSS3",
-    "Firebase", "CoreData", "SQLite", "Realm", "PostgreSQL", "MongoDB",
-    "REST APIs", "GraphQL",
-    "Git", "Docker", "CI/CD", "GitHub Actions",
-    "CocoaPods", "Swift Package Manager",
-    "JIRA", "Agile", "Scrum",
-    "Mixpanel", "Crashlytics", "Google Analytics",
-    "AWS", "Vercel"
+    "Swift",
+    "Objective-C",
+    "Dart",
+    "JavaScript",
+    "TypeScript",
+    "C#",
+    "Flutter",
+    "React",
+    "React Native",
+    "Next.js",
+    "Node.js",
+    "Dotnet Core",
+    "Ionic",
+    "Tailwind CSS",
+    "HTML5",
+    "CSS3",
+    "Firebase",
+    "CoreData",
+    "SQLite",
+    "Realm",
+    "PostgreSQL",
+    "MongoDB",
+    "REST APIs",
+    "GraphQL",
+    "Git",
+    "Docker",
+    "CI/CD",
+    "GitHub Actions",
+    "CocoaPods",
+    "Swift Package Manager",
+    "JIRA",
+    "Agile",
+    "Scrum",
+    "Mixpanel",
+    "Crashlytics",
+    "Google Analytics",
+    "AWS",
+    "Vercel"
   ],
   "whatIDo": [
     {
       "title": "MOBILE APPS",
       "description": "Native iOS (Swift, Obj-C) and cross-platform Flutter apps shipped to millions of users. From system architecture to App Store optimization — I own the full mobile lifecycle.",
-      "skills": ["Swift", "Objective-C", "Flutter", "Dart", "React Native", "Ionic"]
+      "skills": [
+        "Swift",
+        "Objective-C",
+        "Flutter",
+        "Dart",
+        "React Native",
+        "Ionic"
+      ]
     },
     {
       "title": "WEB APPS",
       "description": "Modern web applications with React, Next.js, and TypeScript. Server-side rendering, responsive design, and performance tuning for production-grade experiences.",
-      "skills": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Dotnet Core"]
+      "skills": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Node.js",
+        "Dotnet Core"
+      ]
     },
     {
       "title": "BACKEND & APIs",
       "description": "Scalable backend systems with .NET Core, Node.js, REST APIs, GraphQL, and cloud infrastructure on AWS. Designed for throughput, reliability, and developer ergonomics.",
-      "skills": ["C#", "Node.js", "PostgreSQL", "MongoDB", "Firebase", "REST APIs"]
+      "skills": [
+        "C#",
+        "Node.js",
+        "PostgreSQL",
+        "MongoDB",
+        "Firebase",
+        "REST APIs"
+      ]
     },
     {
       "title": "TEAM & DELIVERY",
       "description": "Engineering leadership, Agile delivery, CI/CD pipelines, code reviews, and mentoring. Led teams of up to 14 engineers and co-founded a startup scaled to 200k+ users.",
-      "skills": ["Agile", "Scrum", "CI/CD", "Docker", "AWS", "JIRA"]
+      "skills": [
+        "Agile",
+        "Scrum",
+        "CI/CD",
+        "Docker",
+        "AWS",
+        "JIRA"
+      ]
     }
   ],
   "careerData": [
@@ -144,7 +234,7 @@
       "category": "PropTech",
       "tools": "iOS, Swift, API Integration",
       "description": "India's leading gated community management app with 1M+ active users. Architected core security and visitor management modules, streamlined API integrations, and drove performance improvements across the iOS platform.",
-      "image": "https://play-lh.googleusercontent.com/j2k8mGPkBaMLRKJaQ1i7UMx3kYZxHQfHWjDCcKpXf-mI9vJnKrSBCl6FKybVNLmmWQ=w240-h480",
+      "image": "https://www.exp-inc.com/_next/image?url=%2Fassets%2Fblog%2Fimages%2FEXP_Logo.png",
       "liveUrl": "https://play.google.com/store/apps/details?id=com.mygate.user",
       "githubUrl": "#"
     },
