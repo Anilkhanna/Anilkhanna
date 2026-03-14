@@ -112,7 +112,7 @@ export function JobCard({ job, isExpanded, onToggle, onStatusChange, onNotesChan
           <div className="flex flex-wrap gap-2 text-xs text-[#8892b0]">
             {job.job_type && <span className="px-2 py-1 rounded bg-[#112240]">{job.job_type}</span>}
             {job.salary_range && <span className="px-2 py-1 rounded bg-[#112240]">{job.salary_range}</span>}
-            <span className="px-2 py-1 rounded bg-[#2164f3]/10 text-[#2164f3]">Indeed</span>
+            <span className="px-2 py-1 rounded bg-[#2164f3]/10 text-[#2164f3] capitalize">{job.platform}</span>
           </div>
 
           {job.matched_skills.length > 0 && (
