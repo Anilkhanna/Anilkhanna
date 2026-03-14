@@ -60,12 +60,18 @@ export function JobsDashboard() {
     }
   }, []);
 
-  const initialized = useRef(false);
+  // Refetch jobs when filters/sort/page change
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-    Promise.all([fetchJobs(), fetchStats()]).then(() => setLoading(false));
-  }, [fetchJobs, fetchStats]);
+    fetchJobs().then(() => setLoading(false));
+  }, [fetchJobs]);
+
+  // Fetch stats on mount
+  const statsInitialized = useRef(false);
+  useEffect(() => {
+    if (statsInitialized.current) return;
+    statsInitialized.current = true;
+    fetchStats();
+  }, [fetchStats]);
 
   // Debounce search
   const [searchDebounce, setSearchDebounce] = useState('');
