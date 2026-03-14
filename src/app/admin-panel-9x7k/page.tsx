@@ -32,10 +32,20 @@ interface ProjectItem {
   description: string; image: string | null; liveUrl: string; githubUrl: string;
 }
 interface EducationItem { degree: string; field: string; institution: string; year: string; description: string; }
+interface SectionHeading { label: string; title: string; }
+interface SectionHeadings {
+  about: SectionHeading;
+  whatIDo: SectionHeading;
+  career: SectionHeading;
+  projects: SectionHeading;
+  techStack: SectionHeading;
+  contact: SectionHeading;
+}
 interface PortfolioData {
   siteConfig: SiteConfig;
   navLinks: NavLink[];
   socialLinks: SocialLink[];
+  sectionHeadings: SectionHeadings;
   aboutData: AboutData;
   techStack: string[];
   whatIDo: WhatIDoItem[];
@@ -363,6 +373,31 @@ function CertificationsEditor({ data, onChange }: { data: string[]; onChange: (d
   );
 }
 
+function SectionHeadingsEditor({ data, onChange }: { data: SectionHeadings; onChange: (d: SectionHeadings) => void }) {
+  const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "career", "projects", "techStack", "contact"];
+  const labels: Record<keyof SectionHeadings, string> = {
+    about: "About", whatIDo: "What I Do", career: "Career",
+    projects: "Projects", techStack: "Tech Stack", contact: "Contact",
+  };
+  const update = (section: keyof SectionHeadings, field: keyof SectionHeading, val: string) => {
+    onChange({ ...data, [section]: { ...data[section], [field]: val } });
+  };
+
+  return (
+    <div className="space-y-4">
+      {keys.map((key) => (
+        <div key={key} className="rounded-xl border border-gray-200 dark:border-white/5 p-6 space-y-4">
+          <span className="text-sm font-medium text-gray-700 dark:text-neutral-300">{labels[key]}</span>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Label" value={data[key].label} onChange={(v) => update(key, "label", v)} placeholder="01. ABOUT" />
+            <Field label="Title" value={data[key].title} onChange={(v) => update(key, "title", v)} placeholder="Who I Am" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Login                                                              */
 /* ------------------------------------------------------------------ */
@@ -417,6 +452,7 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 /* ------------------------------------------------------------------ */
 const SECTION_LIST: { key: string; label: string }[] = [
   { key: "siteConfig", label: "Site Config" },
+  { key: "sectionHeadings", label: "Section Titles" },
   { key: "navLinks", label: "Navigation" },
   { key: "socialLinks", label: "Social Links" },
   { key: "aboutData", label: "About" },
@@ -506,6 +542,8 @@ function Editor() {
     switch (activeSection) {
       case "siteConfig":
         return <SiteConfigEditor data={allData.siteConfig} onChange={(d) => setAllData({ ...allData, siteConfig: d })} />;
+      case "sectionHeadings":
+        return <SectionHeadingsEditor data={allData.sectionHeadings} onChange={(d) => setAllData({ ...allData, sectionHeadings: d })} />;
       case "navLinks":
         return <NavLinksEditor data={allData.navLinks} onChange={(d) => setAllData({ ...allData, navLinks: d })} />;
       case "socialLinks":
