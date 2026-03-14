@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export function LoginScreen() {
   const [password, setPassword] = useState('');
@@ -60,9 +61,9 @@ export function LoginScreen() {
           </button>
         </form>
 
-        <a href="/" className="block text-center text-sm text-[#8892b0] hover:text-[#64ffda] mt-6">
+        <Link href="/" className="block text-center text-sm text-[#8892b0] hover:text-[#64ffda] mt-6">
           ← Back to Portfolio
-        </a>
+        </Link>
       </div>
     </div>
   );

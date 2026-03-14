@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type { Job, JobStatus, StatsResponse } from '@/lib/jobs/types';
 import { StatsBar } from './StatsBar';
 import { FilterBar } from './FilterBar';
@@ -59,7 +60,10 @@ export function JobsDashboard() {
     }
   }, []);
 
+  const initialized = useRef(false);
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
     Promise.all([fetchJobs(), fetchStats()]).then(() => setLoading(false));
   }, [fetchJobs, fetchStats]);
 
@@ -112,7 +116,7 @@ export function JobsDashboard() {
       {/* Top Bar */}
       <div className="sticky top-0 z-40 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1d2d50]">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
-          <a href="/" className="text-[#8892b0] hover:text-[#64ffda] text-sm">←</a>
+          <Link href="/" className="text-[#8892b0] hover:text-[#64ffda] text-sm">←</Link>
           <h1 className="text-lg font-medium text-[#ccd6f6] flex-1">Job Scheduler</h1>
 
           <button
