@@ -605,6 +605,18 @@ function Editor() {
         {/* Bottom actions */}
         <div className="border-t border-gray-200 dark:border-white/10 px-4 py-5 space-y-2">
           <AdminThemeToggle />
+          <button onClick={() => {
+            if (!allData) return;
+            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "portfolio.json";
+            a.click();
+            URL.revokeObjectURL(url);
+          }} className="flex w-full items-center rounded-xl px-4 py-3 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
+            Download JSON
+          </button>
           <button onClick={loadData} className="flex w-full items-center rounded-xl px-4 py-3 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
             Reload Data
           </button>
