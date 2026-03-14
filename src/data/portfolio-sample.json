@@ -1,0 +1,124 @@
+{
+  "siteConfig": {
+    "name": "Anil Khanna",
+    "firstName": "ANIL",
+    "lastName": "KHANNA",
+    "title": "Full Stack Developer",
+    "altTitle": "Software Engineer",
+    "greeting": "Hello! I'm",
+    "description": "A Full Stack",
+    "email": "hello@example.com",
+    "phone": "+91-XXXXXXXXXX",
+    "website": "https://anilkhanna.dev",
+    "location": "City, Country",
+    "yearsOfExperience": "5+",
+    "resumeUrl": "#"
+  },
+  "navLinks": [
+    { "label": "About", "href": "#about" },
+    { "label": "Work", "href": "#work" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "socialLinks": [
+    { "name": "GitHub", "url": "https://github.com", "icon": "FaGithub" },
+    { "name": "LinkedIn", "url": "https://linkedin.com", "icon": "FaLinkedin" },
+    { "name": "Twitter", "url": "https://twitter.com", "icon": "FaXTwitter" },
+    { "name": "Instagram", "url": "https://instagram.com", "icon": "FaInstagram" }
+  ],
+  "aboutData": {
+    "heading": "About Me",
+    "paragraphs": [
+      "I'm a passionate developer who loves building things for the web. With a focus on creating seamless user experiences and scalable architectures, I bring ideas to life through clean, efficient code.",
+      "When I'm not coding, you can find me exploring new technologies, contributing to open source, or sharing what I've learned with the developer community."
+    ]
+  },
+  "techStack": [
+    "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Python",
+    "Tailwind CSS", "Three.js", "PostgreSQL", "MongoDB", "Docker", "AWS",
+    "Git", "GraphQL", "Redis", "Figma"
+  ],
+  "whatIDo": [
+    {
+      "title": "FRONTEND",
+      "description": "Building interactive, responsive, and performant user interfaces with modern frameworks and cutting-edge web technologies.",
+      "skills": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Three.js", "Framer Motion"]
+    },
+    {
+      "title": "BACKEND",
+      "description": "Designing scalable server-side architectures, RESTful APIs, microservices, and database systems for robust applications.",
+      "skills": ["Node.js", "Python", "PostgreSQL", "MongoDB", "GraphQL", "Docker"]
+    }
+  ],
+  "careerData": [
+    {
+      "role": "Senior Developer",
+      "company": "Company A",
+      "period": "2023 - Present",
+      "description": "Leading frontend architecture and building scalable web applications with modern technologies."
+    },
+    {
+      "role": "Full Stack Developer",
+      "company": "Company B",
+      "period": "2021 - 2023",
+      "description": "Full-stack development with React, Node.js, and cloud infrastructure. Shipped multiple production features."
+    },
+    {
+      "role": "Junior Developer",
+      "company": "Company C",
+      "period": "2019 - 2021",
+      "description": "Started career building web applications, learning best practices, and contributing to team projects."
+    }
+  ],
+  "projectsData": [
+    {
+      "number": "01",
+      "title": "Project One",
+      "category": "Web Application",
+      "tools": "React, Node.js, MongoDB",
+      "description": "A full-stack web application with real-time features.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    },
+    {
+      "number": "02",
+      "title": "Project Two",
+      "category": "SaaS Platform",
+      "tools": "Next.js, TypeScript, PostgreSQL",
+      "description": "A SaaS platform with dashboard and analytics.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    },
+    {
+      "number": "03",
+      "title": "Project Three",
+      "category": "Mobile App",
+      "tools": "React Native, Firebase",
+      "description": "A cross-platform mobile application.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    },
+    {
+      "number": "04",
+      "title": "Project Four",
+      "category": "API Service",
+      "tools": "Python, FastAPI, Redis",
+      "description": "A high-performance API service with caching.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    }
+  ],
+  "educationData": [
+    {
+      "degree": "Bachelor of Technology",
+      "field": "Computer Science",
+      "institution": "University Name",
+      "year": "2019",
+      "description": ""
+    }
+  ],
+  "certifications": []
+}

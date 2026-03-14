@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /resume
+Disallow: /admin-panel-9x7k
+Disallow: /api/admin
+
+Sitemap: https://anilkhanna.dev/sitemap.xml
