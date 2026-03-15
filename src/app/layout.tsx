@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Anil Khanna | Senior Full Stack Developer",
@@ -93,6 +94,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <CustomCursor />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
