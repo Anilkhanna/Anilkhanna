@@ -21,12 +21,14 @@ Every content change optimizes for a 30-second scan by a recruiter.
 
 **Current → Proposed:**
 
-| Field | Current | New |
-|-------|---------|-----|
-| Greeting | "Hi, my name is" | Remove greeting format |
-| Line 1 | (part of greeting) | "I'm Anil Khanna" |
-| Title | "Senior Full Stack Developer" | "Senior Full Stack Developer" (keep) |
-| Tagline | "I build things that live in your pocket and on your screen." | "From native iOS to Flutter to React — I ship production apps across every screen." |
+| JSON Field | Current | New |
+|------------|---------|-----|
+| `siteConfig.greeting` | "Hi, my name is" | "I'm" |
+| `siteConfig.name` | "Anil Khanna" | "Anil Khanna" (keep — renders as `{greeting} {name}.` in Hero) |
+| `siteConfig.title` | "Senior Full Stack Developer" | "Senior Full Stack Developer" (keep) |
+| `siteConfig.description` | "I build things that live in your pocket and on your screen." | "From native iOS to Flutter to React — I ship production apps across every screen." |
+
+**How it renders:** The Hero component (`src/components/sections/Hero.tsx`) renders `greeting` on line 50 as accent text, then `name` on line 66 as a large gradient heading. Setting greeting to "I'm" produces: "I'm" (accent) + "Anil Khanna." (heading) — which reads naturally as "I'm Anil Khanna."
 
 ---
 
@@ -95,13 +97,16 @@ Every content change optimizes for a 30-second scan by a recruiter.
 2. **RMT Secure Portal** — FinTech — React, Next.js, TypeScript, API Integration
    Keep existing description.
 
-3. **EXP Suite Web & Mobile** — Enterprise EH&S — Next.js, React Native, Turborepo, Tailwind, NativeWind — **NEW**
+3. **EXP Suite Web & Mobile** — Enterprise EH&S — Next.js, React Native, Turborepo, Tailwind, NativeWind — **ADD NEW ENTRY**
    > "Cross-platform rebuild of the EXP Suite enterprise platform using a Turborepo monorepo — Next.js for web, React Native with NativeWind for mobile. Unified codebase serving both platforms with shared business logic and consistent UI."
-   Live URL: https://demo2.exp-inc.com/
+   - Live URL: https://demo2.exp-inc.com/
+   - Image: `null` (no screenshot available yet)
+   - GitHub: "#"
 
-4. **EXP Suite 7.0** — Enterprise EH&S — **Flutter, Dart** (updated from iOS/Swift/Obj-C)
+4. **EXP Suite 7.0** — Enterprise EH&S — Flutter, Dart — **RENAME & UPDATE existing "EXP Suite" entry**
+   Rename title from "EXP Suite" to "EXP Suite 7.0". Change tools from "iOS, Swift, Objective-C" to "Flutter, Dart". The app was originally native iOS but was rebuilt in Flutter.
    > "Enterprise EH&S compliance platform rebuilt in Flutter for cross-platform delivery. Offline-first architecture enables field workers to capture incidents, audits, and inspections without connectivity."
-   Live URL: https://apps.apple.com/us/app/exp-suite-7-0/id1568060604
+   Live URL: https://apps.apple.com/us/app/exp-suite-7-0/id1568060604 (keep existing)
 
 5. **MyGate** — PropTech — iOS, Swift, API Integration
    Keep existing description.
@@ -131,11 +136,25 @@ Every content change optimizes for a 30-second scan by a recruiter.
 
 ## 8. Contact
 
-**New copy:**
-> "I'm open to senior and lead roles in Munich (onsite/hybrid) or remote. Looking for teams that build mobile or full stack products at scale. Have a role in mind? Let's talk."
+The contact description is **hardcoded in JSX** at `src/components/sections/Contact.tsx` lines 33-34, not driven by portfolio.json. This requires a direct edit to the component.
 
-**Add second line:**
-> "Also available for freelance and consulting engagements."
+**File:** `src/components/sections/Contact.tsx`
+**Lines 33-34, replace:**
+```
+I&apos;m currently open to new opportunities. Whether you have a
+question or just want to say hi, my inbox is always open.
+```
+**With:**
+```
+I&apos;m open to senior and lead roles in Munich (onsite/hybrid) or
+remote. Looking for teams that build mobile or full stack products
+at scale. Have a role in mind? Let&apos;s talk.
+```
+
+**Add a second `<p>` below it:**
+```
+Also available for freelance and consulting engagements.
+```
 
 ---
 
@@ -147,6 +166,26 @@ Every content change optimizes for a 30-second scan by a recruiter.
 
 ---
 
-## 10. Implementation
+## 10. Unchanged Sections
 
-All changes are in `src/data/portfolio.json` and `src/app/layout.tsx` (meta). No structural or component changes needed.
+These JSON fields were reviewed and require no changes:
+- `navLinks` — keep as-is
+- `socialLinks` — keep as-is
+- `techStack` — keep as-is (order and contents are fine)
+- `educationData` — keep as-is
+- `certifications` — keep as-is (empty array)
+- `aboutData.heading` — keep as "About Me"
+
+---
+
+## 11. Implementation
+
+**Files to modify:**
+- `src/data/portfolio.json` — all content changes (hero, about, whatIDo, career, projects, section headings, altTitle)
+- `src/app/layout.tsx` — meta description, OG description, Twitter description
+- `src/components/sections/Contact.tsx` — hardcoded contact copy (lines 33-34)
+
+**Project numbering:** Renumber all project `number` fields ("01" through "08") to match the new order.
+
+**OG/Twitter meta:** Update OpenGraph and Twitter descriptions in `layout.tsx` to match the new meta description:
+> "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles."
