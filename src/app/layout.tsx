@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "Anil Khanna | Senior Full Stack Developer",
   description:
-    "Portfolio of Anil Khanna — Senior Full Stack Developer with 14+ years of experience. Expert in iOS, Flutter, React, Next.js, .NET Core, and cloud technologies.",
+    "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
   keywords: [
     "Anil Khanna",
     "Senior Full Stack Developer",
@@ -28,14 +28,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "Anil Khanna | Senior Full Stack Developer",
     description:
-      "Portfolio of Anil Khanna — Senior Full Stack Developer with 14+ years of experience in mobile & web technologies.",
+      "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
     siteName: "Anil Khanna Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "Anil Khanna | Senior Full Stack Developer",
     description:
-      "Portfolio of Anil Khanna — Senior Full Stack Developer with 14+ years of experience.",
+      "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
     creator: "@anilkhanna",
   },
   robots: {
