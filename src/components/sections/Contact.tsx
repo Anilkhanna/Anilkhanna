@@ -29,9 +29,13 @@ export function Contact() {
 
         {/* Description */}
         <ScrollReveal delay={0.1}>
-          <p className="mb-10 max-w-[600px] text-lg leading-relaxed text-muted">
-            I&apos;m currently open to new opportunities. Whether you have a
-            question or just want to say hi, my inbox is always open.
+          <p className="mb-4 max-w-[600px] text-lg leading-relaxed text-muted">
+            I&apos;m open to senior and lead roles in Munich (onsite/hybrid) or
+            remote. Looking for teams that build mobile or full stack products
+            at scale. Have a role in mind? Let&apos;s talk.
+          </p>
+          <p className="mb-10 max-w-[600px] text-base leading-relaxed text-muted/70">
+            Also available for freelance and consulting engagements.
           </p>
         </ScrollReveal>
 

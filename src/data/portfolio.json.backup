@@ -1,0 +1,229 @@
+{
+  "siteConfig": {
+    "name": "Anil Khanna",
+    "firstName": "ANIL",
+    "lastName": "KHANNA",
+    "title": "Senior Full Stack Developer",
+    "altTitle": "Mobile & Web Tech Lead",
+    "greeting": "Hi, my name is",
+    "description": "I build things that live in your pocket and on your screen.",
+    "email": "anil.khanna89@gmail.com",
+    "phone": "+49-17632247043",
+    "website": "https://anilkhanna.dev",
+    "location": "Gräfelfing, Munich",
+    "yearsOfExperience": "14+",
+    "resumeUrl": "/resume"
+  },
+  "navLinks": [
+    { "label": "About", "href": "#about" },
+    { "label": "Work", "href": "#work" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "socialLinks": [
+    { "name": "GitHub", "url": "https://github.com/Anilkhanna", "icon": "FaGithub" },
+    { "name": "LinkedIn", "url": "https://www.linkedin.com/in/anil-khanna-07299b23/", "icon": "FaLinkedin" }
+  ],
+  "sectionHeadings": {
+    "about": { "label": "01. ABOUT", "title": "Who I Am" },
+    "whatIDo": { "label": "02. WHAT I DO", "title": "What I Bring to the Table" },
+    "career": { "label": "03. CAREER", "title": "Career & Milestones" },
+    "projects": { "label": "04. PROJECTS", "title": "Featured Work" },
+    "techStack": { "label": "05. TECH STACK", "title": "Tools & Technologies" },
+    "contact": { "label": "06. CONTACT", "title": "Get In Touch" }
+  },
+  "aboutData": {
+    "heading": "About Me",
+    "paragraphs": [
+      "I'm a Senior Full Stack Developer with 14+ years of experience building scalable mobile and web applications. My expertise spans across iOS (Swift, Objective-C), Flutter, React, Next.js, and .NET Core — bridging the gap between elegant front-end experiences and robust back-end systems.",
+      "Throughout my career, I've led engineering teams of up to 14 developers, co-founded a startup that scaled to 200k+ users, and delivered enterprise solutions for global brands. I'm passionate about clean code, performance optimization, and mentoring the next generation of developers."
+    ]
+  },
+  "techStack": [
+    "Swift", "Objective-C", "Dart", "JavaScript", "TypeScript", "C#",
+    "Flutter", "React", "React Native", "Next.js", "Node.js",
+    "Dotnet Core", "Ionic",
+    "Tailwind CSS", "HTML5", "CSS3",
+    "Firebase", "CoreData", "SQLite", "Realm", "PostgreSQL", "MongoDB",
+    "REST APIs", "GraphQL",
+    "Git", "Docker", "CI/CD", "GitHub Actions",
+    "CocoaPods", "Swift Package Manager",
+    "JIRA", "Agile", "Scrum",
+    "Mixpanel", "Crashlytics", "Google Analytics",
+    "AWS", "Vercel"
+  ],
+  "whatIDo": [
+    {
+      "title": "MOBILE APPS",
+      "description": "Native iOS (Swift, Obj-C) and cross-platform Flutter apps shipped to millions of users. From system architecture to App Store optimization — I own the full mobile lifecycle.",
+      "skills": ["Swift", "Objective-C", "Flutter", "Dart", "React Native", "Ionic"]
+    },
+    {
+      "title": "WEB APPS",
+      "description": "Modern web applications with React, Next.js, and TypeScript. Server-side rendering, responsive design, and performance tuning for production-grade experiences.",
+      "skills": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Dotnet Core"]
+    },
+    {
+      "title": "BACKEND & APIs",
+      "description": "Scalable backend systems with .NET Core, Node.js, REST APIs, GraphQL, and cloud infrastructure on AWS. Designed for throughput, reliability, and developer ergonomics.",
+      "skills": ["C#", "Node.js", "PostgreSQL", "MongoDB", "Firebase", "REST APIs"]
+    },
+    {
+      "title": "TEAM & DELIVERY",
+      "description": "Engineering leadership, Agile delivery, CI/CD pipelines, code reviews, and mentoring. Led teams of up to 14 engineers and co-founded a startup scaled to 200k+ users.",
+      "skills": ["Agile", "Scrum", "CI/CD", "Docker", "AWS", "JIRA"]
+    }
+  ],
+  "careerData": [
+    {
+      "role": "Software Developer",
+      "company": "transact Elektronische Zahlungssysteme GmbH (Euronet Worldwide)",
+      "period": "Feb 2022 - Present",
+      "description": "Building the DM stock management app end-to-end on Flutter, serving one of Germany's largest retail chains. Optimized API contracts and reduced app launch time by 20%. Mentoring developers and driving technical decisions across the mobile stack."
+    },
+    {
+      "role": "SDE-III",
+      "company": "SDOD Technologies Pvt. Ltd — MyGate (Remote)",
+      "period": "Jan 2020 - Jan 2022",
+      "description": "Led iOS development for MyGate, India's leading gated community platform with 1M+ active users. Owned the full iOS lifecycle — architecture, API contract design, performance profiling, and release management. Architected core security and visitor management modules."
+    },
+    {
+      "role": "CoFounder & Mobile Lead",
+      "company": "Hefty Innovations (Remote)",
+      "period": "Oct 2018 - Dec 2020",
+      "description": "Co-founded a mobile-first startup and scaled it to 200k+ active users. Redesigned the app architecture for high performance and built features that achieved 30% faster time-to-market. Defined product roadmaps alongside co-founders and led the engineering team."
+    },
+    {
+      "role": "Senior Software Engineer",
+      "company": "EX2 Solutions India Pvt Ltd",
+      "period": "Feb 2017 - Oct 2018",
+      "description": "Developed enterprise EH&S (Environmental, Health & Safety) compliance apps for global clients. Built offline-first iOS architecture enabling field workers to operate in low-connectivity environments. Delivered modules for incident reporting, audits, and safety inspections."
+    },
+    {
+      "role": "Mobile Lead",
+      "company": "Mobikasa Inc, New Delhi",
+      "period": "Jun 2015 - Jan 2017",
+      "description": "Led a team of 14 developers and delivered 10+ iOS projects across e-commerce and fitness verticals with a 95% on-time delivery rate. Established code review practices and modular architecture patterns that became the team's standard."
+    },
+    {
+      "role": "Senior iOS Developer",
+      "company": "PRM Technologies, New Delhi",
+      "period": "Feb 2014 - May 2015",
+      "description": "Translated client concepts into polished iOS applications across multiple domains. Mentored 3 junior developers, managed task allocation, and introduced structured code review workflows to the team."
+    },
+    {
+      "role": "iOS Developer",
+      "company": "WeirdLogics Pvt Ltd, Gurugram",
+      "period": "Apr 2013 - Jan 2014",
+      "description": "Built foundational iOS development skills working on production apps from day one. Delivered client-facing projects using Objective-C and UIKit, gaining deep expertise in the Apple ecosystem."
+    }
+  ],
+  "projectsData": [
+    {
+      "number": "01",
+      "title": "Ria Money Transfer",
+      "category": "FinTech",
+      "tools": "Flutter, iOS, API Integration",
+      "description": "International money transfer app serving millions of users globally with real-time exchange rates. Built secure payment flows and optimized the cross-platform experience on Flutter and iOS.",
+      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "liveUrl": "https://secure.riamoneytransfer.com/",
+      "githubUrl": "#"
+    },
+    {
+      "number": "02",
+      "title": "RMT Secure Portal",
+      "category": "FinTech",
+      "tools": "React, Next.js, TypeScript, API Integration",
+      "description": "Secure web portal for Ria Money Transfer enabling international fund transfers with real-time exchange rates and transparent fee calculations. Built the frontend architecture for a seamless, compliant money transfer experience across 165+ countries.",
+      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "liveUrl": "https://secure.riamoneytransfer.com/",
+      "githubUrl": "#"
+    },
+    {
+      "number": "03",
+      "title": "MyGate",
+      "category": "PropTech",
+      "tools": "iOS, Swift, API Integration",
+      "description": "India's leading gated community management app with 1M+ active users. Architected core security and visitor management modules, streamlined API integrations, and drove performance improvements across the iOS platform.",
+      "image": "https://play-lh.googleusercontent.com/j2k8mGPkBaMLRKJaQ1i7UMx3kYZxHQfHWjDCcKpXf-mI9vJnKrSBCl6FKybVNLmmWQ=w240-h480",
+      "liveUrl": "https://play.google.com/store/apps/details?id=com.mygate.user",
+      "githubUrl": "#"
+    },
+    {
+      "number": "04",
+      "title": "EXP Suite",
+      "category": "Enterprise EH&S",
+      "tools": "iOS, Swift, Objective-C",
+      "description": "Enterprise EH&S compliance platform for environmental health and safety reporting. Built offline-first architecture enabling field workers to capture incidents, audits, and inspections without connectivity.",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/ca/f0/a5caf069-ef20-47fa-b3e2-c5fe20e0a95f/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "liveUrl": "https://apps.apple.com/us/app/exp-suite-7-0/id1568060604",
+      "githubUrl": "#"
+    },
+    {
+      "number": "05",
+      "title": "1-800-Flowers",
+      "category": "E-Commerce",
+      "tools": "iOS, Swift",
+      "description": "One of America's top gifting e-commerce apps. Developed seamless checkout flows, product browsing with rich media, and push notification campaigns that boosted user engagement.",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/45/d5/3a/45d53ab5-60c4-a73f-c498-4e9c46a0d160/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/230x0w.webp",
+      "liveUrl": "https://apps.apple.com/us/app/1800flowers-shop-gifts-more/id457699767",
+      "githubUrl": "#"
+    },
+    {
+      "number": "06",
+      "title": "Performix",
+      "category": "Fitness",
+      "tools": "iOS, Swift",
+      "description": "Fitness app featuring a 6-week guided video workout program. Built video streaming, progress tracking, and workout scheduling with a focus on smooth playback and offline caching.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    },
+    {
+      "number": "07",
+      "title": "CoFetch",
+      "category": "Social Network",
+      "tools": "iOS, Swift",
+      "description": "A verified student-only social network using college email authentication. Built real-time messaging, activity matching, and campus-based discovery features from the ground up.",
+      "image": null,
+      "liveUrl": "#",
+      "githubUrl": "#"
+    },
+    {
+      "number": "08",
+      "title": "CES Official App",
+      "category": "Events",
+      "tools": "iOS, Objective-C",
+      "description": "The official mobile app for the International Consumer Electronics Show in Las Vegas. Built interactive floor maps, exhibitor search, and personalized session scheduling for 170k+ attendees.",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/93/f1/37/93f13720-1a60-0cc4-f587-a4df75bf6f5c/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "liveUrl": "https://apps.apple.com/us/app/ces-2026/id6443741077",
+      "githubUrl": "#"
+    },
+    {
+      "number": "09",
+      "title": "Eventa",
+      "category": "Events Management",
+      "tools": "iOS, Swift",
+      "description": "End-to-end events management platform for organizers and attendees. Built event creation workflows, RSVP management, and real-time attendee coordination features.",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/e9/2e/74e92e0c-3950-f49f-9a7f-76cc08e2c03c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
+      "liveUrl": "https://apps.apple.com/us/app/eventa/id6450686615",
+      "githubUrl": "#"
+    }
+  ],
+  "educationData": [
+    {
+      "degree": "Master of Computer Applications",
+      "field": "Computer Applications",
+      "institution": "Punjab Technical University",
+      "year": "2013",
+      "description": ""
+    },
+    {
+      "degree": "Bachelor of Computer Applications",
+      "field": "Computer Applications",
+      "institution": "Jamia Hamdard University",
+      "year": "2010",
+      "description": ""
+    }
+  ],
+  "certifications": []
+}
