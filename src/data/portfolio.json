@@ -74,6 +74,17 @@
       "Open to senior and lead roles in mobile, full stack, or frontend — remote, hybrid, or onsite in Munich."
     ]
   },
+  "trendingSkills": [
+    "Next.js",
+    "Claude AI",
+    "AI / LLMs",
+    "Test Case Recorder",
+    "Chrome Extensions",
+    "MCP Servers",
+    "Cursor IDE",
+    "Prompt Engineering",
+    "RAG Pipelines"
+  ],
   "techStack": [
     "Swift",
     "Objective-C",
@@ -113,6 +124,15 @@
     "Google Analytics",
     "AWS",
     "Vercel"
+  ],
+  "techCategories": [
+    { "label": "Mobile", "items": ["Swift", "Obj-C", "Flutter", "Dart"] },
+    { "label": "Frontend", "items": ["React", "Next.js", "TypeScript"] },
+    { "label": "Backend", "items": [".NET Core", "Node.js", "GraphQL", "PostgreSQL"] },
+    { "label": "DevOps", "items": ["Docker", "AWS", "CI/CD", "Firebase"] },
+    { "label": "Languages", "items": ["Swift", "Objective-C", "Dart", "TypeScript", "JavaScript", "C#"] },
+    { "label": "Frameworks", "items": ["Flutter", "React", "Next.js", "React Native", "Node.js", ".NET Core", "Tailwind CSS"] },
+    { "label": "Data & DevOps", "items": ["PostgreSQL", "Firebase", "MongoDB", "GraphQL", "Docker", "AWS", "CI/CD", "Git"] }
   ],
   "whatIDo": [
     {
