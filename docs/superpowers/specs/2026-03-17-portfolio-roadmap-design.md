@@ -48,9 +48,16 @@ Five features across three phases, prioritized by conversion impact:
 }
 ```
 
+**Banner message template:**
+> "Available for hire — {roles} · {domains} · {location}" + (if freelance: " · Also open to freelance")
+
+When `freelance` is false, that clause is omitted. When `isAvailable` is false, the entire banner is hidden.
+
 **Admin panel integration:**
 - Add toggle switch + editable fields to existing admin panel at `/admin-panel-9x7k`
 - Read/write via existing `/api/admin/data` endpoint (no new API routes needed)
+- Update `PortfolioData` TypeScript interface in admin panel to include `availability` type
+- Add `"availability"` to the `requiredKeys` array in `/api/admin/data/route.ts` to prevent data loss on save
 
 **Styling:**
 - Accent background color (`--accent`) with contrasting text
@@ -70,6 +77,13 @@ Five features across three phases, prioritized by conversion impact:
 - 05. TESTIMONIALS → "What People Say"
 - 06. TECH STACK (was 05)
 - 07. CONTACT (was 06)
+
+**Section headings update in `portfolio.json`:**
+- Add `"testimonials": { "label": "05. TESTIMONIALS", "title": "What People Say" }`
+- Update `"techStack"` label to `"06. TECH STACK"`
+- Update `"contact"` label to `"07. CONTACT"`
+
+**Empty state:** If testimonials array is empty, hide the section entirely (no heading or carousel rendered).
 
 **Content:** 5-7 LinkedIn recommendations. Each testimonial:
 - Quote text (trimmed to ~2-3 sentences if long)
@@ -135,18 +149,20 @@ Five features across three phases, prioritized by conversion impact:
       "slug": "ria-money-transfer",
       "title": "Ria Money Transfer",
       "category": "FinTech",
-      "tools": ["Flutter", "iOS", "Swift", "REST APIs"],
+      "tools": "Flutter, iOS, Swift, REST APIs",
       "image": "/images/projects/ria.png",
-      "problem": "...",
-      "approach": "...",
-      "challenges": "...",
-      "results": "..."
+      "problem": ["Paragraph 1...", "Paragraph 2..."],
+      "approach": ["Paragraph 1...", "Paragraph 2..."],
+      "challenges": ["Paragraph 1...", "Paragraph 2..."],
+      "results": ["Paragraph 1...", "Paragraph 2..."]
     }
   ]
 }
 ```
 
-**Integration with Projects section:** Project cards that have case studies show a "Read Case Study →" link alongside existing live/GitHub links.
+Note: `tools` uses a comma-separated string to match the existing `projectsData.tools` format. Content sections use `string[]` arrays for multi-paragraph support (matching the `aboutData.paragraphs` pattern).
+
+**Integration with Projects section:** Add optional `caseStudySlug` field to `projectsData` items. Project cards where `caseStudySlug` is set show a "Read Case Study →" link alongside existing live/GitHub links.
 
 **Content:** Draft based on existing project descriptions in portfolio.json — user refines later.
 
@@ -223,9 +239,10 @@ Five features across three phases, prioritized by conversion impact:
 - `/blog` — listing page
 - `/blog/[slug]` — individual post
 
-**Tech approach:** File-based MDX with `next-mdx-remote`.
+**Tech approach:** File-based MDX with `next-mdx-remote/rsc` (RSC-compatible version for App Router).
 - Posts stored as `.mdx` files in `src/content/blog/`
 - Frontmatter for metadata
+- Verify `next-mdx-remote` compatibility with Next.js 16 / React 19 during implementation; fall back to `@next/mdx` if needed
 
 **Frontmatter schema:**
 ```yaml
@@ -243,7 +260,7 @@ published: true
 - Grid of post cards sorted by date (newest first)
 - Each card: title, date, excerpt, tags, reading time
 - Empty state: "Posts coming soon — check back later" (for initial deploy)
-- Pagination if posts exceed 10
+- Client-side pagination if posts exceed 10 (simple "Load More" button — no additional routes needed)
 
 **Post page (`/blog/[slug]`):**
 - Title, date, tags, reading time header
@@ -277,6 +294,20 @@ published: true
 **SEO:** New routes (`/services`, `/case-study/*`, `/blog/*`) added to `sitemap.ts`. Dynamic metadata for all new pages.
 
 **Navigation updates:** Navbar gains "Services" and "Blog" links. Section numbering on main page updates to accommodate Testimonials.
+
+**Navbar link handling:** The current Navbar uses `scrollTo` with `document.querySelector(href)` for all links, which only works for hash anchors (`#about`, `#work`). New page routes (`/services`, `/blog`) require different handling. Add a `type` field to `navLinks` data model:
+```json
+{ "name": "Services", "href": "/services", "type": "page" }
+{ "name": "Blog", "href": "/blog", "type": "page" }
+```
+Existing links get `"type": "anchor"`. The Navbar click handler uses `scrollTo` for `"anchor"` type and `router.push()` for `"page"` type.
+
+**Data layer updates:** New fields (`availability`, `testimonials`, `caseStudies`, `services`) must be:
+- Added to `src/data/portfolio.ts` exports
+- Added to the `requiredKeys` array in `/api/admin/data/route.ts`
+- Added to the admin panel's `PortfolioData` TypeScript interface
+
+**OG metadata:** All new pages (`/services`, `/case-study/*`, `/blog/*`) include dynamic `<meta>` tags for title, description, and og:image. Case studies and services use project images or a default OG image.
 
 **Theme:** All new components use existing CSS variables. No new design tokens needed.
 
