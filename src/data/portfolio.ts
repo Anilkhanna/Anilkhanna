@@ -13,3 +13,7 @@ export const careerData = data.careerData;
 export const projectsData = data.projectsData;
 export const educationData = data.educationData;
 export const certifications = data.certifications;
+export const availability = data.availability;
+export const testimonials = data.testimonials;
+export const caseStudies = data.caseStudies;
+export const services = data.services;

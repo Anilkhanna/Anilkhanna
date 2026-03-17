@@ -15,18 +15,11 @@
     "resumeUrl": "/resume"
   },
   "navLinks": [
-    {
-      "label": "About",
-      "href": "#about"
-    },
-    {
-      "label": "Work",
-      "href": "#work"
-    },
-    {
-      "label": "Contact",
-      "href": "#contact"
-    }
+    { "label": "About", "href": "#about", "type": "anchor" },
+    { "label": "Work", "href": "#work", "type": "anchor" },
+    { "label": "Services", "href": "/services", "type": "page" },
+    { "label": "Blog", "href": "/blog", "type": "page" },
+    { "label": "Contact", "href": "#contact", "type": "anchor" }
   ],
   "socialLinks": [
     {
@@ -57,12 +50,16 @@
       "label": "04. PROJECTS",
       "title": "Featured Work"
     },
+    "testimonials": {
+      "label": "05. TESTIMONIALS",
+      "title": "What People Say"
+    },
     "techStack": {
-      "label": "05. TECH STACK",
+      "label": "06. TECH STACK",
       "title": "Tools & Technologies"
     },
     "contact": {
-      "label": "06. CONTACT",
+      "label": "07. CONTACT",
       "title": "Get In Touch"
     }
   },
@@ -326,5 +323,54 @@
       "description": ""
     }
   ],
-  "certifications": []
+  "certifications": [],
+  "availability": {
+    "isAvailable": true,
+    "roles": "Senior/Lead roles",
+    "domains": "Full Stack & Mobile",
+    "location": "Munich (onsite/hybrid) or Remote",
+    "freelance": true
+  },
+  "testimonials": [],
+  "caseStudies": [],
+  "services": {
+    "headline": "Let's Build Something Together",
+    "intro": "14+ years of experience building mobile and web products — available for your next project.",
+    "offerings": [
+      {
+        "icon": "smartphone",
+        "title": "Mobile App Development",
+        "description": "Native iOS, Flutter, and React Native apps from concept to App Store.",
+        "deliverables": ["New app development", "Existing app improvements", "App Store optimization"]
+      },
+      {
+        "icon": "globe",
+        "title": "Web App Development",
+        "description": "React and Next.js applications with modern UI and performance.",
+        "deliverables": ["Full-stack web apps", "Landing pages", "Admin dashboards"]
+      },
+      {
+        "icon": "server",
+        "title": "Backend & API Development",
+        "description": "Node.js, .NET Core, and GraphQL APIs built for scale.",
+        "deliverables": ["REST & GraphQL APIs", "Database design", "Third-party integrations"]
+      },
+      {
+        "icon": "users",
+        "title": "Technical Consulting",
+        "description": "Architecture reviews, code audits, and tech stack guidance.",
+        "deliverables": ["Architecture reviews", "Code audits", "Team mentoring"]
+      }
+    ],
+    "pricing": {
+      "hourlyRate": "$30/hr",
+      "note": "Project-based quotes available for defined scopes"
+    },
+    "process": [
+      { "step": "Discovery", "description": "Understand your goals and requirements" },
+      { "step": "Proposal", "description": "Scope, timeline, and cost estimate" },
+      { "step": "Build", "description": "Iterative development with regular updates" },
+      { "step": "Deliver", "description": "Launch, handoff, and support" }
+    ]
+  }
 }

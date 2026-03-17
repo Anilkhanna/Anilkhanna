@@ -57,6 +57,10 @@ export async function PUT(request: NextRequest) {
       "projectsData",
       "educationData",
       "certifications",
+      "availability",
+      "testimonials",
+      "caseStudies",
+      "services",
     ];
 
     for (const key of requiredKeys) {
