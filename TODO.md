@@ -1,38 +1,47 @@
 # Portfolio Improvement Roadmap
 
-Future enhancements from Approach B (content + structure overhaul). Implement after Approach A content polish is live and validated.
+Phased enhancements prioritized by conversion impact — job hunting, freelance leads, and long-term brand building.
 
 ---
 
-## Testimonials / Recommendations Section
-- [ ] Add a new section between Projects and Tech Stack
-- [ ] Collect 3-5 quotes from past managers, co-founders, or clients
-- [ ] Include name, role, company, and optionally a photo/LinkedIn link
-- [ ] Design as a horizontal carousel or stacked cards
+## Phase 1 — Conversion Boosters
 
-## Blog / Writing Section
-- [ ] Add a `/blog` route with MDX or markdown-based posts
-- [ ] Write 2-3 seed articles (e.g., "Migrating a native iOS app to Flutter", "Turborepo for React Native + Next.js monorepos")
-- [ ] Add blog link to navbar
-- [ ] Good for SEO and thought leadership positioning
+### "Hire Me" Availability Banner
+- [ ] Add sticky banner above navbar showing availability status
+- [ ] Content: roles, work modes, location, freelance openness
+- [ ] Admin panel toggle to show/hide banner
+- [ ] Store availability config in portfolio.json
+- [ ] Banner disappears entirely when toggled off
 
-## "Hire Me" Availability Banner
-- [ ] Add a subtle sticky banner or badge showing availability status
-- [ ] Include preferred roles (Senior/Lead, Mobile/Full Stack)
-- [ ] Include preferred work modes (Munich onsite/hybrid, remote)
-- [ ] Make it toggleable from admin panel when availability changes
+### Testimonials / Recommendations Section
+- [ ] Add new section between Projects and Tech Stack
+- [ ] Pull 5-7 quotes from LinkedIn recommendations
+- [ ] Horizontal carousel layout (matching Projects drag pattern)
+- [ ] Each card: quote, name, role, company, LinkedIn link
+- [ ] Section heading: "07. TESTIMONIALS" — "What People Say"
 
-## Section Reordering for Recruiter Scan Pattern
-- [ ] Consider moving Projects above Career (recruiters care about what you built more than where you worked)
-- [ ] A/B test with analytics to see which order gets more contact clicks
+## Phase 2 — Depth & Credibility
 
-## Freelance Services Page
-- [ ] Add a `/services` route for freelance/consulting leads
-- [ ] List service offerings (mobile app development, technical consulting, code audits)
-- [ ] Include pricing tiers or "starting from" ranges
-- [ ] Add a contact form specific to project inquiries
+### Case Studies
+- [ ] Create `/case-study/[slug]` dynamic route
+- [ ] Convert top 3 projects: Ria Money Transfer, EXP Suite, MyGate
+- [ ] Page structure: problem, approach, challenges, results
+- [ ] Add "Read Case Study →" link on project cards
+- [ ] Store case study content in portfolio.json
 
-## Case Studies
-- [ ] Convert top 2-3 projects into detailed case studies
-- [ ] Include: problem, approach, architecture decisions, results with metrics
-- [ ] Much more convincing than a one-paragraph project description
+### Freelance Services Page
+- [ ] Create `/services` route
+- [ ] 4 service cards: Mobile, Web, Backend, Consulting
+- [ ] Pricing: $30/hr with project-based quotes available
+- [ ] Process section: Discovery → Proposal → Build → Deliver
+- [ ] Add "Services" link to Navbar
+
+## Phase 3 — Content Engine
+
+### Blog Infrastructure
+- [ ] Create `/blog` and `/blog/[slug]` routes
+- [ ] MDX-based posts in `src/content/blog/` with frontmatter
+- [ ] Blog listing page with post cards (title, date, excerpt, tags)
+- [ ] Clean reading layout with code syntax highlighting
+- [ ] Add "Blog" link to Navbar
+- [ ] SEO: sitemap entries and per-post meta tags
