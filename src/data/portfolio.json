@@ -333,7 +333,7 @@
   ],
   "certifications": [],
   "availability": {
-    "isAvailable": true,
+    "isAvailable": false,
     "roles": "Senior/Lead roles",
     "domains": "Full Stack & Mobile",
     "location": "Munich (onsite/hybrid) or Remote",
