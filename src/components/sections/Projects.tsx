@@ -121,10 +121,10 @@ export function Projects() {
               {"caseStudySlug" in project && project.caseStudySlug ? (
                 <Link
                   href={`/case-study/${project.caseStudySlug}`}
-                  className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-accent transition-colors hover:text-foreground"
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent/80"
                 >
-                  <FiFileText size={12} />
-                  Read Case Study →
+                  <FiFileText size={14} />
+                  Read Case Study
                 </Link>
               ) : null}
             </div>

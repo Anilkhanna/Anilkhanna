@@ -242,6 +242,7 @@
       "title": "RMT Secure Portal",
       "category": "FinTech",
       "tools": "React, Next.js, TypeScript, API Integration",
+      "caseStudySlug": "rmt-secure-portal",
       "description": "Secure web portal for Ria Money Transfer enabling international fund transfers with real-time exchange rates and transparent fee calculations. Built the frontend architecture for a seamless, compliant money transfer experience across 165+ countries.",
       "image": "https://www.riamoneytransfer.com/meta-image.png",
       "liveUrl": "https://secure.riamoneytransfer.com/",
@@ -263,6 +264,7 @@
       "title": "EXP Suite 7.0",
       "category": "Enterprise EH&S",
       "tools": "Flutter, Dart",
+      "caseStudySlug": "exp-suite-7",
       "description": "Enterprise EH&S compliance platform rebuilt in Flutter for cross-platform delivery. Offline-first architecture enables field workers to capture incidents, audits, and inspections without connectivity.",
       "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/ca/f0/a5caf069-ef20-47fa-b3e2-c5fe20e0a95f/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
       "liveUrl": "https://apps.apple.com/us/app/exp-suite-7-0/id1568060604",
@@ -284,6 +286,7 @@
       "title": "1-800-Flowers",
       "category": "E-Commerce",
       "tools": "iOS, Swift",
+      "caseStudySlug": "1800-flowers",
       "description": "One of America's top gifting e-commerce apps. Developed seamless checkout flows, product browsing with rich media, and push notification campaigns that boosted user engagement.",
       "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/45/d5/3a/45d53ab5-60c4-a73f-c498-4e9c46a0d160/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/230x0w.webp",
       "liveUrl": "https://apps.apple.com/us/app/1800flowers-shop-gifts-more/id457699767",
@@ -294,6 +297,7 @@
       "title": "CES Official App",
       "category": "Events",
       "tools": "iOS, Objective-C",
+      "caseStudySlug": "ces-official-app",
       "description": "The official mobile app for the International Consumer Electronics Show in Las Vegas. Built interactive floor maps, exhibitor search, and personalized session scheduling for 170k+ attendees.",
       "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/93/f1/37/93f13720-1a60-0cc4-f587-a4df75bf6f5c/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
       "liveUrl": "https://apps.apple.com/us/app/ces-2026/id6443741077",
@@ -304,6 +308,7 @@
       "title": "Eventa",
       "category": "Events Management",
       "tools": "iOS, Swift",
+      "caseStudySlug": "eventa",
       "description": "End-to-end events management platform for organizers and attendees. Built event creation workflows, RSVP management, and real-time attendee coordination features.",
       "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/e9/2e/74e92e0c-3950-f49f-9a7f-76cc08e2c03c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
       "liveUrl": "https://apps.apple.com/us/app/eventa/id6450686615",
@@ -425,6 +430,121 @@
       "results": [
         "Crash-free rate improved from 96.2% to 99.5%. App launch time decreased by 60% thanks to the optimized API layer and lazy module loading. Memory usage on the home screen dropped by 40%.",
         "The modular architecture enabled the team to ship the delivery management feature in 3 weeks — a task estimated at 8 weeks under the old architecture. The app maintained a 4.6 rating on the App Store throughout the transition."
+      ]
+    },
+    {
+      "slug": "rmt-secure-portal",
+      "title": "RMT Secure Portal",
+      "category": "FinTech",
+      "tools": "React, Next.js, TypeScript, REST APIs, Tailwind CSS",
+      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "problem": [
+        "Ria Money Transfer needed a modern, secure web portal that would allow customers to send money internationally from their browsers with the same ease as the mobile app. The legacy web experience was built on aging jQuery-based templates with poor responsiveness, inconsistent form validation, and a multi-page checkout flow that caused a 45% drop-off rate during transactions.",
+        "Regulatory compliance added another layer of complexity. The portal needed to handle KYC verification, sanctions screening, and dynamic fee disclosures that varied by corridor (sender/receiver country pair). The existing system hard-coded these rules, making it painful to onboard new corridors or adjust to changing regulations."
+      ],
+      "approach": [
+        "I architected the frontend from scratch using Next.js and TypeScript, implementing a single-page transaction flow that replaced the old multi-step process. The UI was built with Tailwind CSS for rapid iteration, and every form component was designed with real-time validation and accessibility in mind. Server-side rendering ensured fast initial loads and strong SEO for the marketing pages.",
+        "For the compliance layer, I built a dynamic rules engine on the frontend that consumed corridor-specific configuration from the API. Fee calculations, transfer limits, and required documents updated in real time as users selected sender and receiver countries. This decoupled regulatory logic from the codebase, allowing the compliance team to update rules without developer involvement."
+      ],
+      "challenges": [
+        "Handling real-time exchange rate fluctuations during the transaction flow was critical. Rates could change between when a user started a transfer and when they confirmed it. I implemented a rate-lock mechanism with a visible countdown timer, and a graceful re-quote flow if the lock expired — all without losing the user's form state.",
+        "Security was paramount for a financial portal. We implemented CSP headers, CSRF protection, and a secure token refresh strategy that handled session expiry gracefully. Penetration testing revealed edge cases in the multi-tab scenario that required a shared authentication state manager using BroadcastChannel API."
+      ],
+      "results": [
+        "Transaction completion rate improved by 32% compared to the legacy portal, driven by the streamlined single-page flow and real-time validation that caught errors before submission. Page load time dropped from 4.2s to under 1.2s thanks to Next.js SSR and optimized API calls.",
+        "The dynamic compliance engine enabled the business to launch 12 new corridors in the first quarter without any frontend code changes. The portal now handles thousands of daily transactions across 165+ countries with a 99.9% uptime SLA."
+      ]
+    },
+    {
+      "slug": "exp-suite-7",
+      "title": "EXP Suite 7.0",
+      "category": "Enterprise EH&S",
+      "tools": "Flutter, Dart, SQLite, REST APIs, Background Sync",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/ca/f0/a5caf069-ef20-47fa-b3e2-c5fe20e0a95f/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "problem": [
+        "EXP Suite 7.0 is an enterprise Environmental Health & Safety platform used by field inspectors, safety officers, and compliance managers at industrial facilities. The previous native iOS and Android apps had diverging feature sets, and maintaining two separate codebases was consuming 60% of the engineering team's capacity on bug fixes alone rather than new feature development.",
+        "The most critical requirement was offline functionality. Field workers operate at construction sites, mines, and remote industrial locations with unreliable or zero connectivity. The existing offline mode was a fragile afterthought — forms would lose data mid-inspection, photo attachments would fail to sync, and conflict resolution when multiple inspectors worked on the same facility was essentially non-existent."
+      ],
+      "approach": [
+        "I rebuilt the entire mobile application in Flutter to serve both platforms from a single codebase, using a clean architecture pattern with distinct data, domain, and presentation layers. The offline-first design was the foundation, not an add-on: every feature was built to work without connectivity first, with sync as an enhancement. Local persistence used SQLite with a custom schema that mirrored the server-side data model for seamless round-tripping.",
+        "For the sync engine, I implemented a queue-based architecture with automatic retry and exponential backoff. Each data mutation was recorded as an immutable event in a local queue, complete with timestamps and user context. When connectivity resumed, the sync engine processed the queue in order, handling photo uploads as chunked multipart requests to avoid timeouts on slow connections."
+      ],
+      "challenges": [
+        "Conflict resolution in a multi-user enterprise environment was the most complex challenge. When two inspectors edited the same audit checklist offline, we needed deterministic resolution without data loss. I implemented a field-level merge strategy using operational transforms — non-conflicting changes merged automatically, while true conflicts surfaced a clear diff UI for manual resolution by the facility manager.",
+        "Photo and document attachments posed unique challenges in offline mode. Inspectors often captured 50+ photos per inspection, and storing high-resolution images locally while keeping the app responsive required a background processing pipeline with progressive JPEG compression, thumbnail generation, and lazy loading with placeholder shimmer effects."
+      ],
+      "results": [
+        "Development velocity increased by 45% after consolidating to a single Flutter codebase. The team shipped features to both platforms simultaneously, eliminating the 2-3 week lag that previously existed between iOS and Android releases. Bug reports related to platform inconsistencies dropped to near zero.",
+        "The offline-first architecture reduced data loss incidents from approximately 12 per month to zero over the first six months. Sync reliability reached 99.97%, and the average time to complete a safety inspection decreased by 35% thanks to streamlined workflows and instant photo capture without upload delays."
+      ]
+    },
+    {
+      "slug": "1800-flowers",
+      "title": "1-800-Flowers",
+      "category": "E-Commerce",
+      "tools": "iOS, Swift, UIKit, Core Data, Push Notifications, Analytics",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/45/d5/3a/45d53ab5-60c4-a73f-c498-4e9c46a0d160/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/230x0w.webp",
+      "problem": [
+        "1-800-Flowers is one of America's largest gifting e-commerce brands, and the iOS app needed to deliver a premium shopping experience that matched the emotional nature of gift-giving. The existing app had a dated UI, a clunky checkout flow with 6 separate screens, and poor product browsing performance — image-heavy catalog pages stuttered on older devices and the search experience returned irrelevant results.",
+        "Seasonal traffic spikes were a major pain point. During holidays like Valentine's Day and Mother's Day, the app experienced 10x normal traffic. The existing architecture couldn't handle the load gracefully — API timeouts cascaded into blank screens, and the cart would occasionally lose items during high-traffic checkout, leading to customer complaints and lost revenue."
+      ],
+      "approach": [
+        "I redesigned the checkout flow from 6 screens down to a streamlined 3-step process: recipient details, delivery date, and payment. Each step used inline validation with real-time delivery date availability checks, so customers never reached the payment screen only to discover their chosen date was unavailable. The UI used custom UIKit animations to create a smooth, premium feel appropriate for a gifting experience.",
+        "For the product catalog, I implemented a prefetching strategy with a multi-layer image cache (memory, disk, and CDN-optimized thumbnails). Collection views used compositional layouts with self-sizing cells, and I built a custom search engine integration that supported natural language queries like 'birthday flowers for mom under $50' with faceted filtering."
+      ],
+      "challenges": [
+        "Handling seasonal traffic required the app to be resilient without degrading the experience. I implemented a circuit breaker pattern for API calls — when the backend was under heavy load, the app fell back to cached catalog data and queued non-critical requests. Cart state was persisted locally with Core Data and reconciled server-side, preventing item loss during connectivity hiccups.",
+        "Push notification campaigns were critical for driving seasonal revenue, but the existing implementation had poor opt-in rates and generic messaging. I built a rich notification system with inline product images and actionable buttons (Quick Reorder, Track Delivery), along with a smart timing engine that analyzed user timezone and past purchase patterns to deliver prompts at optimal moments."
+      ],
+      "results": [
+        "The streamlined checkout flow increased conversion rates by 22% and reduced cart abandonment by 18%. Average order completion time dropped from 4.5 minutes to under 2 minutes. The app maintained smooth 60fps scrolling across the entire product catalog, even on iPhone 6s and SE devices.",
+        "During the Valentine's Day peak, the app handled 10x normal traffic with zero downtime and no reported cart loss incidents. Push notification opt-in rates improved by 40% with the rich notification redesign, and targeted campaigns drove a 28% increase in repeat purchases during the holiday season."
+      ]
+    },
+    {
+      "slug": "ces-official-app",
+      "title": "CES Official App",
+      "category": "Events",
+      "tools": "iOS, Objective-C, MapKit, Core Data, REST APIs, Push Notifications",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/93/f1/37/93f13720-1a60-0cc4-f587-a4df75bf6f5c/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "problem": [
+        "The Consumer Electronics Show (CES) in Las Vegas is the world's largest tech trade show, attracting 170,000+ attendees across multiple massive venue halls. The official app needed to serve as the indispensable companion for navigating the event — from finding specific exhibitor booths across 2.9 million square feet of floor space to managing personalized schedules with hundreds of concurrent sessions.",
+        "The existing app suffered from poor indoor navigation, a search experience that couldn't handle 4,400+ exhibitors effectively, and a schedule builder that didn't account for travel time between venues. With attendees relying on the app in a venue with spotty Wi-Fi from network congestion, offline reliability was essential but barely functional."
+      ],
+      "approach": [
+        "I built a custom interactive floor map system using MapKit with custom tile overlays for indoor venue layouts. Each exhibitor booth was a tappable region with rich detail cards showing company info, product categories, and booth staff. The map supported multi-floor navigation with smooth transitions between hall levels and provided walking directions between any two points on the show floor.",
+        "The session scheduling engine was designed to be intelligent — when a user added a session, the app automatically flagged time conflicts, calculated walking time between venues using the floor map data, and suggested buffer periods. All schedule and exhibitor data was pre-loaded during app launch and stored in Core Data, making the entire experience available offline."
+      ],
+      "challenges": [
+        "Indoor positioning at the scale of the Las Vegas Convention Center was extremely challenging. GPS was unreliable indoors, and Bluetooth beacon coverage was inconsistent across halls. I implemented a hybrid approach combining Wi-Fi fingerprinting, beacon triangulation, and dead reckoning from the accelerometer to provide approximate user location with a 10-meter accuracy — good enough for hall-level navigation.",
+        "The data model was complex and dynamic. Exhibitors changed booth locations, sessions were rescheduled, and new events were added daily during the show week. I designed a differential sync system that checked for updates every 15 minutes over the network but only downloaded changed records, keeping bandwidth usage minimal in the congested venue Wi-Fi environment."
+      ],
+      "results": [
+        "The app was used by over 120,000 unique attendees during CES week, with an average of 8 sessions per day per user. The interactive floor map became the most-used feature, with 2.3 million map interactions over the 4-day event. Indoor navigation accuracy of 10 meters proved sufficient for attendees to locate specific booths.",
+        "The offline-first architecture proved critical — during peak hours when venue Wi-Fi was effectively unusable, the app continued to function seamlessly. The smart scheduling feature reduced reported session conflicts by 60% compared to the previous year, and attendees rated the app 4.4 stars on the App Store."
+      ]
+    },
+    {
+      "slug": "eventa",
+      "title": "Eventa",
+      "category": "Events Management",
+      "tools": "iOS, Swift, UIKit, Firebase, REST APIs, Push Notifications",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/e9/2e/74e92e0c-3950-f49f-9a7f-76cc08e2c03c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
+      "problem": [
+        "Event organizers were juggling multiple disconnected tools — Google Forms for RSVPs, spreadsheets for attendee tracking, email for communication, and manual check-ins at the door. Eventa aimed to consolidate the entire event lifecycle into a single mobile platform, but the initial product concept was too broad, trying to serve everything from small meetups to large conferences without a clear UX hierarchy.",
+        "The attendee-facing experience also needed work. Users who downloaded the app for a specific event found it difficult to discover other relevant events nearby, the RSVP flow required too many steps, and there was no real-time coordination during events — attendees couldn't see live schedule changes, venue updates, or connect with other participants."
+      ],
+      "approach": [
+        "I designed and built the iOS app with two distinct user modes: Organizer and Attendee. The Organizer mode featured a step-by-step event creation wizard that guided users through venue setup, ticket tiers, schedule building, and communication templates. Smart defaults and templates reduced event creation time dramatically. The Attendee mode focused on discovery, with a location-based feed and category filtering.",
+        "For real-time event coordination, I integrated Firebase Realtime Database for live updates — schedule changes, venue announcements, and attendee count updates all pushed instantly to connected devices. The check-in system used QR code scanning with offline fallback, storing scans locally and reconciling when connectivity resumed. I also built a lightweight in-app messaging feature for attendee networking."
+      ],
+      "challenges": [
+        "The dual-mode architecture (Organizer vs Attendee) required careful state management to avoid data leaking between contexts. An organizer viewing their own event needed admin controls, while the same event viewed as an attendee showed a completely different UI. I implemented a role-based rendering system with protocol-oriented design that cleanly separated the two experiences while sharing the underlying data models.",
+        "QR code check-in needed to be bulletproof for events with hundreds of attendees arriving simultaneously. The scanning module had to handle rapid successive scans, duplicate detection, and provide instant visual and haptic feedback. I optimized the AVFoundation camera pipeline for continuous scanning mode and implemented a local bloom filter for O(1) duplicate detection without network round-trips."
+      ],
+      "results": [
+        "Event creation time dropped from an average of 45 minutes (across multiple tools) to under 10 minutes within the app. Organizers reported a 70% reduction in day-of-event coordination overhead thanks to real-time push updates and centralized attendee management. The QR check-in system processed up to 200 scans per minute with zero duplicates.",
+        "The attendee discovery feed drove a 35% increase in event attendance for organizers who listed public events. The app achieved a 4.5 rating on the App Store with particular praise for the clean organizer workflow and reliable check-in system. Monthly active users grew 25% month-over-month in the first quarter after launch."
       ]
     }
   ],
