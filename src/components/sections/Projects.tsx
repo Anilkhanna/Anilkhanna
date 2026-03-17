@@ -2,7 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiArrowUpRight, FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { FiArrowUpRight, FiArrowLeft, FiArrowRight, FiFileText } from "react-icons/fi";
+import Link from "next/link";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { projectsData, sectionHeadings } from "@/data/portfolio";
 
@@ -117,6 +118,15 @@ export function Projects() {
               <p className="text-sm leading-relaxed text-muted">
                 {project.description}
               </p>
+              {"caseStudySlug" in project && project.caseStudySlug ? (
+                <Link
+                  href={`/case-study/${project.caseStudySlug}`}
+                  className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-accent transition-colors hover:text-foreground"
+                >
+                  <FiFileText size={12} />
+                  Read Case Study →
+                </Link>
+              ) : null}
             </div>
           </motion.div>
         ))}

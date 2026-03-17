@@ -231,6 +231,7 @@
       "title": "Ria Money Transfer",
       "category": "FinTech",
       "tools": "Flutter, iOS, API Integration",
+      "caseStudySlug": "ria-money-transfer",
       "description": "International money transfer app serving millions of users globally with real-time exchange rates. Built secure payment flows and optimized the cross-platform experience on Flutter and iOS.",
       "image": "https://www.riamoneytransfer.com/meta-image.png",
       "liveUrl": "https://secure.riamoneytransfer.com/",
@@ -251,6 +252,7 @@
       "title": "EXP Suite Web & Mobile",
       "category": "Enterprise EH&S",
       "tools": "Next.js, React Native, Turborepo, Tailwind, NativeWind",
+      "caseStudySlug": "exp-suite",
       "description": "Cross-platform rebuild of the EXP Suite enterprise platform using a Turborepo monorepo — Next.js for web, React Native with NativeWind for mobile. Unified codebase serving both platforms with shared business logic and consistent UI.",
       "image": null,
       "liveUrl": "https://demo2.exp-inc.com/",
@@ -271,6 +273,7 @@
       "title": "MyGate",
       "category": "PropTech",
       "tools": "iOS, Swift, API Integration",
+      "caseStudySlug": "mygate",
       "description": "India's leading gated community management app with 1M+ active users. Architected core security and visitor management modules, streamlined API integrations, and drove performance improvements across the iOS platform.",
       "image": "https://www.exp-inc.com/_next/image?url=%2Fassets%2Fblog%2Fimages%2FEXP_Logo.png",
       "liveUrl": "https://play.google.com/store/apps/details?id=com.mygate.user",
@@ -354,7 +357,77 @@
       "linkedinUrl": ""
     }
   ],
-  "caseStudies": [],
+  "caseStudies": [
+    {
+      "slug": "ria-money-transfer",
+      "title": "Ria Money Transfer",
+      "category": "FinTech",
+      "tools": "Flutter, iOS, Swift, REST APIs, CI/CD",
+      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "problem": [
+        "Ria Money Transfer serves millions of users sending money across 165+ countries. The existing mobile apps suffered from inconsistent user experiences between iOS and Android, slow transaction flows, and a fragmented codebase that made it difficult to ship features simultaneously on both platforms.",
+        "Compliance requirements in the financial sector meant every release needed thorough testing and regulatory checks, which further slowed delivery cycles. The team needed a way to unify the mobile experience without sacrificing native performance."
+      ],
+      "approach": [
+        "I led the migration of critical payment flows to Flutter, enabling a single codebase to serve both platforms while retaining native modules for platform-specific features like biometric authentication and secure storage. The architecture followed a clean separation of concerns with a repository pattern for API integration.",
+        "On the iOS side, I optimized the existing Swift codebase for performance-critical paths — real-time exchange rate polling, transaction state management, and push notification handling. We implemented a phased rollout strategy to minimize risk during the transition."
+      ],
+      "challenges": [
+        "Integrating Flutter into an existing native iOS project required careful bridging between Swift and Dart. We had to maintain backward compatibility with the legacy Objective-C modules while progressively migrating screens to Flutter.",
+        "Ensuring PCI-DSS compliance across the cross-platform layer was non-trivial. We built a secure channel for sensitive data that bypassed Flutter's standard platform channels, using native encryption on both sides."
+      ],
+      "results": [
+        "Reduced feature delivery time by 40% by shipping to both platforms from a single Flutter codebase. The unified transaction flow improved completion rates by 15% due to a more consistent and polished user experience.",
+        "App launch time improved by 20% on iOS through lazy loading and optimized API contracts. The app maintains a 4.5+ rating on both the App Store and Google Play."
+      ]
+    },
+    {
+      "slug": "exp-suite",
+      "title": "EXP Suite Web & Mobile",
+      "category": "Enterprise EH&S",
+      "tools": "Next.js, React Native, Flutter, Turborepo, NativeWind, Tailwind CSS",
+      "image": null,
+      "problem": [
+        "EXP Suite is an enterprise Environmental Health & Safety platform used by field workers, safety managers, and compliance officers. The legacy system had separate codebases for web, iOS, and Android — each with diverging feature sets and inconsistent UIs that confused users switching between platforms.",
+        "Field workers in low-connectivity environments (construction sites, oil rigs, remote facilities) needed reliable offline functionality. The existing offline implementation was fragile, with frequent data loss during sync operations."
+      ],
+      "approach": [
+        "We rebuilt the platform using a Turborepo monorepo architecture — Next.js for the web dashboard and React Native with NativeWind for mobile. Shared business logic, validation rules, and API clients lived in common packages, ensuring feature parity across platforms.",
+        "For the Flutter-based EXP Suite 7.0 mobile app, I designed an offline-first architecture with conflict resolution. Field workers could capture incidents, run audits, and complete safety inspections entirely offline, with intelligent sync when connectivity resumed."
+      ],
+      "challenges": [
+        "The monorepo approach required careful dependency management to avoid bloating mobile bundles with web-only code. We built custom Turborepo pipelines that tree-shook shared packages differently for each target platform.",
+        "Offline conflict resolution in a multi-user enterprise environment was the hardest problem. When two inspectors edited the same audit offline, we implemented a field-level merge strategy with automatic resolution for non-conflicting changes and a clear UI for manual resolution."
+      ],
+      "results": [
+        "Achieved 100% feature parity between web and mobile for the first time in the product's history. Development velocity increased by 35% thanks to shared code and unified testing pipelines.",
+        "The offline-first architecture reduced data loss incidents from ~12 per month to zero. Field workers reported a 50% reduction in time spent on paperwork due to the streamlined mobile inspection workflows."
+      ]
+    },
+    {
+      "slug": "mygate",
+      "title": "MyGate",
+      "category": "PropTech",
+      "tools": "iOS, Swift, UIKit, Core Data, REST APIs, Push Notifications",
+      "image": "https://www.exp-inc.com/_next/image?url=%2Fassets%2Fblog%2Fimages%2FEXP_Logo.png",
+      "problem": [
+        "MyGate is India's largest gated community management platform, serving 1M+ active users across 25,000+ residential societies. The iOS app had accumulated significant technical debt — a monolithic architecture, inconsistent navigation patterns, and memory leaks that caused frequent crashes on older devices.",
+        "The security and visitor management modules — the core value proposition — were tightly coupled and difficult to extend. Adding new features like delivery management or domestic help tracking required touching multiple unrelated parts of the codebase."
+      ],
+      "approach": [
+        "I led the architectural overhaul of the iOS app, breaking the monolith into feature modules with clear boundaries. Each module (security, visitor management, community, payments) owned its own data layer, business logic, and UI, communicating through well-defined protocols.",
+        "I redesigned the API integration layer to use a reactive pattern with Combine, replacing the callback-heavy legacy code. This made it easier to handle complex flows like real-time gate entry notifications, visitor pre-approvals, and security guard coordination."
+      ],
+      "challenges": [
+        "Refactoring a live app with 1M+ users required zero-downtime migration. We used feature flags to gradually roll out the modular architecture, running old and new implementations side by side and comparing metrics before cutting over.",
+        "Performance profiling revealed that the home screen was making 14 sequential API calls on launch. I redesigned this into 3 parallel batch requests with a local cache layer using Core Data, which required careful cache invalidation logic to keep security data real-time accurate."
+      ],
+      "results": [
+        "Crash-free rate improved from 96.2% to 99.5%. App launch time decreased by 60% thanks to the optimized API layer and lazy module loading. Memory usage on the home screen dropped by 40%.",
+        "The modular architecture enabled the team to ship the delivery management feature in 3 weeks — a task estimated at 8 weeks under the old architecture. The app maintained a 4.6 rating on the App Store throughout the transition."
+      ]
+    }
+  ],
   "services": {
     "headline": "Let's Build Something Together",
     "intro": "14+ years of experience building mobile and web products — available for your next project.",
