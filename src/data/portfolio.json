@@ -331,7 +331,29 @@
     "location": "Munich (onsite/hybrid) or Remote",
     "freelance": true
   },
-  "testimonials": [],
+  "testimonials": [
+    {
+      "name": "Placeholder — Manager",
+      "role": "Engineering Manager",
+      "company": "Previous Company",
+      "quote": "Anil is an outstanding developer who consistently delivers high-quality work. His ability to tackle complex technical challenges while maintaining clean, maintainable code is exceptional.",
+      "linkedinUrl": ""
+    },
+    {
+      "name": "Placeholder — Colleague",
+      "role": "Senior Developer",
+      "company": "Previous Company",
+      "quote": "Working with Anil was a great experience. He brings deep mobile expertise and a pragmatic approach to problem-solving that elevates the entire team.",
+      "linkedinUrl": ""
+    },
+    {
+      "name": "Placeholder — Client",
+      "role": "Product Owner",
+      "company": "Client Company",
+      "quote": "Anil delivered our mobile app ahead of schedule with exceptional quality. His communication throughout the project was clear and professional.",
+      "linkedinUrl": ""
+    }
+  ],
   "caseStudies": [],
   "services": {
     "headline": "Let's Build Something Together",
