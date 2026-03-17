@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { navLinks, siteConfig } from "@/data/portfolio";
 import { HoverLinks } from "./HoverLinks";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -15,9 +17,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
+  const handleNavClick = (href: string, type: string) => {
+    if (type === "page") {
+      router.push(href);
+    } else {
+      const el = document.querySelector(href);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -61,7 +67,7 @@ export function Navbar() {
               <HoverLinks
                 key={link.href}
                 text={link.label}
-                onClick={() => scrollTo(link.href)}
+                onClick={() => handleNavClick(link.href, link.type)}
                 className="text-xs font-medium uppercase tracking-[3px] text-foreground"
               />
             ))}
