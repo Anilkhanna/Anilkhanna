@@ -1,3 +1,4 @@
+import { AvailabilityBanner } from "@/components/ui/AvailabilityBanner";
 import { Navbar } from "@/components/ui/Navbar";
 import { SocialIcons } from "@/components/ui/SocialIcons";
 import { Hero } from "@/components/sections/Hero";
@@ -12,6 +13,7 @@ import { Footer } from "@/components/ui/Footer";
 export default function Home() {
   return (
     <>
+      <AvailabilityBanner />
       <Navbar />
       <SocialIcons />
       <main>

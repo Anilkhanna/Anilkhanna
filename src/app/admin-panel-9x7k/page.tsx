@@ -22,7 +22,14 @@ interface SiteConfig {
   yearsOfExperience: string;
   resumeUrl: string;
 }
-interface NavLink { label: string; href: string; }
+interface Availability {
+  isAvailable: boolean;
+  roles: string;
+  domains: string;
+  location: string;
+  freelance: boolean;
+}
+interface NavLink { label: string; href: string; type: "anchor" | "page"; }
 interface SocialLink { name: string; url: string; icon: string; }
 interface AboutData { heading: string; paragraphs: string[]; }
 interface WhatIDoItem { title: string; description: string; skills: string[]; }
@@ -56,6 +63,10 @@ interface PortfolioData {
   projectsData: ProjectItem[];
   educationData: EducationItem[];
   certifications: string[];
+  availability: Availability;
+  testimonials: unknown[];
+  caseStudies: unknown[];
+  services: unknown;
 }
 
 const ICON_OPTIONS = ["FaGithub", "FaLinkedin", "FaXTwitter", "FaInstagram", "FaDribbble", "FaBehance", "FaYoutube", "FaMedium"];
@@ -116,7 +127,7 @@ function NavLinksEditor({ data, onChange }: { data: NavLink[]; onChange: (d: Nav
   const update = (i: number, key: keyof NavLink, val: string) => {
     const copy = [...data]; copy[i] = { ...copy[i], [key]: val }; onChange(copy);
   };
-  const add = () => onChange([...data, { label: "", href: "#" }]);
+  const add = () => onChange([...data, { label: "", href: "#", type: "anchor" }]);
   const remove = (i: number) => onChange(data.filter((_, j) => j !== i));
 
   return (
@@ -438,6 +449,36 @@ function CertificationsEditor({ data, onChange }: { data: string[]; onChange: (d
   );
 }
 
+function AvailabilityEditor({ data, onChange }: { data: Availability; onChange: (d: Availability) => void }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <label className={labelCls}>Available for hire</label>
+        <button
+          onClick={() => onChange({ ...data, isAvailable: !data.isAvailable })}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${data.isAvailable ? "bg-[#5eead4]" : "bg-gray-300 dark:bg-white/10"}`}
+        >
+          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${data.isAvailable ? "translate-x-6" : "translate-x-1"}`} />
+        </button>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Roles" value={data.roles} onChange={(v) => onChange({ ...data, roles: v })} placeholder="Senior/Lead roles" />
+        <Field label="Domains" value={data.domains} onChange={(v) => onChange({ ...data, domains: v })} placeholder="Full Stack & Mobile" />
+        <Field label="Location" value={data.location} onChange={(v) => onChange({ ...data, location: v })} placeholder="Munich (onsite/hybrid) or Remote" />
+      </div>
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          checked={data.freelance}
+          onChange={(e) => onChange({ ...data, freelance: e.target.checked })}
+          className="h-4 w-4 rounded border-gray-300 text-[#5eead4] focus:ring-[#5eead4] dark:border-white/10"
+        />
+        <label className={labelCls + " !mb-0"}>Also open to freelance</label>
+      </div>
+    </div>
+  );
+}
+
 function SectionHeadingsEditor({ data, onChange }: { data: SectionHeadings; onChange: (d: SectionHeadings) => void }) {
   const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "career", "projects", "techStack", "contact"];
   const labels: Record<keyof SectionHeadings, string> = {
@@ -516,6 +557,7 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 /*  Sidebar Nav Item                                                   */
 /* ------------------------------------------------------------------ */
 const SECTION_LIST: { key: string; label: string }[] = [
+  { key: "availability", label: "Availability" },
   { key: "siteConfig", label: "Site Config" },
   { key: "sectionHeadings", label: "Section Titles" },
   { key: "navLinks", label: "Navigation" },
@@ -607,6 +649,8 @@ function Editor() {
 
   const renderEditor = () => {
     switch (activeSection) {
+      case "availability":
+        return <AvailabilityEditor data={allData.availability} onChange={(d) => setAllData({ ...allData, availability: d })} />;
       case "siteConfig":
         return <SiteConfigEditor data={allData.siteConfig} onChange={(d) => setAllData({ ...allData, siteConfig: d })} />;
       case "sectionHeadings":

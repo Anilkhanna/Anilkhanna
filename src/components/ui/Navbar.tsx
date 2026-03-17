@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { navLinks, siteConfig } from "@/data/portfolio";
+import { availability, navLinks, siteConfig } from "@/data/portfolio";
 import { HoverLinks } from "./HoverLinks";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -29,13 +29,13 @@ export function Navbar() {
   return (
     <>
       {/* Nav fade gradient at top */}
-      <div className="pointer-events-none fixed top-0 left-0 right-0 z-40 h-24 bg-gradient-to-b from-background/80 to-transparent" />
+      <div className={`pointer-events-none fixed ${availability.isAvailable ? "top-9" : "top-0"} left-0 right-0 z-40 h-24 bg-gradient-to-b from-background/80 to-transparent`} />
 
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 z-50 px-6 py-5"
+        className={`fixed ${availability.isAvailable ? "top-9" : "top-0"} left-0 right-0 z-50 px-6 py-5`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Logo */}
