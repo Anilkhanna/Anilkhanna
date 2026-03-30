@@ -5,7 +5,7 @@ pipeline {
         APP_NAME = 'anilkhanna'
         NODE_ENV = 'production'
         PORT = '4000'
-        PATH = "/var/lib/jenkins/.nvm/versions/node/v20.20.2/bin:/usr/local/bin:${env.PATH}"
+        PATH = "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${env.PATH}"
     }
 
     triggers {
@@ -60,14 +60,14 @@ ENVEOF
             steps {
                 echo 'Deploying with PM2 from workspace...'
                 sh '''
-                    if pm2 describe $APP_NAME > /dev/null 2>&1; then
+                    if sudo -u anil pm2 describe $APP_NAME > /dev/null 2>&1; then
                         echo "Restarting existing PM2 process..."
-                        pm2 restart $APP_NAME
+                        sudo -u anil pm2 restart $APP_NAME
                     else
                         echo "Starting new PM2 process from workspace..."
-                        pm2 start npm --name "$APP_NAME" -- start -- -p $PORT
+                        sudo -u anil pm2 start npm --name "$APP_NAME" -- start -- -p $PORT
                     fi
-                    pm2 save
+                    sudo -u anil pm2 save
                 '''
             }
         }
