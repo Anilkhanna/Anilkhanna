@@ -1,4 +1,11 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const sql = {
+  query: (text: string, values?: any[]) => pool.query(text, values),
+};
 import type {
   Job, JobStatus, ProfileConfig, CronLog,
   JobsListResponse, StatsResponse, RawJob, MatchResult,

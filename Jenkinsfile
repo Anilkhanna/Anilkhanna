@@ -20,10 +20,31 @@ pipeline {
             }
         }
 
+        stage('Create .env') {
+            steps {
+                echo 'Creating .env file...'
+                withCredentials([
+                    string(credentialsId: 'ADMIN_PASSWORD', variable: 'ADMIN_PASSWORD'),
+                    string(credentialsId: 'CRON_SECRET', variable: 'CRON_SECRET'),
+                    string(credentialsId: 'POSTGRES_URL', variable: 'POSTGRES_URL'),
+                    string(credentialsId: 'RAPIDAPI_KEY', variable: 'RAPIDAPI_KEY')
+                ]) {
+                    sh '''
+                        cat > .env << ENVEOF
+NODE_ENV=production
+ADMIN_PASSWORD=${ADMIN_PASSWORD}
+CRON_SECRET=${CRON_SECRET}
+POSTGRES_URL=${POSTGRES_URL}
+RAPIDAPI_KEY=${RAPIDAPI_KEY}
+ENVEOF
+                    '''
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                // Install all deps including devDependencies for build
                 sh 'npm ci --include=dev'
             }
         }
