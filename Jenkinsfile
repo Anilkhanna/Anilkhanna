@@ -5,6 +5,7 @@ pipeline {
         APP_NAME = 'anilkhanna'
         NODE_ENV = 'production'
         PORT = '4000'
+        PATH = "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${env.PATH}"
     }
 
     triggers {
