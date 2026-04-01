@@ -49,12 +49,18 @@ export async function PUT(request: NextRequest) {
       "socialLinks",
       "sectionHeadings",
       "aboutData",
+      "trendingSkills",
       "techStack",
+      "techCategories",
       "whatIDo",
       "careerData",
       "projectsData",
       "educationData",
       "certifications",
+      "availability",
+      "testimonials",
+      "caseStudies",
+      "services",
     ];
 
     for (const key of requiredKeys) {

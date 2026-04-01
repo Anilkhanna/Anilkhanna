@@ -22,7 +22,14 @@ interface SiteConfig {
   yearsOfExperience: string;
   resumeUrl: string;
 }
-interface NavLink { label: string; href: string; }
+interface Availability {
+  isAvailable: boolean;
+  roles: string;
+  domains: string;
+  location: string;
+  freelance: boolean;
+}
+interface NavLink { label: string; href: string; type: "anchor" | "page"; }
 interface SocialLink { name: string; url: string; icon: string; }
 interface AboutData { heading: string; paragraphs: string[]; }
 interface WhatIDoItem { title: string; description: string; skills: string[]; }
@@ -41,18 +48,25 @@ interface SectionHeadings {
   techStack: SectionHeading;
   contact: SectionHeading;
 }
+interface TechCategory { label: string; items: string[]; }
 interface PortfolioData {
   siteConfig: SiteConfig;
   navLinks: NavLink[];
   socialLinks: SocialLink[];
   sectionHeadings: SectionHeadings;
   aboutData: AboutData;
+  trendingSkills: string[];
   techStack: string[];
+  techCategories: TechCategory[];
   whatIDo: WhatIDoItem[];
   careerData: CareerItem[];
   projectsData: ProjectItem[];
   educationData: EducationItem[];
   certifications: string[];
+  availability: Availability;
+  testimonials: unknown[];
+  caseStudies: unknown[];
+  services: unknown;
 }
 
 const ICON_OPTIONS = ["FaGithub", "FaLinkedin", "FaXTwitter", "FaInstagram", "FaDribbble", "FaBehance", "FaYoutube", "FaMedium"];
@@ -113,7 +127,7 @@ function NavLinksEditor({ data, onChange }: { data: NavLink[]; onChange: (d: Nav
   const update = (i: number, key: keyof NavLink, val: string) => {
     const copy = [...data]; copy[i] = { ...copy[i], [key]: val }; onChange(copy);
   };
-  const add = () => onChange([...data, { label: "", href: "#" }]);
+  const add = () => onChange([...data, { label: "", href: "#", type: "anchor" }]);
   const remove = (i: number) => onChange(data.filter((_, j) => j !== i));
 
   return (
@@ -192,6 +206,27 @@ function AboutEditor({ data, onChange }: { data: AboutData; onChange: (d: AboutD
   );
 }
 
+function TrendingSkillsEditor({ data, onChange }: { data: string[]; onChange: (d: string[]) => void }) {
+  const update = (i: number, val: string) => { const copy = [...data]; copy[i] = val; onChange(copy); };
+  const add = () => onChange([...data, ""]);
+  const remove = (i: number) => onChange(data.filter((_, j) => j !== i));
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-500 dark:text-neutral-500">Skills highlighted as trending / top skills on your portfolio.</p>
+      <div className="grid gap-2 sm:grid-cols-3 md:grid-cols-4">
+        {data.map((skill, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <input value={skill} onChange={(e) => update(i, e.target.value)} className={inputCls} placeholder="Skill" />
+            <button onClick={() => remove(i)} className="text-red-400 hover:text-red-300"><FiTrash2 size={14} /></button>
+          </div>
+        ))}
+      </div>
+      <button onClick={add} className={btnOutline + " flex items-center gap-1"}><FiPlus size={12} /> Add Skill</button>
+    </div>
+  );
+}
+
 function TechStackEditor({ data, onChange }: { data: string[]; onChange: (d: string[]) => void }) {
   const update = (i: number, val: string) => { const copy = [...data]; copy[i] = val; onChange(copy); };
   const add = () => onChange([...data, ""]);
@@ -208,6 +243,47 @@ function TechStackEditor({ data, onChange }: { data: string[]; onChange: (d: str
         ))}
       </div>
       <button onClick={add} className={btnOutline + " flex items-center gap-1"}><FiPlus size={12} /> Add Tech</button>
+    </div>
+  );
+}
+
+function TechCategoriesEditor({ data, onChange }: { data: TechCategory[]; onChange: (d: TechCategory[]) => void }) {
+  const updateLabel = (i: number, val: string) => { const copy = [...data]; copy[i] = { ...copy[i], label: val }; onChange(copy); };
+  const updateItem = (i: number, si: number, val: string) => {
+    const copy = [...data]; const items = [...copy[i].items]; items[si] = val;
+    copy[i] = { ...copy[i], items }; onChange(copy);
+  };
+  const addItem = (i: number) => { const copy = [...data]; copy[i] = { ...copy[i], items: [...copy[i].items, ""] }; onChange(copy); };
+  const removeItem = (i: number, si: number) => {
+    const copy = [...data]; copy[i] = { ...copy[i], items: copy[i].items.filter((_, j) => j !== si) }; onChange(copy);
+  };
+  const add = () => onChange([...data, { label: "", items: [] }]);
+  const remove = (i: number) => onChange(data.filter((_, j) => j !== i));
+
+  return (
+    <div className="space-y-4">
+      {data.map((cat, i) => (
+        <div key={i} className="rounded-xl border border-gray-200 dark:border-white/5 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700 dark:text-neutral-300">{cat.label || `Category ${i + 1}`}</span>
+            <button onClick={() => remove(i)} className={btnDanger}><FiTrash2 size={14} /></button>
+          </div>
+          <Field label="Label" value={cat.label} onChange={(v) => updateLabel(i, v)} placeholder="e.g. Mobile, Frontend" />
+          <div>
+            <label className={labelCls}>Items</label>
+            <div className="grid gap-2 sm:grid-cols-3 md:grid-cols-4">
+              {cat.items.map((item, si) => (
+                <div key={si} className="flex items-center gap-2">
+                  <input value={item} onChange={(e) => updateItem(i, si, e.target.value)} className={inputCls} placeholder="Technology" />
+                  <button onClick={() => removeItem(i, si)} className="text-red-400 hover:text-red-300"><FiTrash2 size={14} /></button>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => addItem(i)} className={btnOutline + " flex items-center gap-1 mt-2"}><FiPlus size={12} /> Add Item</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={add} className={btnOutline + " flex items-center gap-1"}><FiPlus size={12} /> Add Category</button>
     </div>
   );
 }
@@ -373,6 +449,36 @@ function CertificationsEditor({ data, onChange }: { data: string[]; onChange: (d
   );
 }
 
+function AvailabilityEditor({ data, onChange }: { data: Availability; onChange: (d: Availability) => void }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <label className={labelCls}>Available for hire</label>
+        <button
+          onClick={() => onChange({ ...data, isAvailable: !data.isAvailable })}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${data.isAvailable ? "bg-[#5eead4]" : "bg-gray-300 dark:bg-white/10"}`}
+        >
+          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${data.isAvailable ? "translate-x-6" : "translate-x-1"}`} />
+        </button>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Roles" value={data.roles} onChange={(v) => onChange({ ...data, roles: v })} placeholder="Senior/Lead roles" />
+        <Field label="Domains" value={data.domains} onChange={(v) => onChange({ ...data, domains: v })} placeholder="Full Stack & Mobile" />
+        <Field label="Location" value={data.location} onChange={(v) => onChange({ ...data, location: v })} placeholder="Munich (onsite/hybrid) or Remote" />
+      </div>
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          checked={data.freelance}
+          onChange={(e) => onChange({ ...data, freelance: e.target.checked })}
+          className="h-4 w-4 rounded border-gray-300 text-[#5eead4] focus:ring-[#5eead4] dark:border-white/10"
+        />
+        <label className={labelCls + " !mb-0"}>Also open to freelance</label>
+      </div>
+    </div>
+  );
+}
+
 function SectionHeadingsEditor({ data, onChange }: { data: SectionHeadings; onChange: (d: SectionHeadings) => void }) {
   const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "career", "projects", "techStack", "contact"];
   const labels: Record<keyof SectionHeadings, string> = {
@@ -451,12 +557,15 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 /*  Sidebar Nav Item                                                   */
 /* ------------------------------------------------------------------ */
 const SECTION_LIST: { key: string; label: string }[] = [
+  { key: "availability", label: "Availability" },
   { key: "siteConfig", label: "Site Config" },
   { key: "sectionHeadings", label: "Section Titles" },
   { key: "navLinks", label: "Navigation" },
   { key: "socialLinks", label: "Social Links" },
   { key: "aboutData", label: "About" },
+  { key: "trendingSkills", label: "Trending Skills" },
   { key: "techStack", label: "Tech Stack" },
+  { key: "techCategories", label: "Tech Categories" },
   { key: "whatIDo", label: "What I Do" },
   { key: "careerData", label: "Career" },
   { key: "projectsData", label: "Projects" },
@@ -540,6 +649,8 @@ function Editor() {
 
   const renderEditor = () => {
     switch (activeSection) {
+      case "availability":
+        return <AvailabilityEditor data={allData.availability} onChange={(d) => setAllData({ ...allData, availability: d })} />;
       case "siteConfig":
         return <SiteConfigEditor data={allData.siteConfig} onChange={(d) => setAllData({ ...allData, siteConfig: d })} />;
       case "sectionHeadings":
@@ -550,8 +661,12 @@ function Editor() {
         return <SocialLinksEditor data={allData.socialLinks} onChange={(d) => setAllData({ ...allData, socialLinks: d })} />;
       case "aboutData":
         return <AboutEditor data={allData.aboutData} onChange={(d) => setAllData({ ...allData, aboutData: d })} />;
+      case "trendingSkills":
+        return <TrendingSkillsEditor data={allData.trendingSkills} onChange={(d) => setAllData({ ...allData, trendingSkills: d })} />;
       case "techStack":
         return <TechStackEditor data={allData.techStack} onChange={(d) => setAllData({ ...allData, techStack: d })} />;
+      case "techCategories":
+        return <TechCategoriesEditor data={allData.techCategories} onChange={(d) => setAllData({ ...allData, techCategories: d })} />;
       case "whatIDo":
         return <WhatIDoEditor data={allData.whatIDo} onChange={(d) => setAllData({ ...allData, whatIDo: d })} />;
       case "careerData":
