@@ -56,6 +56,13 @@ ENVEOF
             }
         }
 
+        stage('Fix Permissions') {
+            steps {
+                echo 'Setting file permissions for PM2 user...'
+                sh 'chown -R anil:anil src/data/'
+            }
+        }
+
         stage('Deploy with PM2') {
             steps {
                 echo 'Deploying with PM2 from workspace...'
