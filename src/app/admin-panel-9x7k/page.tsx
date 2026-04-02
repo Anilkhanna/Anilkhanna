@@ -576,7 +576,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     });
   };
 
-  const handleSave = async () => {
+  const handleSave = async (openResume: boolean) => {
     if (!analysis) return;
     setSaving(true);
 
@@ -635,7 +635,9 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
       const histRes = await fetch("/api/resume/tailor/history");
       const histData = await histRes.json();
       setHistory(histData.resumes || []);
-      window.open(`/resume/tailored/${data.resume.id}`, "_blank");
+      if (openResume) {
+        window.open(`/resume/tailored/${data.resume.id}`, "_blank");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
     } finally {
@@ -646,6 +648,41 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
   const handleDelete = async (id: number) => {
     await fetch(`/api/resume/tailor/${id}`, { method: "DELETE" });
     setHistory((prev) => prev.filter((r) => r.id !== id));
+  };
+
+  const loadFromHistory = async (id: number) => {
+    try {
+      const res = await fetch(`/api/resume/tailor/${id}`);
+      if (!res.ok) throw new Error("Failed to load");
+      const data = await res.json();
+      const record = data.resume;
+      const td = typeof record.tailored_data === "string" ? JSON.parse(record.tailored_data) : record.tailored_data;
+      const si = typeof record.skills_included === "string" ? JSON.parse(record.skills_included) : (record.skills_included || []);
+      const se = typeof record.skills_excluded === "string" ? JSON.parse(record.skills_excluded) : (record.skills_excluded || []);
+
+      // Reconstruct analysis from saved data
+      setAnalysis({
+        matchScore: record.match_score || 0,
+        jobTitle: record.job_title,
+        company: record.company || "",
+        suggestedSummary: td.summary || "",
+        skillAnalysis: {
+          matched: si as string[],
+          inResumeNotJD: se as string[],
+          inJDNotResume: [],
+        },
+        tailoredBullets: Object.fromEntries(
+          (td.career || []).map((c: { bullets: string[] }, i: number) => [String(i), c.bullets])
+        ),
+        skillsReordered: si as string[],
+      });
+      setSelectedSkills(new Set(si as string[]));
+      setJdText(record.jd_text || "");
+      setJdUrl(record.jd_url || "");
+      setActiveTab("tailor");
+    } catch {
+      setError("Failed to load from history");
+    }
   };
 
   const addToProfile = async (skill: string) => {
@@ -710,12 +747,18 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                 </p>
               </div>
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => loadFromHistory(item.id)}
+                  className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
+                >
+                  Edit
+                </button>
                 <a
                   href={`/resume/tailored/${item.id}`}
                   target="_blank"
                   className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
                 >
-                  View
+                  Resume
                 </a>
                 <button
                   onClick={() => handleDelete(item.id)}
@@ -851,17 +894,21 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                 </p>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <button
-                  onClick={handleSave}
+                  onClick={() => handleSave(false)}
+                  disabled={saving}
+                  className={btnOutline}
+                >
+                  {saving ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={() => handleSave(true)}
                   disabled={saving}
                   className={btnPrimary}
                 >
-                  {saving ? "Saving..." : "Save & View Tailored Resume"}
+                  {saving ? "Saving..." : "Save & View Resume"}
                 </button>
-                <p className="text-xs text-gray-400 dark:text-neutral-600">
-                  Opens in a new tab for printing/download
-                </p>
               </div>
             </div>
           )}
