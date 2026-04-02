@@ -505,6 +505,340 @@ function AvailabilityEditor({ data, onChange }: { data: Availability; onChange: 
   );
 }
 
+interface TailorAnalysis {
+  matchScore: number;
+  jobTitle: string;
+  company: string;
+  suggestedSummary: string;
+  skillAnalysis: {
+    matched: string[];
+    inResumeNotJD: string[];
+    inJDNotResume: string[];
+  };
+  tailoredBullets: Record<string, string[]>;
+  skillsReordered: string[];
+}
+
+interface HistoryItem {
+  id: number;
+  job_title: string;
+  company: string;
+  match_score: number;
+  created_at: string;
+}
+
+function TailorResumeEditor({ portfolioData }: { portfolioData: PortfolioData }) {
+  const [jdText, setJdText] = useState("");
+  const [jdUrl, setJdUrl] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [analysis, setAnalysis] = useState<TailorAnalysis | null>(null);
+  const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [activeTab, setActiveTab] = useState<"tailor" | "history">("tailor");
+
+  useEffect(() => {
+    fetch("/api/resume/tailor/history")
+      .then((r) => r.ok ? r.json() : { resumes: [] })
+      .then((d) => setHistory(d.resumes || []))
+      .catch(() => {});
+  }, []);
+
+  const handleAnalyze = async () => {
+    setAnalyzing(true);
+    setError("");
+    setAnalysis(null);
+    try {
+      const res = await fetch("/api/resume/tailor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jdText, jdUrl }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Analysis failed");
+      setAnalysis(data.analysis);
+      setSelectedSkills(new Set(data.analysis.skillsReordered));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Analysis failed");
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const toggleSkill = (skill: string) => {
+    setSelectedSkills((prev) => {
+      const next = new Set(prev);
+      if (next.has(skill)) next.delete(skill);
+      else next.add(skill);
+      return next;
+    });
+  };
+
+  const handleSave = async () => {
+    if (!analysis) return;
+    setSaving(true);
+
+    const allSkills = [...portfolioData.techStack, ...portfolioData.techCategories.flatMap((c) => c.items)];
+    const uniqueSkills = [...new Set(allSkills)];
+    const included = uniqueSkills.filter((s) => selectedSkills.has(s));
+    const excluded = uniqueSkills.filter((s) => !selectedSkills.has(s));
+
+    const linkedin = portfolioData.socialLinks.find((l) => l.name === "LinkedIn");
+    const github = portfolioData.socialLinks.find((l) => l.name === "GitHub");
+
+    const tailoredData = {
+      summary: analysis.suggestedSummary,
+      skills: [...selectedSkills],
+      techCategories: portfolioData.techCategories.map((cat) => ({
+        label: cat.label,
+        items: cat.items.filter((item) => selectedSkills.has(item)),
+      })).filter((cat) => cat.items.length > 0),
+      career: portfolioData.careerData.map((job, i) => ({
+        role: job.role,
+        company: job.company,
+        period: job.period,
+        bullets: analysis.tailoredBullets[String(i)] || job.bullets || [job.description],
+      })),
+      education: portfolioData.educationData,
+      siteConfig: {
+        name: portfolioData.siteConfig.name,
+        title: portfolioData.siteConfig.title,
+        yearsOfExperience: portfolioData.siteConfig.yearsOfExperience,
+        location: portfolioData.siteConfig.location,
+        phone: portfolioData.siteConfig.phone,
+        email: portfolioData.siteConfig.email,
+        website: portfolioData.siteConfig.website,
+        linkedin: linkedin?.url || "",
+        github: github?.url || "",
+      },
+    };
+
+    try {
+      const res = await fetch("/api/resume/tailor/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jobTitle: analysis.jobTitle,
+          company: analysis.company,
+          jdText,
+          jdUrl: jdUrl || null,
+          tailoredData,
+          skillsIncluded: included,
+          skillsExcluded: excluded,
+          matchScore: analysis.matchScore,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Save failed");
+      const histRes = await fetch("/api/resume/tailor/history");
+      const histData = await histRes.json();
+      setHistory(histData.resumes || []);
+      window.open(`/resume/tailored/${data.resume.id}`, "_blank");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    await fetch(`/api/resume/tailor/${id}`, { method: "DELETE" });
+    setHistory((prev) => prev.filter((r) => r.id !== id));
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Tabs */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setActiveTab("tailor")}
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+            activeTab === "tailor"
+              ? "bg-[#5eead4] text-[#0a0e17]"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-white/5 dark:text-neutral-400 dark:hover:bg-white/10"
+          }`}
+        >
+          Tailor Resume
+        </button>
+        <button
+          onClick={() => setActiveTab("history")}
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+            activeTab === "history"
+              ? "bg-[#5eead4] text-[#0a0e17]"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-white/5 dark:text-neutral-400 dark:hover:bg-white/10"
+          }`}
+        >
+          History ({history.length})
+        </button>
+      </div>
+
+      {activeTab === "history" && (
+        <div className="space-y-3">
+          {history.length === 0 && (
+            <p className="text-sm text-gray-500 dark:text-neutral-500">No tailored resumes yet.</p>
+          )}
+          {history.map((item) => (
+            <div key={item.id} className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-white/5 p-4">
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  {item.job_title}{item.company ? ` — ${item.company}` : ""}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-neutral-500">
+                  {new Date(item.created_at).toLocaleDateString()} · {item.match_score}% match
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`/resume/tailored/${item.id}`}
+                  target="_blank"
+                  className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
+                >
+                  View
+                </a>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="rounded-lg border border-red-300 dark:border-red-500/30 px-3 py-1.5 text-sm text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "tailor" && (
+        <>
+          {/* Step 1: Input */}
+          <div className="space-y-4">
+            <div>
+              <label className={labelCls}>Paste Job Description</label>
+              <textarea
+                value={jdText}
+                onChange={(e) => setJdText(e.target.value)}
+                rows={8}
+                className={inputCls + " resize-y"}
+                placeholder="Paste the full job description here..."
+              />
+            </div>
+            <Field label="Job URL (optional)" value={jdUrl} onChange={setJdUrl} placeholder="https://linkedin.com/jobs/..." />
+            <button
+              onClick={handleAnalyze}
+              disabled={analyzing || (!jdText && !jdUrl)}
+              className={btnPrimary}
+            >
+              {analyzing ? "Analyzing with Claude..." : "Analyze Job Description"}
+            </button>
+            {error && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
+          </div>
+
+          {/* Step 2: Skill Picker */}
+          {analysis && (
+            <div className="space-y-6 rounded-xl border border-gray-200 dark:border-white/5 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {analysis.jobTitle}{analysis.company ? ` @ ${analysis.company}` : ""}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-neutral-400">Select skills to include in tailored resume</p>
+                </div>
+                <span className={`rounded-full px-4 py-2 text-sm font-bold ${
+                  analysis.matchScore >= 70 ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400"
+                  : analysis.matchScore >= 40 ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400"
+                  : "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400"
+                }`}>
+                  {analysis.matchScore}% Match
+                </span>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-3">
+                <div>
+                  <h4 className="mb-2 text-sm font-semibold text-green-700 dark:text-green-400">
+                    Matched Skills ({analysis.skillAnalysis.matched.length})
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {analysis.skillAnalysis.matched.map((skill) => (
+                      <button
+                        key={skill}
+                        onClick={() => toggleSkill(skill)}
+                        className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
+                          selectedSkills.has(skill)
+                            ? "bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300"
+                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-600"
+                        }`}
+                      >
+                        {skill}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="mb-2 text-sm font-semibold text-gray-600 dark:text-neutral-400">
+                    Your Other Skills ({analysis.skillAnalysis.inResumeNotJD.length})
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {analysis.skillAnalysis.inResumeNotJD.map((skill) => (
+                      <button
+                        key={skill}
+                        onClick={() => toggleSkill(skill)}
+                        className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
+                          selectedSkills.has(skill)
+                            ? "bg-gray-200 text-gray-800 dark:bg-white/10 dark:text-neutral-200"
+                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-600"
+                        }`}
+                      >
+                        {skill}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="mb-2 text-sm font-semibold text-red-600 dark:text-red-400">
+                    Missing from Profile ({analysis.skillAnalysis.inJDNotResume.length})
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {analysis.skillAnalysis.inJDNotResume.map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-lg bg-red-50 px-3 py-1.5 text-sm text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="mb-2 text-sm font-semibold text-gray-700 dark:text-neutral-300">Tailored Summary</h4>
+                <p className="rounded-lg bg-gray-50 dark:bg-white/5 p-4 text-sm leading-relaxed text-gray-700 dark:text-neutral-300">
+                  {analysis.suggestedSummary}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className={btnPrimary}
+                >
+                  {saving ? "Saving..." : "Save & View Tailored Resume"}
+                </button>
+                <p className="text-xs text-gray-400 dark:text-neutral-600">
+                  Opens in a new tab for printing/download
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function SectionHeadingsEditor({ data, onChange }: { data: SectionHeadings; onChange: (d: SectionHeadings) => void }) {
   const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "career", "projects", "techStack", "contact"];
   const labels: Record<keyof SectionHeadings, string> = {
@@ -597,6 +931,7 @@ const SECTION_LIST: { key: string; label: string }[] = [
   { key: "projectsData", label: "Projects" },
   { key: "educationData", label: "Education" },
   { key: "certifications", label: "Certifications" },
+  { key: "tailorResume", label: "Tailor Resume" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -703,6 +1038,8 @@ function Editor() {
         return <EducationEditor data={allData.educationData} onChange={(d) => setAllData({ ...allData, educationData: d })} />;
       case "certifications":
         return <CertificationsEditor data={allData.certifications} onChange={(d) => setAllData({ ...allData, certifications: d })} />;
+      case "tailorResume":
+        return <TailorResumeEditor portfolioData={allData} />;
       default:
         return null;
     }
