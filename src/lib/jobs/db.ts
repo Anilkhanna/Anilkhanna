@@ -1,11 +1,5 @@
-import { Pool } from 'pg';
-
-const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sql = {
-  query: (text: string, values?: any[]) => pool.query(text, values),
-};
+import pool from '@/lib/db';
+import type { RowDataPacket, ResultSetHeader } from 'mysql2';
 import type {
   Job, JobStatus, ProfileConfig, CronLog,
   JobsListResponse, StatsResponse, RawJob, MatchResult,
@@ -36,25 +30,23 @@ export async function listJobs(params: ListJobsParams): Promise<JobsListResponse
 
   const conditions: string[] = [];
   const values: (string | number)[] = [];
-  let paramIdx = 1;
 
   if (status && status !== 'all') {
-    conditions.push(`status = $${paramIdx++}`);
+    conditions.push('status = ?');
     values.push(status);
   }
   if (platform && platform !== 'all') {
-    conditions.push(`platform = $${paramIdx++}`);
+    conditions.push('platform = ?');
     values.push(platform);
   }
   if (search) {
-    conditions.push(`(title ILIKE $${paramIdx} OR company ILIKE $${paramIdx} OR description ILIKE $${paramIdx})`);
-    values.push(`%${search}%`);
-    paramIdx++;
+    conditions.push('(title LIKE ? OR company LIKE ? OR description LIKE ?)');
+    const searchVal = `%${search}%`;
+    values.push(searchVal, searchVal, searchVal);
   }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-  // Validate sort column (whitelist only — these are the only values interpolated into SQL)
   const sortColumns: Record<string, string> = {
     match_score: 'match_score',
     newest: 'discovered_at',
@@ -65,17 +57,18 @@ export async function listJobs(params: ListJobsParams): Promise<JobsListResponse
   const sortDir = order === 'asc' ? 'ASC' : 'DESC';
   const offset = (page - 1) * limit;
 
-  // Count query
-  const countQuery = `SELECT COUNT(*) as count FROM jobs ${where}`;
-  const countResult = await sql.query(countQuery, values);
-  const total = parseInt(countResult.rows[0].count, 10);
+  const [countRows] = await pool.query<RowDataPacket[]>(
+    `SELECT COUNT(*) as count FROM jobs ${where}`, values
+  );
+  const total = countRows[0].count as number;
 
-  // Data query
-  const dataQuery = `SELECT * FROM jobs ${where} ORDER BY ${sortCol} ${sortDir} LIMIT $${paramIdx++} OFFSET $${paramIdx++}`;
-  const dataResult = await sql.query(dataQuery, [...values, limit, offset]);
+  const [dataRows] = await pool.query<RowDataPacket[]>(
+    `SELECT * FROM jobs ${where} ORDER BY ${sortCol} ${sortDir} LIMIT ? OFFSET ?`,
+    [...values, limit, offset]
+  );
 
   return {
-    jobs: dataResult.rows as Job[],
+    jobs: dataRows as unknown as Job[],
     total,
     page,
     totalPages: Math.ceil(total / limit),
@@ -87,57 +80,54 @@ export async function updateJob(
   updates: { status?: JobStatus; notes?: string }
 ): Promise<Job | null> {
   const sets: string[] = [];
-  const values: (string)[] = [];
-  let paramIdx = 1;
+  const values: string[] = [];
 
   if (updates.status !== undefined) {
-    sets.push(`status = $${paramIdx++}`);
+    sets.push('status = ?');
     values.push(updates.status);
   }
   if (updates.notes !== undefined) {
-    sets.push(`notes = $${paramIdx++}`);
+    sets.push('notes = ?');
     values.push(updates.notes);
   }
 
   if (sets.length === 0) return null;
 
   values.push(id);
-  const query = `UPDATE jobs SET ${sets.join(', ')} WHERE id = $${paramIdx} RETURNING *`;
-  const result = await sql.query(query, values);
-  return (result.rows[0] as Job) || null;
+  await pool.query(`UPDATE jobs SET ${sets.join(', ')} WHERE id = ?`, values);
+
+  const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM jobs WHERE id = ?', [id]);
+  return (rows[0] as unknown as Job) || null;
 }
 
 export async function deleteJob(id: string): Promise<boolean> {
-  const result = await sql.query('DELETE FROM jobs WHERE id = $1', [id]);
-  return result.rowCount !== null && result.rowCount > 0;
+  const [result] = await pool.query<ResultSetHeader>('DELETE FROM jobs WHERE id = ?', [id]);
+  return result.affectedRows > 0;
 }
 
 export async function upsertJob(
   raw: RawJob,
   match: MatchResult
 ): Promise<{ action: 'inserted' | 'updated' | 'skipped' }> {
-  // Check if job exists
-  const existing = await sql.query(
-    'SELECT id, status FROM jobs WHERE external_id = $1 AND platform = $2',
+  const [existing] = await pool.query<RowDataPacket[]>(
+    'SELECT id, status FROM jobs WHERE external_id = ? AND platform = ?',
     [raw.external_id, raw.platform]
   );
 
-  if (existing.rows.length > 0) {
-    // Only update jobs still in 'new' status
-    if (existing.rows[0].status === 'new') {
-      await sql.query(
-        `UPDATE jobs SET match_score = $1, matched_skills = $2, description = $3 WHERE id = $4`,
-        [match.score, match.matched_skills, raw.description?.substring(0, 5000) ?? null, existing.rows[0].id]
+  if (existing.length > 0) {
+    if (existing[0].status === 'new') {
+      await pool.query(
+        'UPDATE jobs SET match_score = ?, matched_skills = ?, description = ? WHERE id = ?',
+        [match.score, JSON.stringify(match.matched_skills), raw.description?.substring(0, 5000) ?? null, existing[0].id]
       );
       return { action: 'updated' };
     }
     return { action: 'skipped' };
   }
 
-  // Insert new job
-  await sql.query(
+  await pool.query(
     `INSERT INTO jobs (external_id, platform, title, company, location, job_url, description, salary_range, job_type, work_mode, match_score, matched_skills, posted_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       raw.external_id,
       raw.platform,
@@ -150,7 +140,7 @@ export async function upsertJob(
       raw.job_type,
       raw.work_mode,
       match.score,
-      match.matched_skills,
+      JSON.stringify(match.matched_skills),
       raw.posted_at,
     ]
   );
@@ -160,68 +150,69 @@ export async function upsertJob(
 // ── Stats ──
 
 export async function getStats(): Promise<StatsResponse> {
-  const statsResult = await sql.query(`
+  const [statsRows] = await pool.query<RowDataPacket[]>(`
     SELECT
       COUNT(*) as total,
-      COUNT(*) FILTER (WHERE status = 'new') as new,
-      COUNT(*) FILTER (WHERE status = 'saved') as saved,
-      COUNT(*) FILTER (WHERE status = 'applied') as applied,
-      COUNT(*) FILTER (WHERE status = 'rejected') as rejected
+      SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_count,
+      SUM(CASE WHEN status = 'saved' THEN 1 ELSE 0 END) as saved,
+      SUM(CASE WHEN status = 'applied' THEN 1 ELSE 0 END) as applied,
+      SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected
     FROM jobs
   `);
 
-  const lastRunResult = await sql.query(
+  const [lastRunRows] = await pool.query<RowDataPacket[]>(
     'SELECT * FROM cron_logs ORDER BY ran_at DESC LIMIT 1'
   );
 
-  const row = statsResult.rows[0];
+  const row = statsRows[0];
   return {
     stats: {
-      total: parseInt(row.total, 10),
-      new: parseInt(row.new, 10),
-      saved: parseInt(row.saved, 10),
-      applied: parseInt(row.applied, 10),
-      rejected: parseInt(row.rejected, 10),
+      total: Number(row.total),
+      new: Number(row.new_count),
+      saved: Number(row.saved),
+      applied: Number(row.applied),
+      rejected: Number(row.rejected),
     },
-    lastRun: (lastRunResult.rows[0] as CronLog) || null,
+    lastRun: (lastRunRows[0] as unknown as CronLog) || null,
   };
 }
 
 // ── Cron logs ──
 
 export async function logCronRun(log: Omit<CronLog, 'id' | 'ran_at'>): Promise<void> {
-  await sql.query(
+  await pool.query(
     `INSERT INTO cron_logs (jobs_found, jobs_new, jobs_updated, errors, duration_ms, status)
-     VALUES ($1, $2, $3, $4, $5, $6)`,
-    [log.jobs_found, log.jobs_new, log.jobs_updated, log.errors, log.duration_ms, log.status]
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [log.jobs_found, log.jobs_new, log.jobs_updated, JSON.stringify(log.errors), log.duration_ms, log.status]
   );
 }
 
 // ── Profile config ──
 
 export async function getProfileConfig(): Promise<ProfileConfig> {
-  const result = await sql.query('SELECT * FROM profile_config WHERE id = $1', ['default']);
-  return result.rows[0] as ProfileConfig;
+  const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM profile_config WHERE id = ?', ['default']);
+  return rows[0] as unknown as ProfileConfig;
 }
 
 export async function updateProfileConfig(
   config: Omit<ProfileConfig, 'id' | 'updated_at'>
 ): Promise<ProfileConfig> {
-  const result = await sql.query(
+  await pool.query(
     `UPDATE profile_config
-     SET target_roles = $1, primary_skills = $2, secondary_skills = $3,
-         negative_keywords = $4, location_prefs = $5, weights = $6, min_score = $7
-     WHERE id = 'default'
-     RETURNING *`,
+     SET target_roles = ?, primary_skills = ?, secondary_skills = ?,
+         negative_keywords = ?, location_prefs = ?, weights = ?, min_score = ?
+     WHERE id = 'default'`,
     [
       JSON.stringify(config.target_roles),
-      config.primary_skills,
-      config.secondary_skills,
-      config.negative_keywords,
+      JSON.stringify(config.primary_skills),
+      JSON.stringify(config.secondary_skills),
+      JSON.stringify(config.negative_keywords),
       JSON.stringify(config.location_prefs),
       JSON.stringify(config.weights),
       config.min_score,
     ]
   );
-  return result.rows[0] as ProfileConfig;
+
+  const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM profile_config WHERE id = ?', ['default']);
+  return rows[0] as unknown as ProfileConfig;
 }
