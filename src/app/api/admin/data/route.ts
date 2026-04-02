@@ -83,9 +83,11 @@ export async function PUT(request: NextRequest) {
     await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), "utf-8");
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("Admin data save failed:", message);
     return NextResponse.json(
-      { error: "Failed to save data" },
+      { error: `Failed to save data: ${message}` },
       { status: 500 }
     );
   }
