@@ -58,20 +58,20 @@ ENVEOF
 
         stage('Fix Permissions') {
             steps {
-                echo 'Setting file permissions for PM2 user...'
-                sh 'chmod -R 775 src/data/'
+                echo 'Setting file permissions...'
+                sh 'chmod -R 777 src/data/'
             }
         }
 
         stage('Deploy with PM2') {
             steps {
-                echo 'Deploying with PM2 from workspace...'
+                echo 'Deploying with PM2...'
                 sh '''
                     if sudo -u anil pm2 describe $APP_NAME > /dev/null 2>&1; then
                         echo "Restarting existing PM2 process..."
                         sudo -u anil pm2 restart $APP_NAME
                     else
-                        echo "Starting new PM2 process from workspace..."
+                        echo "Starting new PM2 process..."
                         sudo -u anil pm2 start npm --name "$APP_NAME" -- start -- -p $PORT
                     fi
                     sudo -u anil pm2 save
