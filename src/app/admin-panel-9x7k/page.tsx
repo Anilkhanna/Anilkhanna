@@ -33,7 +33,7 @@ interface NavLink { label: string; href: string; type: "anchor" | "page"; }
 interface SocialLink { name: string; url: string; icon: string; }
 interface AboutData { heading: string; paragraphs: string[]; }
 interface WhatIDoItem { title: string; description: string; skills: string[]; }
-interface CareerItem { role: string; company: string; period: string; description: string; }
+interface CareerItem { role: string; company: string; period: string; description: string; bullets?: string[]; }
 interface ProjectItem {
   number: string; title: string; category: string; tools: string;
   description: string; image: string | null; liveUrl: string; githubUrl: string;
@@ -341,7 +341,17 @@ function CareerEditor({ data, onChange }: { data: CareerItem[]; onChange: (d: Ca
   const update = (i: number, key: keyof CareerItem, val: string) => {
     const copy = [...data]; copy[i] = { ...copy[i], [key]: val }; onChange(copy);
   };
-  const add = () => onChange([...data, { role: "", company: "", period: "", description: "" }]);
+  const updateBullet = (i: number, bi: number, val: string) => {
+    const copy = [...data]; const bullets = [...(copy[i].bullets || [])]; bullets[bi] = val;
+    copy[i] = { ...copy[i], bullets }; onChange(copy);
+  };
+  const addBullet = (i: number) => {
+    const copy = [...data]; copy[i] = { ...copy[i], bullets: [...(copy[i].bullets || []), ""] }; onChange(copy);
+  };
+  const removeBullet = (i: number, bi: number) => {
+    const copy = [...data]; copy[i] = { ...copy[i], bullets: (copy[i].bullets || []).filter((_, j) => j !== bi) }; onChange(copy);
+  };
+  const add = () => onChange([...data, { role: "", company: "", period: "", description: "", bullets: [] }]);
   const remove = (i: number) => onChange(data.filter((_, j) => j !== i));
 
   return (
@@ -356,7 +366,23 @@ function CareerEditor({ data, onChange }: { data: CareerItem[]; onChange: (d: Ca
             <Field label="Role" value={item.role} onChange={(v) => update(i, "role", v)} placeholder="Senior Developer" />
             <Field label="Company" value={item.company} onChange={(v) => update(i, "company", v)} placeholder="Company Name" />
             <Field label="Period" value={item.period} onChange={(v) => update(i, "period", v)} placeholder="2023 - Present" />
-            <Field label="Description" value={item.description} onChange={(v) => update(i, "description", v)} multiline />
+            <Field label="Description (portfolio site)" value={item.description} onChange={(v) => update(i, "description", v)} multiline />
+          </div>
+          <div>
+            <label className={labelCls}>Resume Bullets (ATS-friendly achievements)</label>
+            <p className="mb-2 text-xs text-gray-400 dark:text-neutral-600">These appear on the /resume page. Use metrics and action verbs.</p>
+            <div className="space-y-2">
+              {(item.bullets || []).map((bullet, bi) => (
+                <div key={bi} className="flex gap-2">
+                  <div className="flex-1">
+                    <textarea value={bullet} onChange={(e) => updateBullet(i, bi, e.target.value)}
+                      rows={2} className={inputCls + " resize-y"} placeholder="Led development of X, resulting in Y% improvement..." />
+                  </div>
+                  <button onClick={() => removeBullet(i, bi)} className={btnDanger}><FiTrash2 size={14} /></button>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => addBullet(i)} className={btnOutline + " mt-2 flex items-center gap-1"}><FiPlus size={12} /> Add Bullet</button>
           </div>
         </div>
       ))}

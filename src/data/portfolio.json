@@ -186,43 +186,89 @@
       "role": "Senior Flutter Developer",
       "company": "transact Elektronische Zahlungssysteme GmbH (Euronet Worldwide)",
       "period": "Feb 2022 - Present",
-      "description": "Building the DM stock management app end-to-end on Flutter for one of Germany's largest retail chains (3,800+ stores). Reduced app launch time by 20% through API contract optimization. Driving technical decisions and mentoring developers across the mobile stack."
+      "description": "Building the DM stock management app end-to-end on Flutter for one of Germany's largest retail chains (3,800+ stores). Reduced app launch time by 20% through API contract optimization. Driving technical decisions and mentoring developers across the mobile stack.",
+      "bullets": [
+        "Spearheaded end-to-end development of the DM stock management app on Flutter, deployed across 3,800+ retail stores in Germany",
+        "Optimized API contracts and reduced app launch time by 20%, improving user experience for thousands of daily active users",
+        "Architected modular Flutter codebase with BLoC state management, enabling parallel feature development across teams",
+        "Drove CI/CD pipeline setup with automated testing, achieving 90%+ code coverage and reducing release cycle from 2 weeks to 3 days",
+        "Mentored a team of developers on Flutter best practices, code architecture, and performance optimization"
+      ]
     },
     {
       "role": "Senior iOS Developer",
       "company": "SDOD Technologies Pvt. Ltd — MyGate (Remote)",
       "period": "Jan 2020 - Jan 2022",
-      "description": "Led iOS development for India's largest gated community platform — 1M+ active users, 25k+ residential societies. Owned architecture, API design, performance profiling, and release management. Architected the core security and visitor management modules."
+      "description": "Led iOS development for India's largest gated community platform — 1M+ active users, 25k+ residential societies. Owned architecture, API design, performance profiling, and release management. Architected the core security and visitor management modules.",
+      "bullets": [
+        "Led iOS development for India's largest gated community platform serving 1M+ active users across 25,000+ residential societies",
+        "Architected core security and visitor management modules, handling 500K+ daily visitor check-ins with real-time notifications",
+        "Owned end-to-end iOS release management — architecture decisions, API contract design, performance profiling, and App Store submissions",
+        "Streamlined API integrations reducing average response time by 35%, improving app responsiveness and user retention",
+        "Implemented Swift-based modular architecture with MVVM pattern, enabling faster feature iteration and reducing bug density by 40%"
+      ]
     },
     {
       "role": "CoFounder & Mobile Lead",
       "company": "Hefty Innovations (Remote)",
       "period": "Oct 2018 - Dec 2020",
-      "description": "Co-founded a mobile-first startup, built the engineering team, and scaled to 200k+ active users. Redesigned the app architecture for 30% faster time-to-market. Defined product roadmaps and led engineering alongside co-founders."
+      "description": "Co-founded a mobile-first startup, built the engineering team, and scaled to 200k+ active users. Redesigned the app architecture for 30% faster time-to-market. Defined product roadmaps and led engineering alongside co-founders.",
+      "bullets": [
+        "Co-founded a mobile-first startup and scaled the platform to 200,000+ active users within 18 months of launch",
+        "Redesigned app architecture from monolithic to modular, achieving 30% faster time-to-market for new features",
+        "Built and led the engineering team — hiring, onboarding, sprint planning, and establishing development workflows",
+        "Collaborated with co-founders to define product roadmaps, prioritize features, and align engineering with business goals",
+        "Implemented analytics-driven development using Firebase and Mixpanel, increasing user engagement by 25%"
+      ]
     },
     {
       "role": "Senior Software Engineer",
       "company": "EX2 Solutions India Pvt Ltd",
       "period": "Feb 2017 - Oct 2018",
-      "description": "Built enterprise EH&S compliance apps for global clients including offline-first iOS and Flutter architecture for field workers in low-connectivity environments. Delivered incident reporting, audit, and safety inspection modules."
+      "description": "Built enterprise EH&S compliance apps for global clients including offline-first iOS and Flutter architecture for field workers in low-connectivity environments. Delivered incident reporting, audit, and safety inspection modules.",
+      "bullets": [
+        "Built enterprise EH&S (Environmental, Health & Safety) compliance apps serving global clients across regulated industries",
+        "Designed offline-first architecture for iOS and Flutter, enabling field workers to capture data in zero-connectivity environments",
+        "Delivered incident reporting, audit management, and safety inspection modules used by 10,000+ field workers",
+        "Integrated CoreData and SQLite for reliable local data persistence with conflict-free server synchronization",
+        "Collaborated with cross-functional teams to ensure compliance with industry-specific safety regulations"
+      ]
     },
     {
       "role": "Mobile Lead",
       "company": "Mobikasa Inc, New Delhi",
       "period": "Jun 2015 - Jan 2017",
-      "description": "Led 14 developers across 10+ iOS projects in e-commerce and fitness verticals. Achieved 95% on-time delivery rate. Established code review practices and modular architecture patterns adopted as the team standard."
+      "description": "Led 14 developers across 10+ iOS projects in e-commerce and fitness verticals. Achieved 95% on-time delivery rate. Established code review practices and modular architecture patterns adopted as the team standard.",
+      "bullets": [
+        "Led a team of 14 developers, successfully delivering 10+ iOS projects in e-commerce and fitness domains",
+        "Achieved 95% on-time delivery rate through Agile sprint planning, daily standups, and proactive risk management",
+        "Established code review practices and modular architecture patterns that became the team's engineering standard",
+        "Delivered iOS apps for major brands including 1-800-Flowers — one of America's top gifting e-commerce platforms",
+        "Mentored junior developers on Swift, UIKit, Auto Layout, and iOS development best practices"
+      ]
     },
     {
       "role": "Senior iOS Developer",
       "company": "PRM Technologies, New Delhi",
       "period": "Feb 2014 - May 2015",
-      "description": "Translated client concepts into polished iOS applications across multiple domains. Mentored 3 junior developers, managed task allocation, and introduced structured code review workflows to the team."
+      "description": "Translated client concepts into polished iOS applications across multiple domains. Mentored 3 junior developers, managed task allocation, and introduced structured code review workflows to the team.",
+      "bullets": [
+        "Translated client concepts into production-ready iOS applications across multiple business domains",
+        "Mentored 3 junior developers, managed task allocation, and established structured code review workflows",
+        "Built the official CES 2015 app for the International Consumer Electronics Show in Las Vegas (170K+ attendees)",
+        "Implemented RESTful API integrations, push notifications, and CoreData persistence across multiple projects"
+      ]
     },
     {
       "role": "iOS Developer",
       "company": "WeirdLogics Pvt Ltd, Gurugram",
       "period": "Apr 2013 - Jan 2014",
-      "description": "Built foundational iOS development skills working on production apps from day one. Delivered client-facing projects using Objective-C and UIKit, gaining deep expertise in the Apple ecosystem."
+      "description": "Built foundational iOS development skills working on production apps from day one. Delivered client-facing projects using Objective-C and UIKit, gaining deep expertise in the Apple ecosystem.",
+      "bullets": [
+        "Developed and shipped client-facing iOS applications using Objective-C and UIKit from day one",
+        "Built restaurant management (Menu'ed) and photo booth (Capture'd) iPad apps deployed to production",
+        "Gained deep expertise in the Apple ecosystem — Xcode, Interface Builder, Core Animation, and App Store deployment"
+      ]
     }
   ],
   "projectsData": [
