@@ -1,25 +1,24 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 export function PageTracker() {
-  const pathname = usePathname();
   const lastPath = useRef("");
 
   useEffect(() => {
-    if (pathname === lastPath.current) return;
-    lastPath.current = pathname;
+    const path = window.location.pathname;
+    if (path === lastPath.current) return;
+    lastPath.current = path;
 
     fetch("/api/analytics/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        path: pathname,
+        path,
         referrer: document.referrer || "",
       }),
-    }).catch(() => {}); // Silent fail
-  }, [pathname]);
+    }).catch(() => {});
+  }, []);
 
   return null;
 }

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import dynamic from "next/dynamic";
-const PageTracker = dynamic(() => import("@/components/ui/PageTracker").then((m) => m.PageTracker), { ssr: false });
+import { PageTracker } from "@/components/ui/PageTracker";
 
 export const metadata: Metadata = {
   title: "Anil Khanna | Senior Full Stack Developer",
