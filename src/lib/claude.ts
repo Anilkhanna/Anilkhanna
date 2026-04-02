@@ -77,20 +77,20 @@ export async function analyzeJD(jdText: string): Promise<TailorAnalysis> {
 
         try {
           // Claude --output-format json wraps response in a JSON envelope
+          // e.g. {"type":"result","result":"\n\n```json\n{...}\n```","..."}
           const envelope = JSON.parse(stdout);
-          // The actual text content is in envelope.result or envelope.content
-          const textContent = typeof envelope === 'string'
-            ? envelope
-            : envelope.result ?? envelope.content ?? stdout;
+          const textContent = envelope.result ?? envelope.content ?? '';
 
-          // Parse the inner JSON from Claude's text response
-          const jsonStr = typeof textContent === 'string' ? textContent : JSON.stringify(textContent);
-          // Extract JSON from possible markdown code fences
-          const cleaned = jsonStr.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-          const analysis: TailorAnalysis = JSON.parse(cleaned);
+          // Extract JSON from the text — strip markdown fences, leading whitespace
+          const jsonMatch = textContent.match(/\{[\s\S]*\}/);
+          if (!jsonMatch) {
+            reject(new Error(`No JSON object found in Claude response. Raw result: ${textContent.substring(0, 500)}`));
+            return;
+          }
+          const analysis: TailorAnalysis = JSON.parse(jsonMatch[0]);
           resolve(analysis);
         } catch (parseError) {
-          reject(new Error(`Failed to parse Claude response: ${parseError}. Raw: ${stdout.substring(0, 500)}`));
+          reject(new Error(`Failed to parse Claude response: ${parseError}. Raw stdout: ${stdout.substring(0, 500)}`));
         }
       }
     );
