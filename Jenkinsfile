@@ -59,7 +59,7 @@ ENVEOF
         stage('Fix Permissions') {
             steps {
                 echo 'Setting file permissions for PM2 user...'
-                sh 'sudo chown -R anil:anil src/data/'
+                sh 'chmod -R 775 src/data/'
             }
         }
 
