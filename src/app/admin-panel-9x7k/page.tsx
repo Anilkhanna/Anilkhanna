@@ -637,13 +637,25 @@ interface TailorAnalysis {
   skillsReordered: string[];
 }
 
+type ApplicationStatus = 'draft' | 'applied' | 'accepted' | 'rejected' | 'no_reply';
+
 interface HistoryItem {
   id: number;
   job_title: string;
   company: string;
   match_score: number;
+  status: ApplicationStatus;
+  applied_at: string | null;
   created_at: string;
 }
+
+const STATUS_CONFIG: Record<ApplicationStatus, { label: string; color: string }> = {
+  draft: { label: "Draft", color: "bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-neutral-400" },
+  applied: { label: "Applied", color: "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400" },
+  accepted: { label: "Accepted", color: "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400" },
+  rejected: { label: "Rejected", color: "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400" },
+  no_reply: { label: "No Reply", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400" },
+};
 
 function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioData: PortfolioData; onPortfolioUpdate: (d: PortfolioData) => void }) {
   const [jdText, setJdText] = useState("");
@@ -808,6 +820,17 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     setHistory((prev) => prev.filter((r) => r.id !== id));
   };
 
+  const handleStatusChange = async (id: number, status: ApplicationStatus) => {
+    const res = await fetch(`/api/resume/tailor/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    if (res.ok) {
+      setHistory((prev) => prev.map((r) => r.id === id ? { ...r, status, applied_at: status === "applied" ? new Date().toISOString() : r.applied_at } : r));
+    }
+  };
+
   const loadFromHistory = async (id: number) => {
     try {
       const res = await fetch(`/api/resume/tailor/${id}`);
@@ -925,39 +948,61 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
           {history.length === 0 && (
             <p className="text-sm text-gray-500 dark:text-neutral-500">No tailored resumes yet.</p>
           )}
-          {history.map((item) => (
-            <div key={item.id} className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-white/5 p-4">
-              <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {item.job_title}{item.company ? ` — ${item.company}` : ""}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-neutral-500">
-                  {new Date(item.created_at).toLocaleDateString()} · {item.match_score}% match
-                </p>
+          {history.map((item) => {
+            const statusCfg = STATUS_CONFIG[item.status || "draft"];
+            return (
+              <div key={item.id} className="rounded-xl border border-gray-200 dark:border-white/5 p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {item.job_title}{item.company ? ` — ${item.company}` : ""}
+                      </p>
+                      <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${statusCfg.color}`}>
+                        {statusCfg.label}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-neutral-500 mt-1">
+                      {new Date(item.created_at).toLocaleDateString()} · {item.match_score}% match
+                      {item.applied_at && ` · Applied ${new Date(item.applied_at).toLocaleDateString()}`}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <select
+                    value={item.status || "draft"}
+                    onChange={(e) => handleStatusChange(item.id, e.target.value as ApplicationStatus)}
+                    className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-black/30 px-2.5 py-1.5 text-xs text-gray-600 dark:text-neutral-400 cursor-pointer"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="applied">Applied</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="no_reply">No Reply</option>
+                  </select>
+                  <button
+                    onClick={() => loadFromHistory(item.id)}
+                    className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
+                  >
+                    Edit
+                  </button>
+                  <a
+                    href={`/resume/tailored/${item.id}`}
+                    target="_blank"
+                    className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
+                  >
+                    Resume
+                  </a>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="rounded-lg border border-red-300 dark:border-red-500/30 px-3 py-1.5 text-xs text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => loadFromHistory(item.id)}
-                  className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
-                >
-                  Edit
-                </button>
-                <a
-                  href={`/resume/tailored/${item.id}`}
-                  target="_blank"
-                  className="rounded-lg border border-gray-300 dark:border-white/10 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
-                >
-                  Resume
-                </a>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="rounded-lg border border-red-300 dark:border-red-500/30 px-3 py-1.5 text-sm text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

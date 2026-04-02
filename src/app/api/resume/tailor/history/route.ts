@@ -15,7 +15,7 @@ export async function GET() {
   }
 
   const [rows] = await pool.query<RowDataPacket[]>(
-    'SELECT id, job_title, company, match_score, created_at FROM tailored_resumes ORDER BY created_at DESC'
+    'SELECT id, job_title, company, match_score, status, applied_at, created_at FROM tailored_resumes ORDER BY created_at DESC'
   );
 
   return NextResponse.json({ resumes: rows });

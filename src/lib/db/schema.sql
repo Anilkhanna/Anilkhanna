@@ -82,5 +82,7 @@ CREATE TABLE IF NOT EXISTS tailored_resumes (
   skills_included JSON,
   skills_excluded JSON,
   match_score     INT,
+  status          VARCHAR(20) DEFAULT 'draft',
+  applied_at      TIMESTAMP NULL,
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

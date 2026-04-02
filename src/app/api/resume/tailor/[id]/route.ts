@@ -63,6 +63,39 @@ export async function PUT(
   return NextResponse.json({ success: true });
 }
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const { status } = await request.json();
+
+  const validStatuses = ['draft', 'applied', 'accepted', 'rejected', 'no_reply'];
+  if (!status || !validStatuses.includes(status)) {
+    return NextResponse.json({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` }, { status: 400 });
+  }
+
+  const appliedAt = status === 'applied' ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
+
+  if (appliedAt) {
+    await pool.query<ResultSetHeader>(
+      'UPDATE tailored_resumes SET status = ?, applied_at = ? WHERE id = ?',
+      [status, appliedAt, id]
+    );
+  } else {
+    await pool.query<ResultSetHeader>(
+      'UPDATE tailored_resumes SET status = ? WHERE id = ?',
+      [status, id]
+    );
+  }
+
+  return NextResponse.json({ success: true });
+}
+
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
