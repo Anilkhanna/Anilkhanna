@@ -733,6 +733,15 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
         linkedin: linkedin?.url || "",
         github: github?.url || "",
       },
+      analysis: {
+        matchScore: analysis.matchScore,
+        jobTitle: analysis.jobTitle,
+        company: analysis.company,
+        suggestedSummary: analysis.suggestedSummary,
+        skillAnalysis: analysis.skillAnalysis,
+        tailoredBullets: analysis.tailoredBullets,
+        skillsReordered: analysis.skillsReordered,
+      },
     };
 
     try {
@@ -798,26 +807,33 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
       const data = await res.json();
       const record = data.resume;
       const td = typeof record.tailored_data === "string" ? JSON.parse(record.tailored_data) : record.tailored_data;
-      const si = typeof record.skills_included === "string" ? JSON.parse(record.skills_included) : (record.skills_included || []);
-      const se = typeof record.skills_excluded === "string" ? JSON.parse(record.skills_excluded) : (record.skills_excluded || []);
+      const savedAnalysis = td.analysis;
 
-      // Reconstruct analysis from saved data
-      setAnalysis({
-        matchScore: record.match_score || 0,
-        jobTitle: record.job_title,
-        company: record.company || "",
-        suggestedSummary: td.summary || "",
-        skillAnalysis: {
-          matched: si as string[],
-          inResumeNotJD: se as string[],
-          inJDNotResume: [],
-        },
-        tailoredBullets: Object.fromEntries(
-          (td.career || []).map((c: { bullets: string[] }, i: number) => [String(i), c.bullets])
-        ),
-        skillsReordered: si as string[],
-      });
-      setSelectedSkills(new Set(si as string[]));
+      if (savedAnalysis) {
+        // Restore full analysis from saved data
+        setAnalysis(savedAnalysis);
+        setSelectedSkills(new Set(savedAnalysis.skillsReordered || []));
+      } else {
+        // Fallback for old records without saved analysis
+        const si = typeof record.skills_included === "string" ? JSON.parse(record.skills_included) : (record.skills_included || []);
+        const se = typeof record.skills_excluded === "string" ? JSON.parse(record.skills_excluded) : (record.skills_excluded || []);
+        setAnalysis({
+          matchScore: record.match_score || 0,
+          jobTitle: record.job_title,
+          company: record.company || "",
+          suggestedSummary: td.summary || "",
+          skillAnalysis: {
+            matched: si as string[],
+            inResumeNotJD: se as string[],
+            inJDNotResume: [],
+          },
+          tailoredBullets: Object.fromEntries(
+            (td.career || []).map((c: { bullets: string[] }, i: number) => [String(i), c.bullets])
+          ),
+          skillsReordered: si as string[],
+        });
+        setSelectedSkills(new Set(si as string[]));
+      }
       setJdText(record.jd_text || "");
       setJdUrl(record.jd_url || "");
       setSavedId(record.id);
