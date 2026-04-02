@@ -505,6 +505,124 @@ function AvailabilityEditor({ data, onChange }: { data: Availability; onChange: 
   );
 }
 
+interface AnalyticsStats {
+  totals: { total: number; today: number; week: number; month: number };
+  topPages: { path: string; views: number }[];
+  dailyViews: { date: string; views: number }[];
+  devices: { device: string; count: number }[];
+  browsers: { browser: string; count: number }[];
+  referrers: { referrer: string; count: number }[];
+}
+
+function DashboardEditor() {
+  const [stats, setStats] = useState<AnalyticsStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/analytics/stats")
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => setStats(d))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p className="text-sm text-gray-500 dark:text-neutral-500">Loading analytics...</p>;
+  if (!stats) return <p className="text-sm text-red-500">Failed to load analytics</p>;
+
+  const maxDailyViews = Math.max(...stats.dailyViews.map((d) => d.views), 1);
+
+  return (
+    <div className="space-y-6">
+      {/* Summary cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Today", value: stats.totals.today },
+          { label: "This Week", value: stats.totals.week },
+          { label: "This Month", value: stats.totals.month },
+          { label: "All Time", value: stats.totals.total },
+        ].map((card) => (
+          <div key={card.label} className="rounded-xl border border-gray-200 dark:border-white/5 p-5">
+            <p className="text-sm text-gray-500 dark:text-neutral-500">{card.label}</p>
+            <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{Number(card.value).toLocaleString()}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Daily views chart (bar chart using divs) */}
+      <div className="rounded-xl border border-gray-200 dark:border-white/5 p-6">
+        <h3 className="mb-4 text-sm font-semibold text-gray-700 dark:text-neutral-300">Page Views (Last 14 Days)</h3>
+        <div className="flex items-end gap-1.5" style={{ height: 160 }}>
+          {stats.dailyViews.map((d) => (
+            <div key={d.date} className="flex flex-1 flex-col items-center gap-1">
+              <span className="text-[10px] text-gray-500 dark:text-neutral-500">{d.views}</span>
+              <div
+                className="w-full rounded-t bg-[#5eead4] transition-all"
+                style={{ height: `${(d.views / maxDailyViews) * 120}px`, minHeight: d.views > 0 ? 4 : 0 }}
+              />
+              <span className="text-[10px] text-gray-400 dark:text-neutral-600">
+                {new Date(d.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Top pages */}
+        <div className="rounded-xl border border-gray-200 dark:border-white/5 p-6">
+          <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-neutral-300">Top Pages</h3>
+          <div className="space-y-2">
+            {stats.topPages.map((p) => (
+              <div key={p.path} className="flex items-center justify-between">
+                <span className="truncate text-sm text-gray-600 dark:text-neutral-400">{p.path}</span>
+                <span className="ml-2 shrink-0 text-sm font-medium text-gray-900 dark:text-white">{p.views}</span>
+              </div>
+            ))}
+            {stats.topPages.length === 0 && <p className="text-sm text-gray-400">No data yet</p>}
+          </div>
+        </div>
+
+        {/* Devices & Browsers */}
+        <div className="rounded-xl border border-gray-200 dark:border-white/5 p-6">
+          <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-neutral-300">Devices</h3>
+          <div className="space-y-2 mb-5">
+            {stats.devices.map((d) => (
+              <div key={d.device} className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-neutral-400 capitalize">{d.device}</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{d.count}</span>
+              </div>
+            ))}
+          </div>
+          <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-neutral-300">Browsers</h3>
+          <div className="space-y-2">
+            {stats.browsers.map((b) => (
+              <div key={b.browser} className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-neutral-400">{b.browser}</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{b.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Referrers */}
+      {stats.referrers.length > 0 && (
+        <div className="rounded-xl border border-gray-200 dark:border-white/5 p-6">
+          <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-neutral-300">Top Referrers</h3>
+          <div className="space-y-2">
+            {stats.referrers.map((r) => (
+              <div key={r.referrer} className="flex items-center justify-between">
+                <span className="truncate text-sm text-gray-600 dark:text-neutral-400">{r.referrer}</span>
+                <span className="ml-2 shrink-0 text-sm font-medium text-gray-900 dark:text-white">{r.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface TailorAnalysis {
   matchScore: number;
   jobTitle: string;
@@ -999,6 +1117,7 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 /*  Sidebar Nav Item                                                   */
 /* ------------------------------------------------------------------ */
 const SECTION_LIST: { key: string; label: string }[] = [
+  { key: "dashboard", label: "Dashboard" },
   { key: "availability", label: "Availability" },
   { key: "siteConfig", label: "Site Config" },
   { key: "sectionHeadings", label: "Section Titles" },
@@ -1045,7 +1164,7 @@ function Editor() {
   const [error, setError] = useState("");
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [sectionStatus, setSectionStatus] = useState<Record<string, "idle" | "saved" | "error">>({});
-  const [activeSection, setActiveSection] = useState("siteConfig");
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   const loadData = useCallback(async () => {
     try {
@@ -1092,6 +1211,8 @@ function Editor() {
 
   const renderEditor = () => {
     switch (activeSection) {
+      case "dashboard":
+        return <DashboardEditor />;
       case "availability":
         return <AvailabilityEditor data={allData.availability} onChange={(d) => setAllData({ ...allData, availability: d })} />;
       case "siteConfig":
@@ -1191,7 +1312,7 @@ function Editor() {
         {/* Section header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 dark:border-white/10 dark:bg-[#0a0e17]/95 px-10 py-5 backdrop-blur-sm">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{activeLabel}</h2>
-          {activeSection !== "tailorResume" && (
+          {activeSection !== "tailorResume" && activeSection !== "dashboard" && (
             <div className="flex items-center gap-4">
               {sectionStatus[activeSection] === "saved" && (
                 <span className="rounded-lg bg-[#5eead4]/20 px-3 py-1.5 text-sm text-[#5eead4]">Saved</span>

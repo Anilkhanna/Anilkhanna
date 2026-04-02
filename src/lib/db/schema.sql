@@ -48,6 +48,20 @@ CREATE TABLE IF NOT EXISTS profile_config (
   updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Site analytics
+
+CREATE TABLE IF NOT EXISTS page_views (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  path          VARCHAR(500) NOT NULL,
+  referrer      VARCHAR(1000),
+  country       VARCHAR(10),
+  device        VARCHAR(20),
+  browser       VARCHAR(50),
+  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_path (path),
+  INDEX idx_created (created_at)
+);
+
 -- Resume tailor system
 
 CREATE TABLE IF NOT EXISTS tailored_resumes (
