@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import { Suspense } from "react";
-import { PageTracker } from "@/components/ui/PageTracker";
+import dynamic from "next/dynamic";
+const PageTracker = dynamic(() => import("@/components/ui/PageTracker").then((m) => m.PageTracker), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Anil Khanna | Senior Full Stack Developer",
@@ -95,10 +95,8 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <CustomCursor />
-        </ThemeProvider>
-        <Suspense fallback={null}>
           <PageTracker />
-        </Suspense>
+        </ThemeProvider>
       </body>
     </html>
   );
