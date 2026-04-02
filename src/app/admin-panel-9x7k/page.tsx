@@ -1210,6 +1210,47 @@ function AdminThemeToggle() {
   );
 }
 
+function PublishButton() {
+  const [publishing, setPublishing] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const handlePublish = async () => {
+    if (!confirm("Publish all changes to the live site?")) return;
+    setPublishing(true);
+    setStatus("idle");
+    try {
+      const res = await fetch("/api/admin/data/publish", { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: "Publish failed" }));
+        throw new Error(data.error);
+      }
+      setStatus("success");
+      setTimeout(() => setStatus("idle"), 3000);
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handlePublish}
+      disabled={publishing}
+      className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-[13px] font-medium transition-colors ${
+        status === "success"
+          ? "bg-green-500/20 text-green-600 dark:text-green-400"
+          : status === "error"
+          ? "bg-red-500/20 text-red-600 dark:text-red-400"
+          : "bg-[#5eead4] text-[#0a0e17] hover:opacity-90"
+      }`}
+    >
+      {publishing ? "Publishing..." : status === "success" ? "Published!" : status === "error" ? "Publish Failed" : "Publish to Live Site"}
+    </button>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Main Editor                                                        */
 /* ------------------------------------------------------------------ */
@@ -1353,22 +1394,8 @@ function Editor() {
 
       {/* Bottom actions */}
       <div className="border-t border-gray-200 dark:border-white/10 px-3 py-4 space-y-1">
+        <PublishButton />
         <AdminThemeToggle />
-        <button onClick={() => {
-          if (!allData) return;
-          const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "portfolio.json";
-          a.click();
-          URL.revokeObjectURL(url);
-        }} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
-          Download JSON
-        </button>
-        <button onClick={loadData} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
-          Reload Data
-        </button>
         <button onClick={handleLogout} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-red-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-red-400">
           Logout
         </button>

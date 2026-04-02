@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import fs from "fs/promises";
-import path from "path";
-
-const DATA_PATH = path.join(process.cwd(), "src/data/portfolio.json");
+import pool from "@/lib/db";
+import type { RowDataPacket } from "mysql2";
 
 async function isAuthenticated(): Promise<boolean> {
   const cookieStore = await cookies();
@@ -17,13 +15,20 @@ export async function GET() {
   }
 
   try {
-    const raw = await fs.readFile(DATA_PATH, "utf-8");
-    return NextResponse.json({ data: JSON.parse(raw) });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to read data" },
-      { status: 500 }
+    const [rows] = await pool.query<RowDataPacket[]>(
+      "SELECT data, updated_at FROM portfolio_data WHERE id = 1"
     );
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: "No data found. Run seed-portfolio.js first." }, { status: 404 });
+    }
+
+    const data = typeof rows[0].data === "string" ? JSON.parse(rows[0].data) : rows[0].data;
+    return NextResponse.json({ data, updatedAt: rows[0].updated_at });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("Admin data read failed:", message);
+    return NextResponse.json({ error: `Failed to read data: ${message}` }, { status: 500 });
   }
 }
 
@@ -35,60 +40,32 @@ export async function PUT(request: NextRequest) {
   try {
     const { data } = await request.json();
 
-    // Validate it's valid JSON with expected structure
     if (!data || typeof data !== "object") {
-      return NextResponse.json(
-        { error: "Invalid data format" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid data format" }, { status: 400 });
     }
 
     const requiredKeys = [
-      "siteConfig",
-      "navLinks",
-      "socialLinks",
-      "sectionHeadings",
-      "aboutData",
-      "trendingSkills",
-      "techStack",
-      "techCategories",
-      "whatIDo",
-      "careerData",
-      "projectsData",
-      "educationData",
-      "certifications",
-      "availability",
-      "testimonials",
-      "caseStudies",
-      "services",
+      "siteConfig", "navLinks", "socialLinks", "sectionHeadings",
+      "aboutData", "trendingSkills", "techStack", "techCategories",
+      "whatIDo", "careerData", "projectsData", "educationData",
+      "certifications", "availability", "testimonials", "caseStudies", "services",
     ];
 
     for (const key of requiredKeys) {
       if (!(key in data)) {
-        return NextResponse.json(
-          { error: `Missing required key: ${key}` },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: `Missing required key: ${key}` }, { status: 400 });
       }
     }
 
-    // Backup current file
-    try {
-      const current = await fs.readFile(DATA_PATH, "utf-8");
-      await fs.writeFile(DATA_PATH + ".backup", current, "utf-8");
-    } catch {
-      // Backup failed, continue anyway
-    }
-
-    await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2), "utf-8");
+    await pool.query(
+      "INSERT INTO portfolio_data (id, data) VALUES (1, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)",
+      [JSON.stringify(data)]
+    );
 
     return NextResponse.json({ success: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Admin data save failed:", message);
-    return NextResponse.json(
-      { error: `Failed to save data: ${message}` },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Failed to save data: ${message}` }, { status: 500 });
   }
 }
