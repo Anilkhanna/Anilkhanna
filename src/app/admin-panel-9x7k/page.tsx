@@ -370,7 +370,7 @@ function CareerEditor({ data, onChange }: { data: CareerItem[]; onChange: (d: Ca
           </div>
           <div>
             <label className={labelCls}>Resume Bullets (ATS-friendly achievements)</label>
-            <p className="mb-2 text-xs text-gray-400 dark:text-neutral-600">These appear on the /resume page. Use metrics and action verbs.</p>
+            <p className="mb-2 text-xs text-gray-400 dark:text-neutral-500">These appear on the /resume page. Use metrics and action verbs.</p>
             <div className="space-y-2">
               {(item.bullets || []).map((bullet, bi) => (
                 <div key={bi} className="flex gap-2">
@@ -559,7 +559,7 @@ function DashboardEditor() {
                 className="w-full rounded-t bg-[#5eead4] transition-all"
                 style={{ height: `${(d.views / maxDailyViews) * 120}px`, minHeight: d.views > 0 ? 4 : 0 }}
               />
-              <span className="text-[10px] text-gray-400 dark:text-neutral-600">
+              <span className="text-[10px] text-gray-400 dark:text-neutral-500">
                 {new Date(d.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
               </span>
             </div>
@@ -578,7 +578,7 @@ function DashboardEditor() {
                 <span className="ml-2 shrink-0 text-sm font-medium text-gray-900 dark:text-white">{p.views}</span>
               </div>
             ))}
-            {stats.topPages.length === 0 && <p className="text-sm text-gray-400">No data yet</p>}
+            {stats.topPages.length === 0 && <p className="text-sm text-gray-400 dark:text-neutral-500">No data yet</p>}
           </div>
         </div>
 
@@ -974,7 +974,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                         className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
                           selectedSkills.has(skill)
                             ? "bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300"
-                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-600"
+                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-500"
                         }`}
                       >
                         {skill}
@@ -995,7 +995,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                         className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
                           selectedSkills.has(skill)
                             ? "bg-gray-200 text-gray-800 dark:bg-white/10 dark:text-neutral-200"
-                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-600"
+                            : "bg-gray-100 text-gray-400 line-through dark:bg-white/5 dark:text-neutral-500"
                         }`}
                       >
                         {skill}
@@ -1008,7 +1008,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                   <h4 className="mb-2 text-sm font-semibold text-red-600 dark:text-red-400">
                     Missing from Profile ({analysis.skillAnalysis.inJDNotResume.length})
                   </h4>
-                  <p className="mb-2 text-xs text-gray-400 dark:text-neutral-600">Click + to add to your profile</p>
+                  <p className="mb-2 text-xs text-gray-400 dark:text-neutral-500">Click + to add to your profile</p>
                   <div className="flex flex-wrap gap-2">
                     {analysis.skillAnalysis.inJDNotResume.map((skill) => (
                       addedSkills.has(skill) ? (
@@ -1353,7 +1353,7 @@ function Editor() {
           <h1 className="text-base font-semibold text-gray-900 dark:text-white">Portfolio Editor</h1>
           <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">Manage your content</p>
         </div>
-        <button onClick={() => setSidebarOpen(false)} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-white lg:hidden">
+        <button onClick={() => setSidebarOpen(false)} className="rounded-lg p-2 text-gray-400 dark:text-neutral-500 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-white lg:hidden">
           <FiX size={18} />
         </button>
       </div>
@@ -1362,7 +1362,7 @@ function Editor() {
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         {SECTION_GROUPS.map((group, gi) => (
           <div key={group.group} className={gi > 0 ? "mt-5" : ""}>
-            <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-neutral-600">
+            <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-neutral-500">
               {group.group}
             </p>
             <div className="space-y-0.5">
