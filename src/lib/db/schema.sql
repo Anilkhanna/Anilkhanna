@@ -48,6 +48,14 @@ CREATE TABLE IF NOT EXISTS profile_config (
   updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Portfolio data (admin source of truth)
+
+CREATE TABLE IF NOT EXISTS portfolio_data (
+  id         INT PRIMARY KEY DEFAULT 1,
+  data       JSON NOT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Site analytics
 
 CREATE TABLE IF NOT EXISTS page_views (
