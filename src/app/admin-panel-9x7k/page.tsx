@@ -1184,12 +1184,27 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <h4 className="text-sm font-semibold text-gray-700 dark:text-neutral-300">Cover Letter</h4>
-                    <button
-                      onClick={() => { navigator.clipboard.writeText(coverLetter); }}
-                      className={btnOutline + " !py-1.5 !px-3 !text-xs"}
-                    >
-                      Copy to Clipboard
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => { navigator.clipboard.writeText(coverLetter); }}
+                        className={btnOutline + " !py-1.5 !px-3 !text-xs"}
+                      >
+                        Copy
+                      </button>
+                      <button
+                        onClick={() => {
+                          const params = new URLSearchParams({
+                            text: coverLetter,
+                            job: analysis?.jobTitle || "",
+                            company: analysis?.company || "",
+                          });
+                          window.open(`/resume/cover-letter?${params.toString()}`, "_blank");
+                        }}
+                        className={btnPrimary + " !py-1.5 !px-3 !text-xs"}
+                      >
+                        Download PDF
+                      </button>
+                    </div>
                   </div>
                   <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-5 text-sm leading-relaxed text-gray-700 dark:text-neutral-300 whitespace-pre-wrap">
                     {coverLetter}
