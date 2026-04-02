@@ -7,5 +7,5 @@ VALUES ('default',
   '["intern", "junior", "trainee", "PHP only"]',
   '{"munich_onsite": true, "hybrid_germany": true, "remote": true}',
   '{"primary_skill": 5, "role_match": 20, "title_keyword": 3, "secondary_skill": 2, "location": 10, "bonus_keyword": 3, "seniority": 5, "negative": -15}',
-  30
+  65
 );
