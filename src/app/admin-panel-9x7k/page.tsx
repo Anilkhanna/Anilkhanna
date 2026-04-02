@@ -658,6 +658,8 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
   const [addedSkills, setAddedSkills] = useState<Set<string>>(new Set());
   const [savedId, setSavedId] = useState<number | null>(null);
   const [savedJobs, setSavedJobs] = useState<{ id: string; title: string; company: string; description: string; job_url: string }[]>([]);
+  const [coverLetter, setCoverLetter] = useState("");
+  const [generatingCL, setGeneratingCL] = useState(false);
 
   useEffect(() => {
     fetch("/api/resume/tailor/history")
@@ -675,6 +677,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     setError("");
     setAnalysis(null);
     setSavedId(null);
+    setCoverLetter("");
     try {
       const res = await fetch("/api/resume/tailor", {
         method: "POST",
@@ -868,6 +871,26 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
       setSelectedSkills((prev) => new Set([...prev, skill]));
     } catch (err) {
       setError(`Failed to add "${skill}": ${err instanceof Error ? err.message : "Unknown error"}`);
+    }
+  };
+
+  const handleGenerateCoverLetter = async () => {
+    if (!analysis) return;
+    setGeneratingCL(true);
+    setCoverLetter("");
+    try {
+      const res = await fetch("/api/resume/tailor/cover-letter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jdText, jobTitle: analysis.jobTitle, company: analysis.company }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Generation failed");
+      setCoverLetter(data.coverLetter);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Cover letter generation failed");
+    } finally {
+      setGeneratingCL(false);
     }
   };
 
@@ -1087,7 +1110,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => handleSave(false)}
                   disabled={saving}
@@ -1102,7 +1125,32 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                 >
                   {saving ? "Saving..." : "Save & View Resume"}
                 </button>
+                <button
+                  onClick={handleGenerateCoverLetter}
+                  disabled={generatingCL}
+                  className={btnOutline}
+                >
+                  {generatingCL ? "Generating Cover Letter..." : "Generate Cover Letter"}
+                </button>
               </div>
+
+              {/* Cover Letter */}
+              {coverLetter && (
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-semibold text-gray-700 dark:text-neutral-300">Cover Letter</h4>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(coverLetter); }}
+                      className={btnOutline + " !py-1.5 !px-3 !text-xs"}
+                    >
+                      Copy to Clipboard
+                    </button>
+                  </div>
+                  <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-5 text-sm leading-relaxed text-gray-700 dark:text-neutral-300 whitespace-pre-wrap">
+                    {coverLetter}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </>

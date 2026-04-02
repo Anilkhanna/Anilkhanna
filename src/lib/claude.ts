@@ -57,48 +57,74 @@ Respond with ONLY valid JSON matching this exact schema (no markdown, no explana
 }`;
 }
 
-export async function analyzeJD(jdText: string): Promise<TailorAnalysis> {
-  const portfolioJson = await readFile(PORTFOLIO_PATH, 'utf-8');
-  const prompt = buildPrompt(portfolioJson, jdText);
-
+function runClaude(prompt: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = execFile(
       process.env.CLAUDE_CLI_PATH || '/home/linuxbrew/.linuxbrew/bin/claude',
       ['-p', '--output-format', 'json'],
       {
-        maxBuffer: 1024 * 1024 * 5, // 5MB
-        timeout: 120_000, // 2 min
+        maxBuffer: 1024 * 1024 * 5,
+        timeout: 120_000,
       },
       (error, stdout, stderr) => {
         if (error) {
           reject(new Error(`Claude CLI failed: ${error.message}. stderr: ${stderr}`));
           return;
         }
-
         try {
-          // Claude --output-format json wraps response in a JSON envelope
-          // e.g. {"type":"result","result":"\n\n```json\n{...}\n```","..."}
           const envelope = JSON.parse(stdout);
           const textContent = envelope.result ?? envelope.content ?? '';
-
-          // Extract JSON from the text — strip markdown fences, leading whitespace
-          const jsonMatch = textContent.match(/\{[\s\S]*\}/);
-          if (!jsonMatch) {
-            reject(new Error(`No JSON object found in Claude response. Raw result: ${textContent.substring(0, 500)}`));
-            return;
-          }
-          const analysis: TailorAnalysis = JSON.parse(jsonMatch[0]);
-          resolve(analysis);
+          resolve(textContent);
         } catch (parseError) {
-          reject(new Error(`Failed to parse Claude response: ${parseError}. Raw stdout: ${stdout.substring(0, 500)}`));
+          reject(new Error(`Failed to parse Claude response: ${parseError}. Raw: ${stdout.substring(0, 500)}`));
         }
       }
     );
-
-    // Write prompt to stdin
     if (child.stdin) {
       child.stdin.write(prompt);
       child.stdin.end();
     }
   });
+}
+
+export async function generateCoverLetter(jdText: string, jobTitle: string, company: string): Promise<string> {
+  const portfolioJson = await readFile(PORTFOLIO_PATH, 'utf-8');
+
+  const prompt = `You are a professional cover letter writer. Write a compelling cover letter for the job below using ONLY facts from the candidate's portfolio data.
+
+RULES:
+- Keep it concise: 3-4 paragraphs, under 350 words
+- Opening: mention the specific role and company, show genuine interest
+- Middle: highlight 2-3 most relevant achievements from the portfolio that match the JD
+- Closing: express enthusiasm and availability
+- Tone: professional but personable, confident not arrogant
+- NEVER fabricate or exaggerate — only use facts from the portfolio
+- Do NOT include placeholder addresses or dates — start directly with "Dear Hiring Manager,"
+
+JOB TITLE: ${jobTitle}
+COMPANY: ${company}
+
+PORTFOLIO DATA:
+${portfolioJson}
+
+JOB DESCRIPTION:
+${jdText}
+
+Write the cover letter as plain text (no markdown, no JSON, no code fences):`;
+
+  const result = await runClaude(prompt);
+  // Clean up any markdown fences if Claude added them
+  return result.replace(/```\w*\n?/g, '').trim();
+}
+
+export async function analyzeJD(jdText: string): Promise<TailorAnalysis> {
+  const portfolioJson = await readFile(PORTFOLIO_PATH, 'utf-8');
+  const prompt = buildPrompt(portfolioJson, jdText);
+  const textContent = await runClaude(prompt);
+
+  const jsonMatch = textContent.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    throw new Error(`No JSON object found in Claude response. Raw result: ${textContent.substring(0, 500)}`);
+  }
+  return JSON.parse(jsonMatch[0]) as TailorAnalysis;
 }
