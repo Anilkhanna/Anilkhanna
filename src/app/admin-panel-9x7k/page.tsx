@@ -1261,6 +1261,7 @@ function Editor() {
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [sectionStatus, setSectionStatus] = useState<Record<string, "idle" | "saved" | "error">>({});
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -1343,8 +1344,6 @@ function Editor() {
         return null;
     }
   };
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const sidebarContent = (
     <>
