@@ -63,7 +63,7 @@ export async function analyzeJD(jdText: string): Promise<TailorAnalysis> {
 
   return new Promise((resolve, reject) => {
     const child = execFile(
-      'claude',
+      process.env.CLAUDE_CLI_PATH || '/home/linuxbrew/.linuxbrew/bin/claude',
       ['-p', '--output-format', 'json'],
       {
         maxBuffer: 1024 * 1024 * 5, // 5MB
