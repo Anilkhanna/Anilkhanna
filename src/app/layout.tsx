@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { Suspense } from "react";
 import { PageTracker } from "@/components/ui/PageTracker";
 
 export const metadata: Metadata = {
@@ -94,8 +95,10 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <CustomCursor />
-          <PageTracker />
         </ThemeProvider>
+        <Suspense fallback={null}>
+          <PageTracker />
+        </Suspense>
       </body>
     </html>
   );
