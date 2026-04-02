@@ -672,6 +672,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
   const [savedJobs, setSavedJobs] = useState<{ id: string; title: string; company: string; description: string; job_url: string }[]>([]);
   const [coverLetter, setCoverLetter] = useState("");
   const [generatingCL, setGeneratingCL] = useState(false);
+  const [categoryPickerSkill, setCategoryPickerSkill] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/resume/tailor/history")
@@ -874,10 +875,15 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     }
   };
 
-  const addToProfile = async (skill: string) => {
+  const addToProfile = async (skill: string, categoryLabel: string) => {
     const updated = {
       ...portfolioData,
       techStack: [...portfolioData.techStack, skill],
+      techCategories: portfolioData.techCategories.map((cat) =>
+        cat.label === categoryLabel
+          ? { ...cat, items: [...cat.items, skill] }
+          : cat
+      ),
     };
     try {
       const res = await fetch("/api/admin/data", {
@@ -892,6 +898,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
       onPortfolioUpdate(updated);
       setAddedSkills((prev) => new Set([...prev, skill]));
       setSelectedSkills((prev) => new Set([...prev, skill]));
+      setCategoryPickerSkill(null);
     } catch (err) {
       setError(`Failed to add "${skill}": ${err instanceof Error ? err.message : "Unknown error"}`);
     }
@@ -1134,10 +1141,29 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
                         >
                           {skill} ✓
                         </span>
+                      ) : categoryPickerSkill === skill ? (
+                        <div key={skill} className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-black/30 p-1">
+                          <span className="px-2 text-sm text-gray-700 dark:text-neutral-300">{skill}</span>
+                          {portfolioData.techCategories.map((cat) => (
+                            <button
+                              key={cat.label}
+                              onClick={() => addToProfile(skill, cat.label)}
+                              className="rounded px-2 py-1 text-xs text-gray-600 hover:bg-[#5eead4]/20 hover:text-[#5eead4] dark:text-neutral-400 dark:hover:text-[#5eead4]"
+                            >
+                              {cat.label}
+                            </button>
+                          ))}
+                          <button
+                            onClick={() => setCategoryPickerSkill(null)}
+                            className="rounded px-1.5 py-1 text-xs text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+                          >
+                            ✕
+                          </button>
+                        </div>
                       ) : (
                         <button
                           key={skill}
-                          onClick={() => addToProfile(skill)}
+                          onClick={() => setCategoryPickerSkill(skill)}
                           className="flex items-center gap-1 rounded-lg bg-red-50 px-3 py-1.5 text-sm text-red-600 transition-colors hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                         >
                           <FiPlus size={12} /> {skill}
