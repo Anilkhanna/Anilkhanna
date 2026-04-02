@@ -656,6 +656,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [activeTab, setActiveTab] = useState<"tailor" | "history">("tailor");
   const [addedSkills, setAddedSkills] = useState<Set<string>>(new Set());
+  const [savedId, setSavedId] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/resume/tailor/history")
@@ -668,6 +669,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     setAnalyzing(true);
     setError("");
     setAnalysis(null);
+    setSavedId(null);
     try {
       const res = await fetch("/api/resume/tailor", {
         method: "POST",
@@ -734,27 +736,48 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
     };
 
     try {
-      const res = await fetch("/api/resume/tailor/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobTitle: analysis.jobTitle,
-          company: analysis.company,
-          jdText,
-          jdUrl: jdUrl || null,
-          tailoredData,
-          skillsIncluded: included,
-          skillsExcluded: excluded,
-          matchScore: analysis.matchScore,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Save failed");
+      const payload = {
+        jobTitle: analysis.jobTitle,
+        company: analysis.company,
+        jdText,
+        jdUrl: jdUrl || null,
+        tailoredData,
+        skillsIncluded: included,
+        skillsExcluded: excluded,
+        matchScore: analysis.matchScore,
+      };
+
+      let resumeId = savedId;
+
+      if (savedId) {
+        // Update existing record
+        const res = await fetch(`/api/resume/tailor/${savedId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({ error: "Update failed" }));
+          throw new Error(data.error || "Update failed");
+        }
+      } else {
+        // Create new record
+        const res = await fetch("/api/resume/tailor/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Save failed");
+        resumeId = data.resume.id;
+        setSavedId(resumeId);
+      }
+
       const histRes = await fetch("/api/resume/tailor/history");
       const histData = await histRes.json();
       setHistory(histData.resumes || []);
-      if (openResume) {
-        window.open(`/resume/tailored/${data.resume.id}`, "_blank");
+      if (openResume && resumeId) {
+        window.open(`/resume/tailored/${resumeId}`, "_blank");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
@@ -797,6 +820,7 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
       setSelectedSkills(new Set(si as string[]));
       setJdText(record.jd_text || "");
       setJdUrl(record.jd_url || "");
+      setSavedId(record.id);
       setActiveTab("tailor");
     } catch {
       setError("Failed to load from history");
