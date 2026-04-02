@@ -657,11 +657,16 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
   const [activeTab, setActiveTab] = useState<"tailor" | "history">("tailor");
   const [addedSkills, setAddedSkills] = useState<Set<string>>(new Set());
   const [savedId, setSavedId] = useState<number | null>(null);
+  const [savedJobs, setSavedJobs] = useState<{ id: string; title: string; company: string; description: string; job_url: string }[]>([]);
 
   useEffect(() => {
     fetch("/api/resume/tailor/history")
       .then((r) => r.ok ? r.json() : { resumes: [] })
       .then((d) => setHistory(d.resumes || []))
+      .catch(() => {});
+    fetch("/api/jobs?limit=50&sort=match_score")
+      .then((r) => r.ok ? r.json() : { jobs: [] })
+      .then((d) => setSavedJobs((d.jobs || []).filter((j: { description: string }) => j.description)))
       .catch(() => {});
   }, []);
 
@@ -937,6 +942,33 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
         <>
           {/* Step 1: Input */}
           <div className="space-y-4">
+            {/* Load from saved jobs */}
+            {savedJobs.length > 0 && (
+              <div>
+                <label className={labelCls}>Load from Saved Jobs</label>
+                <select
+                  onChange={(e) => {
+                    const job = savedJobs.find((j) => j.id === e.target.value);
+                    if (job) {
+                      setJdText(job.description);
+                      setJdUrl(job.job_url || "");
+                      setAnalysis(null);
+                      setSavedId(null);
+                    }
+                  }}
+                  defaultValue=""
+                  className={inputCls + " cursor-pointer"}
+                >
+                  <option value="" disabled>Select a saved job...</option>
+                  {savedJobs.map((job) => (
+                    <option key={job.id} value={job.id}>
+                      {job.title} — {job.company}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <div>
               <label className={labelCls}>Paste Job Description</label>
               <textarea
