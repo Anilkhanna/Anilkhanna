@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTheme } from "next-themes";
-import { FiPlus, FiTrash2, FiSun, FiMoon } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiSun, FiMoon, FiMenu, FiX, FiBarChart2, FiToggleLeft, FiSettings, FiLayout, FiNavigation, FiShare2, FiUser, FiTrendingUp, FiCpu, FiGrid, FiTarget, FiBriefcase, FiFolder, FiBookOpen, FiAward, FiFileText } from "react-icons/fi";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -1140,24 +1140,55 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 /* ------------------------------------------------------------------ */
 /*  Sidebar Nav Item                                                   */
 /* ------------------------------------------------------------------ */
-const SECTION_LIST: { key: string; label: string }[] = [
-  { key: "dashboard", label: "Dashboard" },
-  { key: "availability", label: "Availability" },
-  { key: "siteConfig", label: "Site Config" },
-  { key: "sectionHeadings", label: "Section Titles" },
-  { key: "navLinks", label: "Navigation" },
-  { key: "socialLinks", label: "Social Links" },
-  { key: "aboutData", label: "About" },
-  { key: "trendingSkills", label: "Trending Skills" },
-  { key: "techStack", label: "Tech Stack" },
-  { key: "techCategories", label: "Tech Categories" },
-  { key: "whatIDo", label: "What I Do" },
-  { key: "careerData", label: "Career" },
-  { key: "projectsData", label: "Projects" },
-  { key: "educationData", label: "Education" },
-  { key: "certifications", label: "Certifications" },
-  { key: "tailorResume", label: "Tailor Resume" },
+interface SectionItem { key: string; label: string; icon: React.ReactNode; }
+interface SectionGroup { group: string; items: SectionItem[]; }
+
+const SECTION_GROUPS: SectionGroup[] = [
+  {
+    group: "Overview",
+    items: [
+      { key: "dashboard", label: "Dashboard", icon: <FiBarChart2 size={16} /> },
+      { key: "availability", label: "Availability", icon: <FiToggleLeft size={16} /> },
+    ],
+  },
+  {
+    group: "Site Settings",
+    items: [
+      { key: "siteConfig", label: "Site Config", icon: <FiSettings size={16} /> },
+      { key: "sectionHeadings", label: "Section Titles", icon: <FiLayout size={16} /> },
+      { key: "navLinks", label: "Navigation", icon: <FiNavigation size={16} /> },
+      { key: "socialLinks", label: "Social Links", icon: <FiShare2 size={16} /> },
+    ],
+  },
+  {
+    group: "Content",
+    items: [
+      { key: "aboutData", label: "About", icon: <FiUser size={16} /> },
+      { key: "careerData", label: "Career", icon: <FiBriefcase size={16} /> },
+      { key: "projectsData", label: "Projects", icon: <FiFolder size={16} /> },
+      { key: "educationData", label: "Education", icon: <FiBookOpen size={16} /> },
+      { key: "certifications", label: "Certifications", icon: <FiAward size={16} /> },
+      { key: "whatIDo", label: "What I Do", icon: <FiTarget size={16} /> },
+    ],
+  },
+  {
+    group: "Skills & Tech",
+    items: [
+      { key: "trendingSkills", label: "Trending Skills", icon: <FiTrendingUp size={16} /> },
+      { key: "techStack", label: "Tech Stack", icon: <FiCpu size={16} /> },
+      { key: "techCategories", label: "Tech Categories", icon: <FiGrid size={16} /> },
+    ],
+  },
+  {
+    group: "Tools",
+    items: [
+      { key: "tailorResume", label: "Tailor Resume", icon: <FiFileText size={16} /> },
+    ],
+  },
 ];
+
+// Flat list for lookups
+const SECTION_LIST = SECTION_GROUPS.flatMap((g) => g.items);
 
 /* ------------------------------------------------------------------ */
 /*  Theme Toggle                                                       */
@@ -1272,70 +1303,101 @@ function Editor() {
     }
   };
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const sidebarContent = (
+    <>
+      {/* Logo */}
+      <div className="flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-5 py-5">
+        <div>
+          <h1 className="text-base font-semibold text-gray-900 dark:text-white">Portfolio Editor</h1>
+          <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">Manage your content</p>
+        </div>
+        <button onClick={() => setSidebarOpen(false)} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/5 dark:hover:text-white lg:hidden">
+          <FiX size={18} />
+        </button>
+      </div>
+
+      {/* Grouped nav */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        {SECTION_GROUPS.map((group, gi) => (
+          <div key={group.group} className={gi > 0 ? "mt-5" : ""}>
+            <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-widest text-gray-400 dark:text-neutral-600">
+              {group.group}
+            </p>
+            <div className="space-y-0.5">
+              {group.items.map((section) => (
+                <button
+                  key={section.key}
+                  onClick={() => { setActiveSection(section.key); setSidebarOpen(false); }}
+                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13px] transition-colors ${
+                    activeSection === section.key
+                      ? "bg-[#5eead4]/10 font-medium text-[#5eead4]"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white"
+                  }`}
+                >
+                  <span className={activeSection === section.key ? "text-[#5eead4]" : "text-gray-400 dark:text-neutral-500"}>{section.icon}</span>
+                  <span className="flex-1">{section.label}</span>
+                  {sectionStatus[section.key] === "saved" && (
+                    <span className="h-2 w-2 rounded-full bg-[#5eead4]" />
+                  )}
+                  {sectionStatus[section.key] === "error" && (
+                    <span className="h-2 w-2 rounded-full bg-red-400" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      {/* Bottom actions */}
+      <div className="border-t border-gray-200 dark:border-white/10 px-3 py-4 space-y-1">
+        <AdminThemeToggle />
+        <button onClick={() => {
+          if (!allData) return;
+          const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "portfolio.json";
+          a.click();
+          URL.revokeObjectURL(url);
+        }} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
+          Download JSON
+        </button>
+        <button onClick={loadData} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
+          Reload Data
+        </button>
+        <button onClick={handleLogout} className="flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] text-gray-500 hover:bg-gray-100 hover:text-red-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-red-400">
+          Logout
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-[#0a0e17]">
-      {/* Left Sidebar */}
-      <aside className="sticky top-0 flex h-screen w-72 flex-shrink-0 flex-col border-r border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.02]">
-        {/* Logo */}
-        <div className="border-b border-gray-200 dark:border-white/10 px-6 py-6">
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Portfolio Editor</h1>
-          <p className="mt-1 text-sm text-gray-400 dark:text-neutral-500">Manage your content</p>
-        </div>
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
 
-        {/* Section links */}
-        <nav className="flex-1 overflow-y-auto px-4 py-5">
-          <div className="space-y-1">
-            {SECTION_LIST.map((section) => (
-              <button
-                key={section.key}
-                onClick={() => setActiveSection(section.key)}
-                className={`flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-left text-sm transition-colors ${
-                  activeSection === section.key
-                    ? "bg-[#5eead4]/10 font-medium text-[#5eead4]"
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white"
-                }`}
-              >
-                <span>{section.label}</span>
-                {sectionStatus[section.key] === "saved" && (
-                  <span className="h-2 w-2 rounded-full bg-[#5eead4]" />
-                )}
-                {sectionStatus[section.key] === "error" && (
-                  <span className="h-2 w-2 rounded-full bg-red-400" />
-                )}
-              </button>
-            ))}
-          </div>
-        </nav>
-
-        {/* Bottom actions */}
-        <div className="border-t border-gray-200 dark:border-white/10 px-4 py-5 space-y-2">
-          <AdminThemeToggle />
-          <button onClick={() => {
-            if (!allData) return;
-            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "portfolio.json";
-            a.click();
-            URL.revokeObjectURL(url);
-          }} className="flex w-full items-center rounded-xl px-4 py-3 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
-            Download JSON
-          </button>
-          <button onClick={loadData} className="flex w-full items-center rounded-xl px-4 py-3 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white">
-            Reload Data
-          </button>
-          <button onClick={handleLogout} className="flex w-full items-center rounded-xl px-4 py-3 text-sm text-gray-500 hover:bg-gray-100 hover:text-red-500 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-red-400">
-            Logout
-          </button>
-        </div>
+      {/* Sidebar — fixed on mobile, sticky on desktop */}
+      <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-transform duration-200 dark:border-white/10 dark:bg-[#0d1117] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {sidebarContent}
       </aside>
 
       {/* Right Content */}
       <main className="flex-1 overflow-y-auto">
         {/* Section header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 dark:border-white/10 dark:bg-[#0a0e17]/95 px-10 py-5 backdrop-blur-sm">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{activeLabel}</h2>
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 dark:border-white/10 dark:bg-[#0a0e17]/95 px-6 py-4 backdrop-blur-sm lg:px-10 lg:py-5">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSidebarOpen(true)} className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white lg:hidden">
+              <FiMenu size={20} />
+            </button>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{activeLabel}</h2>
+          </div>
           {activeSection !== "tailorResume" && activeSection !== "dashboard" && (
             <div className="flex items-center gap-4">
               {sectionStatus[activeSection] === "saved" && (
@@ -1356,7 +1418,7 @@ function Editor() {
         </div>
 
         {/* Editor area */}
-        <div className="px-10 py-8">
+        <div className="px-5 py-6 lg:px-10 lg:py-8">
           {renderEditor()}
         </div>
       </main>
