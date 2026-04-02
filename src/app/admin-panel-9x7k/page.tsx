@@ -696,12 +696,15 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: updated }),
       });
-      if (!res.ok) throw new Error("Failed to save");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error || "Failed to save");
+      }
       onPortfolioUpdate(updated);
       setAddedSkills((prev) => new Set([...prev, skill]));
       setSelectedSkills((prev) => new Set([...prev, skill]));
-    } catch {
-      setError(`Failed to add "${skill}" to profile`);
+    } catch (err) {
+      setError(`Failed to add "${skill}": ${err instanceof Error ? err.message : "Unknown error"}`);
     }
   };
 
