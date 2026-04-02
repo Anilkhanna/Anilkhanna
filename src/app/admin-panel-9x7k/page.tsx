@@ -527,7 +527,7 @@ interface HistoryItem {
   created_at: string;
 }
 
-function TailorResumeEditor({ portfolioData }: { portfolioData: PortfolioData }) {
+function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioData: PortfolioData; onPortfolioUpdate: (d: PortfolioData) => void }) {
   const [jdText, setJdText] = useState("");
   const [jdUrl, setJdUrl] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
@@ -537,6 +537,7 @@ function TailorResumeEditor({ portfolioData }: { portfolioData: PortfolioData })
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [activeTab, setActiveTab] = useState<"tailor" | "history">("tailor");
+  const [addedSkills, setAddedSkills] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetch("/api/resume/tailor/history")
@@ -645,6 +646,26 @@ function TailorResumeEditor({ portfolioData }: { portfolioData: PortfolioData })
   const handleDelete = async (id: number) => {
     await fetch(`/api/resume/tailor/${id}`, { method: "DELETE" });
     setHistory((prev) => prev.filter((r) => r.id !== id));
+  };
+
+  const addToProfile = async (skill: string) => {
+    const updated = {
+      ...portfolioData,
+      techStack: [...portfolioData.techStack, skill],
+    };
+    try {
+      const res = await fetch("/api/admin/data", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: updated }),
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      onPortfolioUpdate(updated);
+      setAddedSkills((prev) => new Set([...prev, skill]));
+      setSelectedSkills((prev) => new Set([...prev, skill]));
+    } catch {
+      setError(`Failed to add "${skill}" to profile`);
+    }
   };
 
   return (
@@ -799,14 +820,25 @@ function TailorResumeEditor({ portfolioData }: { portfolioData: PortfolioData })
                   <h4 className="mb-2 text-sm font-semibold text-red-600 dark:text-red-400">
                     Missing from Profile ({analysis.skillAnalysis.inJDNotResume.length})
                   </h4>
+                  <p className="mb-2 text-xs text-gray-400 dark:text-neutral-600">Click + to add to your profile</p>
                   <div className="flex flex-wrap gap-2">
                     {analysis.skillAnalysis.inJDNotResume.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-lg bg-red-50 px-3 py-1.5 text-sm text-red-600 dark:bg-red-500/10 dark:text-red-400"
-                      >
-                        {skill}
-                      </span>
+                      addedSkills.has(skill) ? (
+                        <span
+                          key={skill}
+                          className="rounded-lg bg-green-50 px-3 py-1.5 text-sm text-green-600 dark:bg-green-500/10 dark:text-green-400"
+                        >
+                          {skill} ✓
+                        </span>
+                      ) : (
+                        <button
+                          key={skill}
+                          onClick={() => addToProfile(skill)}
+                          className="flex items-center gap-1 rounded-lg bg-red-50 px-3 py-1.5 text-sm text-red-600 transition-colors hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
+                        >
+                          <FiPlus size={12} /> {skill}
+                        </button>
+                      )
                     ))}
                   </div>
                 </div>
@@ -1039,7 +1071,7 @@ function Editor() {
       case "certifications":
         return <CertificationsEditor data={allData.certifications} onChange={(d) => setAllData({ ...allData, certifications: d })} />;
       case "tailorResume":
-        return <TailorResumeEditor portfolioData={allData} />;
+        return <TailorResumeEditor portfolioData={allData} onPortfolioUpdate={(d) => setAllData(d)} />;
       default:
         return null;
     }
