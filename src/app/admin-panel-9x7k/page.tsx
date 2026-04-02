@@ -1188,21 +1188,23 @@ function Editor() {
         {/* Section header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 dark:border-white/10 dark:bg-[#0a0e17]/95 px-10 py-5 backdrop-blur-sm">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{activeLabel}</h2>
-          <div className="flex items-center gap-4">
-            {sectionStatus[activeSection] === "saved" && (
-              <span className="rounded-lg bg-[#5eead4]/20 px-3 py-1.5 text-sm text-[#5eead4]">Saved</span>
-            )}
-            {sectionStatus[activeSection] === "error" && (
-              <span className="rounded-lg bg-red-500/20 px-3 py-1.5 text-sm text-red-400">Save failed</span>
-            )}
-            <button
-              onClick={() => saveSection(activeSection)}
-              disabled={savingSection === activeSection}
-              className={btnPrimary}
-            >
-              {savingSection === activeSection ? "Saving..." : "Save Section"}
-            </button>
-          </div>
+          {activeSection !== "tailorResume" && (
+            <div className="flex items-center gap-4">
+              {sectionStatus[activeSection] === "saved" && (
+                <span className="rounded-lg bg-[#5eead4]/20 px-3 py-1.5 text-sm text-[#5eead4]">Saved</span>
+              )}
+              {sectionStatus[activeSection] === "error" && (
+                <span className="rounded-lg bg-red-500/20 px-3 py-1.5 text-sm text-red-400">Save failed</span>
+              )}
+              <button
+                onClick={() => saveSection(activeSection)}
+                disabled={savingSection === activeSection}
+                className={btnPrimary}
+              >
+                {savingSection === activeSection ? "Saving..." : "Save Section"}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Editor area */}
