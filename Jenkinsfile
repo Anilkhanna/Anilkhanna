@@ -26,7 +26,7 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'ADMIN_PASSWORD', variable: 'ADMIN_PASSWORD'),
                     string(credentialsId: 'CRON_SECRET', variable: 'CRON_SECRET'),
-                    string(credentialsId: 'POSTGRES_URL', variable: 'POSTGRES_URL'),
+                    string(credentialsId: 'PORTFOLIO_DATABASE_URL', variable: 'PORTFOLIO_DATABASE_URL'),
                     string(credentialsId: 'RAPIDAPI_KEY', variable: 'RAPIDAPI_KEY')
                 ]) {
                     sh '''
@@ -34,7 +34,7 @@ pipeline {
 NODE_ENV=production
 ADMIN_PASSWORD=${ADMIN_PASSWORD}
 CRON_SECRET=${CRON_SECRET}
-POSTGRES_URL=${POSTGRES_URL}
+DATABASE_URL=${PORTFOLIO_DATABASE_URL}
 RAPIDAPI_KEY=${RAPIDAPI_KEY}
 ENVEOF
                     '''
