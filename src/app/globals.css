@@ -128,3 +128,23 @@ body {
   25% { opacity: 1; }
   100% { opacity: 1; }
 }
+@keyframes reveal-safety {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-reveal] {
+  animation: reveal-safety 0.4s ease-out 2.5s both;
+}
+
+html[data-motion="ready"] [data-reveal] {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    animation: reveal-safety 0.01s linear both;
+  }
+}

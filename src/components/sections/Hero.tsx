@@ -29,7 +29,8 @@ export function Hero() {
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 py-24 md:px-[120px] md:py-[100px]">
         {/* Available badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          data-reveal
+      initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-6 flex w-fit items-center gap-2 rounded-full border border-border bg-card px-4 py-2"
@@ -42,7 +43,8 @@ export function Hero() {
 
         {/* Greeting */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          data-reveal
+      initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-4 font-mono text-base font-medium tracking-wide text-accent"
@@ -52,7 +54,8 @@ export function Hero() {
 
         {/* Name */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          data-reveal
+      initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-3 text-[clamp(3rem,8vw,4.5rem)] font-bold leading-[1.05] -tracking-[0.025em]"
@@ -68,7 +71,8 @@ export function Hero() {
 
         {/* Title */}
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          data-reveal
+      initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}
           className="mb-6 text-[clamp(2rem,6vw,3.5rem)] font-bold leading-[1.05] -tracking-[0.025em] text-muted"
@@ -78,7 +82,8 @@ export function Hero() {
 
         {/* Description */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          data-reveal
+      initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mb-10 max-w-[680px] text-lg leading-relaxed text-muted"
@@ -88,7 +93,8 @@ export function Hero() {
 
         {/* CTA buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          data-reveal
+      initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.65 }}
           className="flex items-center gap-4"
@@ -110,7 +116,8 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
+        data-reveal
+      initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
         className="relative z-10 flex flex-col items-center gap-2 pb-10"

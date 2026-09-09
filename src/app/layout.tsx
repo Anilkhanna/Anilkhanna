@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { PageTracker } from "@/components/ui/PageTracker";
+import { MotionReady } from "@/components/ui/MotionReady";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://anilkhanna.dev"),
@@ -97,6 +98,7 @@ export default function RootLayout({
           {children}
           <CustomCursor />
           <PageTracker />
+          <MotionReady />
         </ThemeProvider>
       </body>
     </html>

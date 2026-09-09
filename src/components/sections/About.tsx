@@ -10,7 +10,8 @@ export function About() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 lg:flex-row lg:gap-[60px]">
         {/* Left column: label, title, line, image */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          data-reveal
+      initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
@@ -44,7 +45,8 @@ export function About() {
 
         {/* Right column: paragraphs */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          data-reveal
+      initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
