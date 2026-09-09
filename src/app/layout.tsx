@@ -5,6 +5,8 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { PageTracker } from "@/components/ui/PageTracker";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://anilkhanna.dev"),
+  alternates: { canonical: "/" },
   title: "Anil Khanna | Senior Full Stack Developer",
   description:
     "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: "/",
     title: "Anil Khanna | Senior Full Stack Developer",
     description:
       "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
@@ -36,7 +39,6 @@ export const metadata: Metadata = {
     title: "Anil Khanna | Senior Full Stack Developer",
     description:
       "Anil Khanna — Senior Full Stack Developer with 14+ years shipping iOS, Flutter, React, and .NET applications. Based in Munich. Open to senior and lead roles.",
-    creator: "@anilkhanna",
   },
   robots: {
     index: true,

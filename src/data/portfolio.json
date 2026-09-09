@@ -6,7 +6,7 @@
     "title": "Senior Full Stack Developer",
     "altTitle": "iOS · Flutter · React · Full Stack",
     "greeting": "I'm",
-    "description": "From native iOS to Flutter to React — I ship production apps across every screen.",
+    "description": "I ship production apps for phones and the web, plus a few of my own on the side.",
     "email": "anil.khanna89@gmail.com",
     "phone": "+49-17632247043",
     "website": "https://anilkhanna.dev",
@@ -15,11 +15,31 @@
     "resumeUrl": "/resume"
   },
   "navLinks": [
-    { "label": "About", "href": "#about", "type": "anchor" },
-    { "label": "Work", "href": "#work", "type": "anchor" },
-    { "label": "Services", "href": "/services", "type": "page" },
-    { "label": "Blog", "href": "/blog", "type": "page" },
-    { "label": "Contact", "href": "#contact", "type": "anchor" }
+    {
+      "label": "About",
+      "href": "#about",
+      "type": "anchor"
+    },
+    {
+      "label": "Products",
+      "href": "#products",
+      "type": "anchor"
+    },
+    {
+      "label": "Work",
+      "href": "#work",
+      "type": "anchor"
+    },
+    {
+      "label": "Services",
+      "href": "/services",
+      "type": "page"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact",
+      "type": "anchor"
+    }
   ],
   "socialLinks": [
     {
@@ -42,45 +62,71 @@
       "label": "02. WHAT I DO",
       "title": "What I Do"
     },
+    "products": {
+      "label": "03. PRODUCTS",
+      "title": "Things I've Built & Shipped"
+    },
     "career": {
-      "label": "03. CAREER",
+      "label": "04. CAREER",
       "title": "Where I've Worked"
     },
+    "initiatives": {
+      "label": "05. INITIATIVES",
+      "title": "Built Inside the Job"
+    },
     "projects": {
-      "label": "04. PROJECTS",
+      "label": "06. PROJECTS",
       "title": "Featured Work"
     },
-    "testimonials": {
-      "label": "05. TESTIMONIALS",
-      "title": "What People Say"
-    },
     "techStack": {
-      "label": "06. TECH STACK",
+      "label": "07. TECH STACK",
       "title": "Tools & Technologies"
     },
+    "testimonials": {
+      "label": "TESTIMONIALS",
+      "title": "What People Say"
+    },
     "contact": {
-      "label": "07. CONTACT",
+      "label": "08. CONTACT",
       "title": "Get In Touch"
     }
   },
   "aboutData": {
     "heading": "About Me",
     "paragraphs": [
-      "14+ years shipping mobile and web products — from startup MVPs to enterprise platforms serving millions. I've built native iOS apps in Swift, cross-platform apps in Flutter, and modern web applications in React and Next.js, backed by .NET Core and Node.js APIs.",
-      "I've co-founded a startup that scaled to 200k+ active users, led engineering teams of up to 14 developers, and delivered apps for brands like Ria Money Transfer, 1-800-Flowers, and CES. Currently based in Munich, building Flutter and React apps at Euronet Worldwide.",
-      "Open to senior and lead roles in mobile, full stack, or frontend — remote, hybrid, or onsite in Munich."
+      "14+ years building mobile and web products. I've written native iOS apps in Swift, cross-platform apps in Flutter, and web apps in React and Next.js, with .NET Core and Node.js behind them.",
+      "I co-founded a mobile startup, led engineering teams of up to 14 developers, and shipped apps for Ria Money Transfer, 1-800-Flowers and CES. I'm in Munich now, working on Flutter and React at Euronet Worldwide.",
+      "I also build and ship my own products. GateShell is a paid SSH client on the App Store; QEHS Ethos and Vaanicall are the other two. Most of that work is AI engineering these days: Claude API integrations, MCP servers, RAG pipelines. The internal tools I built at Euronet came out of the same habit.",
+      "Open to senior and lead roles in mobile, full stack or frontend. Remote, hybrid, or onsite in Munich."
+    ],
+    "facts": [
+      {
+        "value": "14+",
+        "label": "Years shipping products"
+      },
+      {
+        "value": "1M+",
+        "label": "Users on apps I've built"
+      },
+      {
+        "value": "14",
+        "label": "Engineers led"
+      },
+      {
+        "value": "3",
+        "label": "Products of my own"
+      }
     ]
   },
   "trendingSkills": [
-    "Next.js",
-    "Claude AI",
-    "AI / LLMs",
-    "Test Case Recorder",
-    "Chrome Extensions",
+    "Claude API",
     "MCP Servers",
-    "Cursor IDE",
+    "Claude Code",
+    "RAG Pipelines",
     "Prompt Engineering",
-    "RAG Pipelines"
+    "LLM Integration",
+    "Cursor IDE",
+    "ElevenLabs"
   ],
   "techStack": [
     "Swift",
@@ -120,21 +166,111 @@
     "Crashlytics",
     "Google Analytics",
     "AWS",
-    "Vercel"
+    "Vercel",
+    "Claude API",
+    "MCP Servers",
+    "Claude Code",
+    "RAG Pipelines",
+    "Prompt Engineering",
+    "LLM Integration",
+    "Cursor IDE",
+    "ElevenLabs",
+    "Playwright",
+    "Chrome Extensions (MV3)",
+    "Firestore",
+    "MySQL",
+    "Three.js",
+    "Framer Motion",
+    "Turborepo",
+    "NativeWind",
+    "BLoC",
+    "UIKit",
+    "Jenkins",
+    "PM2",
+    "SonarQube",
+    "Cordova",
+    "SQL"
   ],
   "techCategories": [
-    { "label": "Mobile", "items": ["Swift", "Obj-C", "Flutter", "Dart"] },
-    { "label": "Frontend", "items": ["React", "Next.js", "TypeScript"] },
-    { "label": "Backend", "items": [".NET Core", "Node.js", "GraphQL", "PostgreSQL"] },
-    { "label": "DevOps", "items": ["Docker", "AWS", "CI/CD", "Firebase"] },
-    { "label": "Languages", "items": ["Swift", "Objective-C", "Dart", "TypeScript", "JavaScript", "C#"] },
-    { "label": "Frameworks", "items": ["Flutter", "React", "Next.js", "React Native", "Node.js", ".NET Core", "Tailwind CSS"] },
-    { "label": "Data & DevOps", "items": ["PostgreSQL", "Firebase", "MongoDB", "GraphQL", "Docker", "AWS", "CI/CD", "Git"] }
+    {
+      "label": "AI & LLM Engineering",
+      "items": [
+        "Claude API",
+        "MCP Servers",
+        "RAG Pipelines",
+        "Prompt Engineering",
+        "LLM Integration",
+        "Multi-engine AI Translation",
+        "AI Voice (ElevenLabs)"
+      ]
+    },
+    {
+      "label": "Languages",
+      "items": [
+        "Swift",
+        "Objective-C",
+        "Dart",
+        "TypeScript",
+        "JavaScript",
+        "C#",
+        "SQL"
+      ]
+    },
+    {
+      "label": "Mobile",
+      "items": [
+        "Flutter",
+        "BLoC",
+        "UIKit",
+        "Core Data",
+        "React Native",
+        "NativeWind",
+        "Ionic",
+        "Cordova"
+      ]
+    },
+    {
+      "label": "Web",
+      "items": [
+        "React",
+        "Next.js",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Three.js",
+        "Turborepo"
+      ]
+    },
+    {
+      "label": "Backend & Data",
+      "items": [
+        ".NET Core",
+        "Node.js",
+        "GraphQL",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Firestore"
+      ]
+    },
+    {
+      "label": "Platform & Quality",
+      "items": [
+        "Docker",
+        "AWS",
+        "Jenkins",
+        "GitHub Actions",
+        "PM2",
+        "Playwright",
+        "Chrome Extensions (MV3)",
+        "SonarQube"
+      ]
+    }
   ],
   "whatIDo": [
     {
       "title": "MOBILE APPS",
-      "description": "Built and shipped iOS and Flutter apps used by millions — from fintech payment flows to retail inventory systems. I own the full lifecycle: architecture, development, performance tuning, and App Store delivery.",
+      "description": "iOS and Flutter apps used by millions, from fintech payment flows to retail stock systems. I take them from architecture through to the App Store, including the performance work nobody enjoys.",
       "skills": [
         "Swift",
         "Objective-C",
@@ -146,7 +282,7 @@
     },
     {
       "title": "WEB APPS",
-      "description": "Production web applications in React and Next.js — secure portals, admin dashboards, and customer-facing platforms. I build for performance, accessibility, and real users at scale.",
+      "description": "React and Next.js in production. Secure portals, admin dashboards, and the platforms customers actually use. I care how fast they feel and whether they work on a screen reader.",
       "skills": [
         "React",
         "Next.js",
@@ -158,7 +294,7 @@
     },
     {
       "title": "BACKEND & APIs",
-      "description": "APIs and services in .NET Core and Node.js that power the apps above. Designed for reliability, clean contracts, and teams that need to move fast without breaking things.",
+      "description": ".NET Core and Node.js services behind the apps above. Clean contracts, sensible errors, and no surprises at 3am.",
       "skills": [
         "C#",
         "Node.js",
@@ -170,7 +306,7 @@
     },
     {
       "title": "TEAM & DELIVERY",
-      "description": "Led teams of up to 14 engineers, established code review practices, and drove Agile delivery with 95% on-time shipping. I mentor developers and build the processes that let teams deliver consistently.",
+      "description": "I've led teams of up to 14 engineers at a 95% on-time delivery rate. I set up code review, mentor developers, and build the boring process that makes shipping repeatable.",
       "skills": [
         "Agile",
         "Scrum",
@@ -183,91 +319,93 @@
   ],
   "careerData": [
     {
-      "role": "Senior Flutter Developer",
+      "role": "Senior Software Engineer",
       "company": "transact Elektronische Zahlungssysteme GmbH (Euronet Worldwide)",
       "period": "Feb 2022 - Present",
-      "description": "Building the DM stock management app end-to-end on Flutter for one of Germany's largest retail chains (3,800+ stores). Reduced app launch time by 20% through API contract optimization. Driving technical decisions and mentoring developers across the mobile stack.",
+      "description": "I build the DM stock management app on Flutter, now running in 3,800+ retail stores in Germany. Cut launch time by 20% by reworking how it talks to the API. I make the technical calls on the mobile stack and mentor the developers on it.",
       "bullets": [
-        "Spearheaded end-to-end development of the DM stock management app on Flutter, deployed across 3,800+ retail stores in Germany",
-        "Optimized API contracts and reduced app launch time by 20%, improving user experience for thousands of daily active users",
-        "Architected modular Flutter codebase with BLoC state management, enabling parallel feature development across teams",
-        "Drove CI/CD pipeline setup with automated testing, achieving 90%+ code coverage and reducing release cycle from 2 weeks to 3 days",
-        "Mentored a team of developers on Flutter best practices, code architecture, and performance optimization"
+        "Built the DM stock management app on Flutter, now running in 3,800+ retail stores across Germany",
+        "Cut app launch time by 20% by reworking how the app talks to the API",
+        "Restructured the Flutter codebase around BLoC so several teams could build features in parallel",
+        "Set up the CI/CD pipeline with automated tests. Release cycle went from 2 weeks to 3 days, at 90%+ coverage",
+        "Mentor the team on Flutter architecture and performance",
+        "Proposed and built RiaLingo, an internal localization platform now in production. Multi-engine AI translation, translation memory, and a compliance gate before strings ship in 100+ languages",
+        "Proposed and built RIA Autotest, a Chrome extension that records a QA walkthrough and turns it into a runnable Playwright spec. Replaced hand-written test authoring on two web apps"
       ]
     },
     {
       "role": "Senior iOS Developer",
       "company": "SDOD Technologies Pvt. Ltd — MyGate (Remote)",
       "period": "Jan 2020 - Jan 2022",
-      "description": "Led iOS development for India's largest gated community platform — 1M+ active users, 25k+ residential societies. Owned architecture, API design, performance profiling, and release management. Architected the core security and visitor management modules.",
+      "description": "Ran iOS for India's largest gated-community platform: 1M+ active users across 25,000+ societies. I owned the architecture, API design, performance work and releases, and built the security and visitor-management modules.",
       "bullets": [
-        "Led iOS development for India's largest gated community platform serving 1M+ active users across 25,000+ residential societies",
-        "Architected core security and visitor management modules, handling 500K+ daily visitor check-ins with real-time notifications",
-        "Owned end-to-end iOS release management — architecture decisions, API contract design, performance profiling, and App Store submissions",
-        "Streamlined API integrations reducing average response time by 35%, improving app responsiveness and user retention",
-        "Implemented Swift-based modular architecture with MVVM pattern, enabling faster feature iteration and reducing bug density by 40%"
+        "Led iOS for India's largest gated-community platform: 1M+ active users, 25,000+ residential societies",
+        "Built the security and visitor-management modules, handling 500K+ visitor check-ins a day with live notifications",
+        "Owned iOS releases: architecture calls, API contracts, performance profiling and App Store submissions",
+        "Cut average API response time by 35%",
+        "Moved the app to a modular MVVM architecture in Swift. Bug density dropped 40% and features shipped faster"
       ]
     },
     {
       "role": "CoFounder & Mobile Lead",
       "company": "Hefty Innovations (Remote)",
       "period": "Oct 2018 - Dec 2020",
-      "description": "Co-founded a mobile-first startup, built the engineering team, and scaled to 200k+ active users. Redesigned the app architecture for 30% faster time-to-market. Defined product roadmaps and led engineering alongside co-founders.",
+      "description": "Co-founded a mobile startup and owned the app from launch. Rebuilt its architecture, which got new features out 30% faster. Set product direction with the other founders and ran engineering.",
       "bullets": [
-        "Co-founded a mobile-first startup and scaled the platform to 200,000+ active users within 18 months of launch",
-        "Redesigned app architecture from monolithic to modular, achieving 30% faster time-to-market for new features",
-        "Built and led the engineering team — hiring, onboarding, sprint planning, and establishing development workflows",
-        "Collaborated with co-founders to define product roadmaps, prioritize features, and align engineering with business goals",
-        "Implemented analytics-driven development using Firebase and Mixpanel, increasing user engagement by 25%"
+        "Co-founded a mobile startup and owned the app from launch through its growth phase",
+        "Rebuilt the app from a monolith into modules. New features shipped 30% faster",
+        "Hired and led the engineering team, and set up how we planned and shipped",
+        "Set product roadmaps with the other founders and decided what got built next",
+        "Put Firebase and Mixpanel in place and acted on what they showed us. Engagement went up 25%"
       ]
     },
     {
       "role": "Senior Software Engineer",
       "company": "EX2 Solutions India Pvt Ltd",
       "period": "Feb 2017 - Oct 2018",
-      "description": "Built enterprise EH&S compliance apps for global clients including offline-first iOS and Flutter architecture for field workers in low-connectivity environments. Delivered incident reporting, audit, and safety inspection modules.",
+      "description": "Built environmental, health and safety compliance apps for global clients, including an offline-first iOS and Flutter architecture for field workers with little or no signal. Shipped the incident reporting, audit and inspection modules.",
       "bullets": [
-        "Built enterprise EH&S (Environmental, Health & Safety) compliance apps serving global clients across regulated industries",
-        "Designed offline-first architecture for iOS and Flutter, enabling field workers to capture data in zero-connectivity environments",
-        "Delivered incident reporting, audit management, and safety inspection modules used by 10,000+ field workers",
-        "Integrated CoreData and SQLite for reliable local data persistence with conflict-free server synchronization",
-        "Collaborated with cross-functional teams to ensure compliance with industry-specific safety regulations"
+        "Built environmental, health and safety compliance apps for clients in regulated industries",
+        "Designed an offline-first architecture for iOS and Flutter so field workers could capture data with no connectivity at all",
+        "Shipped the incident reporting, audit and safety inspection modules, used by 10,000+ field workers",
+        "Used CoreData and SQLite for local storage, with server sync that didn't produce conflicts",
+        "Worked with the compliance team to keep the apps inside industry safety regulations"
       ]
     },
     {
       "role": "Mobile Lead",
       "company": "Mobikasa Inc, New Delhi",
       "period": "Jun 2015 - Jan 2017",
-      "description": "Led 14 developers across 10+ iOS projects in e-commerce and fitness verticals. Achieved 95% on-time delivery rate. Established code review practices and modular architecture patterns adopted as the team standard.",
+      "description": "Led 14 developers across 10+ iOS projects in e-commerce and fitness, at a 95% on-time delivery rate. The code review and architecture patterns I set up became the team standard.",
       "bullets": [
-        "Led a team of 14 developers, successfully delivering 10+ iOS projects in e-commerce and fitness domains",
-        "Achieved 95% on-time delivery rate through Agile sprint planning, daily standups, and proactive risk management",
-        "Established code review practices and modular architecture patterns that became the team's engineering standard",
-        "Delivered iOS apps for major brands including 1-800-Flowers — one of America's top gifting e-commerce platforms",
-        "Mentored junior developers on Swift, UIKit, Auto Layout, and iOS development best practices"
+        "Led a team of 14 developers and delivered 10+ iOS projects in e-commerce and fitness",
+        "Hit a 95% on-time delivery rate with Agile sprints, daily standups and flagging risk early",
+        "Set up the code review practice and architecture patterns the team adopted as standard",
+        "Shipped iOS apps for brands including 1-800-Flowers",
+        "Mentored junior developers on Swift, UIKit and Auto Layout"
       ]
     },
     {
       "role": "Senior iOS Developer",
       "company": "PRM Technologies, New Delhi",
       "period": "Feb 2014 - May 2015",
-      "description": "Translated client concepts into polished iOS applications across multiple domains. Mentored 3 junior developers, managed task allocation, and introduced structured code review workflows to the team.",
+      "description": "Turned client briefs into shipped iOS apps across several industries. Mentored 3 junior developers, handled task allocation, and introduced code review to the team.",
       "bullets": [
-        "Translated client concepts into production-ready iOS applications across multiple business domains",
-        "Mentored 3 junior developers, managed task allocation, and established structured code review workflows",
-        "Built the official CES 2015 app for the International Consumer Electronics Show in Las Vegas (170K+ attendees)",
-        "Implemented RESTful API integrations, push notifications, and CoreData persistence across multiple projects"
+        "Built iOS apps from client briefs across several business domains",
+        "Mentored 3 junior developers, ran task allocation, and introduced code review",
+        "Built the official CES 2015 app for the Consumer Electronics Show in Las Vegas (170K+ attendees)",
+        "Wired up REST APIs, push notifications and CoreData across the projects"
       ]
     },
     {
       "role": "iOS Developer",
       "company": "WeirdLogics Pvt Ltd, Gurugram",
       "period": "Apr 2013 - Jan 2014",
-      "description": "Built foundational iOS development skills working on production apps from day one. Delivered client-facing projects using Objective-C and UIKit, gaining deep expertise in the Apple ecosystem.",
+      "description": "My first iOS job, on production apps from day one. Shipped client projects in Objective-C and UIKit, and learned the Apple toolchain properly.",
       "bullets": [
-        "Developed and shipped client-facing iOS applications using Objective-C and UIKit from day one",
-        "Built restaurant management (Menu'ed) and photo booth (Capture'd) iPad apps deployed to production",
-        "Gained deep expertise in the Apple ecosystem — Xcode, Interface Builder, Core Animation, and App Store deployment"
+        "Shipped client iOS apps in Objective-C and UIKit from day one",
+        "Built two iPad apps that went to production: Menu'ed for restaurant management and Capture'd for photo booths",
+        "Learned the Apple toolchain properly: Xcode, Interface Builder, Core Animation and App Store releases"
       ]
     }
   ],
@@ -279,7 +417,7 @@
       "tools": "Flutter, iOS, API Integration",
       "caseStudySlug": "ria-money-transfer",
       "description": "International money transfer app serving millions of users globally with real-time exchange rates. Built secure payment flows and optimized the cross-platform experience on Flutter and iOS.",
-      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "image": "/images/projects/ria.png",
       "liveUrl": "https://secure.riamoneytransfer.com/",
       "githubUrl": "#"
     },
@@ -290,7 +428,7 @@
       "tools": "React, Next.js, TypeScript, API Integration",
       "caseStudySlug": "rmt-secure-portal",
       "description": "Secure web portal for Ria Money Transfer enabling international fund transfers with real-time exchange rates and transparent fee calculations. Built the frontend architecture for a seamless, compliant money transfer experience across 165+ countries.",
-      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "image": "/images/projects/ria.png",
       "liveUrl": "https://secure.riamoneytransfer.com/",
       "githubUrl": "#"
     },
@@ -301,8 +439,8 @@
       "tools": "Next.js, React Native, Turborepo, Tailwind, NativeWind",
       "caseStudySlug": "exp-suite",
       "description": "Cross-platform rebuild of the EXP Suite enterprise platform using a Turborepo monorepo — Next.js for web, React Native with NativeWind for mobile. Unified codebase serving both platforms with shared business logic and consistent UI.",
-      "image": null,
-      "liveUrl": "https://demo2.exp-inc.com/",
+      "image": "/images/projects/expsuite.png",
+      "liveUrl": "https://apps.apple.com/us/app/exp-suite/id6760672189",
       "githubUrl": "#"
     },
     {
@@ -312,7 +450,7 @@
       "tools": "Flutter, Dart",
       "caseStudySlug": "exp-suite-7",
       "description": "Enterprise EH&S compliance platform rebuilt in Flutter for cross-platform delivery. Offline-first architecture enables field workers to capture incidents, audits, and inspections without connectivity.",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/ca/f0/a5caf069-ef20-47fa-b3e2-c5fe20e0a95f/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/expsuite.png",
       "liveUrl": "https://apps.apple.com/us/app/exp-suite-7-0/id1568060604",
       "githubUrl": "#"
     },
@@ -323,7 +461,7 @@
       "tools": "iOS, Swift, API Integration",
       "caseStudySlug": "mygate",
       "description": "India's leading gated community management app with 1M+ active users. Architected core security and visitor management modules, streamlined API integrations, and drove performance improvements across the iOS platform.",
-      "image": "https://www.exp-inc.com/_next/image?url=%2Fassets%2Fblog%2Fimages%2FEXP_Logo.png",
+      "image": "/images/projects/mygate.png",
       "liveUrl": "https://play.google.com/store/apps/details?id=com.mygate.user",
       "githubUrl": "#"
     },
@@ -334,7 +472,7 @@
       "tools": "iOS, Swift",
       "caseStudySlug": "1800-flowers",
       "description": "One of America's top gifting e-commerce apps. Developed seamless checkout flows, product browsing with rich media, and push notification campaigns that boosted user engagement.",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/45/d5/3a/45d53ab5-60c4-a73f-c498-4e9c46a0d160/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/1800flowers.png",
       "liveUrl": "https://apps.apple.com/us/app/1800flowers-shop-gifts-more/id457699767",
       "githubUrl": "#"
     },
@@ -345,7 +483,7 @@
       "tools": "iOS, Objective-C",
       "caseStudySlug": "ces-official-app",
       "description": "The official mobile app for the International Consumer Electronics Show in Las Vegas. Built interactive floor maps, exhibitor search, and personalized session scheduling for 170k+ attendees.",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/93/f1/37/93f13720-1a60-0cc4-f587-a4df75bf6f5c/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/ces.png",
       "liveUrl": "https://apps.apple.com/us/app/ces-2026/id6443741077",
       "githubUrl": "#"
     },
@@ -356,7 +494,7 @@
       "tools": "iOS, Swift",
       "caseStudySlug": "eventa",
       "description": "End-to-end events management platform for organizers and attendees. Built event creation workflows, RSVP management, and real-time attendee coordination features.",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/e9/2e/74e92e0c-3950-f49f-9a7f-76cc08e2c03c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/eventa.png",
       "liveUrl": "https://apps.apple.com/us/app/eventa/id6450686615",
       "githubUrl": "#"
     }
@@ -385,50 +523,28 @@
     "location": "Munich (onsite/hybrid) or Remote",
     "freelance": true
   },
-  "testimonials": [
-    {
-      "name": "Placeholder — Manager",
-      "role": "Engineering Manager",
-      "company": "Previous Company",
-      "quote": "Anil is an outstanding developer who consistently delivers high-quality work. His ability to tackle complex technical challenges while maintaining clean, maintainable code is exceptional.",
-      "linkedinUrl": ""
-    },
-    {
-      "name": "Placeholder — Colleague",
-      "role": "Senior Developer",
-      "company": "Previous Company",
-      "quote": "Working with Anil was a great experience. He brings deep mobile expertise and a pragmatic approach to problem-solving that elevates the entire team.",
-      "linkedinUrl": ""
-    },
-    {
-      "name": "Placeholder — Client",
-      "role": "Product Owner",
-      "company": "Client Company",
-      "quote": "Anil delivered our mobile app ahead of schedule with exceptional quality. His communication throughout the project was clear and professional.",
-      "linkedinUrl": ""
-    }
-  ],
+  "testimonials": [],
   "caseStudies": [
     {
       "slug": "ria-money-transfer",
       "title": "Ria Money Transfer",
       "category": "FinTech",
       "tools": "Flutter, iOS, Swift, REST APIs, CI/CD",
-      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "image": "/images/projects/ria.png",
       "problem": [
         "Ria Money Transfer serves millions of users sending money across 165+ countries. The existing mobile apps suffered from inconsistent user experiences between iOS and Android, slow transaction flows, and a fragmented codebase that made it difficult to ship features simultaneously on both platforms.",
         "Compliance requirements in the financial sector meant every release needed thorough testing and regulatory checks, which further slowed delivery cycles. The team needed a way to unify the mobile experience without sacrificing native performance."
       ],
       "approach": [
-        "I led the migration of critical payment flows to Flutter, enabling a single codebase to serve both platforms while retaining native modules for platform-specific features like biometric authentication and secure storage. The architecture followed a clean separation of concerns with a repository pattern for API integration.",
+        "I led the migration of critical payment flows to Flutter so one codebase could serve both platforms, keeping native modules for platform-specific features like biometric authentication and secure storage. The architecture followed a clean separation of concerns with a repository pattern for API integration.",
         "On the iOS side, I optimized the existing Swift codebase for performance-critical paths — real-time exchange rate polling, transaction state management, and push notification handling. We implemented a phased rollout strategy to minimize risk during the transition."
       ],
       "challenges": [
         "Integrating Flutter into an existing native iOS project required careful bridging between Swift and Dart. We had to maintain backward compatibility with the legacy Objective-C modules while progressively migrating screens to Flutter.",
-        "Ensuring PCI-DSS compliance across the cross-platform layer was non-trivial. We built a secure channel for sensitive data that bypassed Flutter's standard platform channels, using native encryption on both sides."
+        "PCI-DSS compliance across the cross-platform layer was the hard part. We built a secure channel for sensitive data that bypassed Flutter's standard platform channels, using native encryption on both sides."
       ],
       "results": [
-        "Reduced feature delivery time by 40% by shipping to both platforms from a single Flutter codebase. The unified transaction flow improved completion rates by 15% due to a more consistent and polished user experience.",
+        "Reduced feature delivery time by 40% by shipping to both platforms from a single Flutter codebase. The unified transaction flow improved completion rates by 15%, because the flow finally behaved the same on both platforms.",
         "App launch time improved by 20% on iOS through lazy loading and optimized API contracts. The app maintains a 4.5+ rating on both the App Store and Google Play."
       ]
     },
@@ -437,13 +553,13 @@
       "title": "EXP Suite Web & Mobile",
       "category": "Enterprise EH&S",
       "tools": "Next.js, React Native, Flutter, Turborepo, NativeWind, Tailwind CSS",
-      "image": null,
+      "image": "/images/projects/expsuite.png",
       "problem": [
         "EXP Suite is an enterprise Environmental Health & Safety platform used by field workers, safety managers, and compliance officers. The legacy system had separate codebases for web, iOS, and Android — each with diverging feature sets and inconsistent UIs that confused users switching between platforms.",
         "Field workers in low-connectivity environments (construction sites, oil rigs, remote facilities) needed reliable offline functionality. The existing offline implementation was fragile, with frequent data loss during sync operations."
       ],
       "approach": [
-        "We rebuilt the platform using a Turborepo monorepo architecture — Next.js for the web dashboard and React Native with NativeWind for mobile. Shared business logic, validation rules, and API clients lived in common packages, ensuring feature parity across platforms.",
+        "We rebuilt the platform using a Turborepo monorepo architecture — Next.js for the web dashboard and React Native with NativeWind for mobile. Shared business logic, validation rules, and API clients lived in common packages, so both platforms stayed at feature parity.",
         "For the Flutter-based EXP Suite 7.0 mobile app, I designed an offline-first architecture with conflict resolution. Field workers could capture incidents, run audits, and complete safety inspections entirely offline, with intelligent sync when connectivity resumed."
       ],
       "challenges": [
@@ -460,13 +576,13 @@
       "title": "MyGate",
       "category": "PropTech",
       "tools": "iOS, Swift, UIKit, Core Data, REST APIs, Push Notifications",
-      "image": "https://www.exp-inc.com/_next/image?url=%2Fassets%2Fblog%2Fimages%2FEXP_Logo.png",
+      "image": "/images/projects/mygate.png",
       "problem": [
         "MyGate is India's largest gated community management platform, serving 1M+ active users across 25,000+ residential societies. The iOS app had accumulated significant technical debt — a monolithic architecture, inconsistent navigation patterns, and memory leaks that caused frequent crashes on older devices.",
         "The security and visitor management modules — the core value proposition — were tightly coupled and difficult to extend. Adding new features like delivery management or domestic help tracking required touching multiple unrelated parts of the codebase."
       ],
       "approach": [
-        "I led the architectural overhaul of the iOS app, breaking the monolith into feature modules with clear boundaries. Each module (security, visitor management, community, payments) owned its own data layer, business logic, and UI, communicating through well-defined protocols.",
+        "I led the architectural overhaul of the iOS app, breaking the monolith into feature modules with clear boundaries. Each module (security, visitor management, community, payments) owned its own data layer, business logic and UI, and talked to the others through defined protocols.",
         "I redesigned the API integration layer to use a reactive pattern with Combine, replacing the callback-heavy legacy code. This made it easier to handle complex flows like real-time gate entry notifications, visitor pre-approvals, and security guard coordination."
       ],
       "challenges": [
@@ -483,14 +599,14 @@
       "title": "RMT Secure Portal",
       "category": "FinTech",
       "tools": "React, Next.js, TypeScript, REST APIs, Tailwind CSS",
-      "image": "https://www.riamoneytransfer.com/meta-image.png",
+      "image": "/images/projects/ria.png",
       "problem": [
         "Ria Money Transfer needed a modern, secure web portal that would allow customers to send money internationally from their browsers with the same ease as the mobile app. The legacy web experience was built on aging jQuery-based templates with poor responsiveness, inconsistent form validation, and a multi-page checkout flow that caused a 45% drop-off rate during transactions.",
         "Regulatory compliance added another layer of complexity. The portal needed to handle KYC verification, sanctions screening, and dynamic fee disclosures that varied by corridor (sender/receiver country pair). The existing system hard-coded these rules, making it painful to onboard new corridors or adjust to changing regulations."
       ],
       "approach": [
-        "I architected the frontend from scratch using Next.js and TypeScript, implementing a single-page transaction flow that replaced the old multi-step process. The UI was built with Tailwind CSS for rapid iteration, and every form component was designed with real-time validation and accessibility in mind. Server-side rendering ensured fast initial loads and strong SEO for the marketing pages.",
-        "For the compliance layer, I built a dynamic rules engine on the frontend that consumed corridor-specific configuration from the API. Fee calculations, transfer limits, and required documents updated in real time as users selected sender and receiver countries. This decoupled regulatory logic from the codebase, allowing the compliance team to update rules without developer involvement."
+        "I built the frontend from scratch in Next.js and TypeScript, with a single-page transaction flow that replaced the old multi-step process. The UI was built with Tailwind CSS for rapid iteration, and every form component was designed with real-time validation and accessibility in mind. Server-side rendering ensured fast initial loads and strong SEO for the marketing pages.",
+        "For the compliance layer, I built a dynamic rules engine on the frontend that consumed corridor-specific configuration from the API. Fee calculations, transfer limits, and required documents updated in real time as users selected sender and receiver countries. That took regulatory logic out of the codebase, so the compliance team could change rules without a developer."
       ],
       "challenges": [
         "Handling real-time exchange rate fluctuations during the transaction flow was critical. Rates could change between when a user started a transfer and when they confirmed it. I implemented a rate-lock mechanism with a visible countdown timer, and a graceful re-quote flow if the lock expired — all without losing the user's form state.",
@@ -506,13 +622,13 @@
       "title": "EXP Suite 7.0",
       "category": "Enterprise EH&S",
       "tools": "Flutter, Dart, SQLite, REST APIs, Background Sync",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/ca/f0/a5caf069-ef20-47fa-b3e2-c5fe20e0a95f/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/expsuite.png",
       "problem": [
         "EXP Suite 7.0 is an enterprise Environmental Health & Safety platform used by field inspectors, safety officers, and compliance managers at industrial facilities. The previous native iOS and Android apps had diverging feature sets, and maintaining two separate codebases was consuming 60% of the engineering team's capacity on bug fixes alone rather than new feature development.",
         "The most critical requirement was offline functionality. Field workers operate at construction sites, mines, and remote industrial locations with unreliable or zero connectivity. The existing offline mode was a fragile afterthought — forms would lose data mid-inspection, photo attachments would fail to sync, and conflict resolution when multiple inspectors worked on the same facility was essentially non-existent."
       ],
       "approach": [
-        "I rebuilt the entire mobile application in Flutter to serve both platforms from a single codebase, using a clean architecture pattern with distinct data, domain, and presentation layers. The offline-first design was the foundation, not an add-on: every feature was built to work without connectivity first, with sync as an enhancement. Local persistence used SQLite with a custom schema that mirrored the server-side data model for seamless round-tripping.",
+        "I rebuilt the entire mobile application in Flutter to serve both platforms from a single codebase, using a clean architecture pattern with distinct data, domain, and presentation layers. The offline-first design was the foundation, not an add-on: every feature was built to work without connectivity first, with sync as an enhancement. Local persistence used SQLite with a custom schema that mirrored the server data model, so records round-tripped without translation.",
         "For the sync engine, I implemented a queue-based architecture with automatic retry and exponential backoff. Each data mutation was recorded as an immutable event in a local queue, complete with timestamps and user context. When connectivity resumed, the sync engine processed the queue in order, handling photo uploads as chunked multipart requests to avoid timeouts on slow connections."
       ],
       "challenges": [
@@ -520,7 +636,7 @@
         "Photo and document attachments posed unique challenges in offline mode. Inspectors often captured 50+ photos per inspection, and storing high-resolution images locally while keeping the app responsive required a background processing pipeline with progressive JPEG compression, thumbnail generation, and lazy loading with placeholder shimmer effects."
       ],
       "results": [
-        "Development velocity increased by 45% after consolidating to a single Flutter codebase. The team shipped features to both platforms simultaneously, eliminating the 2-3 week lag that previously existed between iOS and Android releases. Bug reports related to platform inconsistencies dropped to near zero.",
+        "Development velocity increased by 45% after consolidating to a single Flutter codebase. The team shipped to both platforms at once. The 2-3 week lag between iOS and Android releases went away. Bug reports related to platform inconsistencies dropped to near zero.",
         "The offline-first architecture reduced data loss incidents from approximately 12 per month to zero over the first six months. Sync reliability reached 99.97%, and the average time to complete a safety inspection decreased by 35% thanks to streamlined workflows and instant photo capture without upload delays."
       ]
     },
@@ -529,17 +645,17 @@
       "title": "1-800-Flowers",
       "category": "E-Commerce",
       "tools": "iOS, Swift, UIKit, Core Data, Push Notifications, Analytics",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/45/d5/3a/45d53ab5-60c4-a73f-c498-4e9c46a0d160/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/1800flowers.png",
       "problem": [
         "1-800-Flowers is one of America's largest gifting e-commerce brands, and the iOS app needed to deliver a premium shopping experience that matched the emotional nature of gift-giving. The existing app had a dated UI, a clunky checkout flow with 6 separate screens, and poor product browsing performance — image-heavy catalog pages stuttered on older devices and the search experience returned irrelevant results.",
-        "Seasonal traffic spikes were a major pain point. During holidays like Valentine's Day and Mother's Day, the app experienced 10x normal traffic. The existing architecture couldn't handle the load gracefully — API timeouts cascaded into blank screens, and the cart would occasionally lose items during high-traffic checkout, leading to customer complaints and lost revenue."
+        "Seasonal traffic spikes were a major pain point. During holidays like Valentine's Day and Mother's Day, the app experienced 10x normal traffic. The existing architecture couldn't handle the load gracefully — API timeouts cascaded into blank screens, and the cart would occasionally lose items during busy checkout periods. Customers complained and orders were lost."
       ],
       "approach": [
         "I redesigned the checkout flow from 6 screens down to a streamlined 3-step process: recipient details, delivery date, and payment. Each step used inline validation with real-time delivery date availability checks, so customers never reached the payment screen only to discover their chosen date was unavailable. The UI used custom UIKit animations to create a smooth, premium feel appropriate for a gifting experience.",
         "For the product catalog, I implemented a prefetching strategy with a multi-layer image cache (memory, disk, and CDN-optimized thumbnails). Collection views used compositional layouts with self-sizing cells, and I built a custom search engine integration that supported natural language queries like 'birthday flowers for mom under $50' with faceted filtering."
       ],
       "challenges": [
-        "Handling seasonal traffic required the app to be resilient without degrading the experience. I implemented a circuit breaker pattern for API calls — when the backend was under heavy load, the app fell back to cached catalog data and queued non-critical requests. Cart state was persisted locally with Core Data and reconciled server-side, preventing item loss during connectivity hiccups.",
+        "Handling seasonal traffic required the app to be resilient without degrading the experience. I implemented a circuit breaker pattern for API calls — when the backend was under heavy load, the app fell back to cached catalog data and queued non-critical requests. Cart state was persisted locally with Core Data and reconciled on the server, so items survived a dropped connection.",
         "Push notification campaigns were critical for driving seasonal revenue, but the existing implementation had poor opt-in rates and generic messaging. I built a rich notification system with inline product images and actionable buttons (Quick Reorder, Track Delivery), along with a smart timing engine that analyzed user timezone and past purchase patterns to deliver prompts at optimal moments."
       ],
       "results": [
@@ -552,22 +668,22 @@
       "title": "CES Official App",
       "category": "Events",
       "tools": "iOS, Objective-C, MapKit, Core Data, REST APIs, Push Notifications",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/93/f1/37/93f13720-1a60-0cc4-f587-a4df75bf6f5c/AppIcon-0-0-1x_U007epad-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/ces.png",
       "problem": [
         "The Consumer Electronics Show (CES) in Las Vegas is the world's largest tech trade show, attracting 170,000+ attendees across multiple massive venue halls. The official app needed to serve as the indispensable companion for navigating the event — from finding specific exhibitor booths across 2.9 million square feet of floor space to managing personalized schedules with hundreds of concurrent sessions.",
-        "The existing app suffered from poor indoor navigation, a search experience that couldn't handle 4,400+ exhibitors effectively, and a schedule builder that didn't account for travel time between venues. With attendees relying on the app in a venue with spotty Wi-Fi from network congestion, offline reliability was essential but barely functional."
+        "The existing app suffered from poor indoor navigation, a search that buckled at 4,400+ exhibitors, and a schedule builder that didn't account for travel time between venues. With attendees relying on the app in a venue with spotty Wi-Fi from network congestion, offline reliability was essential but barely functional."
       ],
       "approach": [
         "I built a custom interactive floor map system using MapKit with custom tile overlays for indoor venue layouts. Each exhibitor booth was a tappable region with rich detail cards showing company info, product categories, and booth staff. The map supported multi-floor navigation with smooth transitions between hall levels and provided walking directions between any two points on the show floor.",
-        "The session scheduling engine was designed to be intelligent — when a user added a session, the app automatically flagged time conflicts, calculated walking time between venues using the floor map data, and suggested buffer periods. All schedule and exhibitor data was pre-loaded during app launch and stored in Core Data, making the entire experience available offline."
+        "The session scheduling engine was designed to be intelligent — when a user added a session, the app automatically flagged time conflicts, calculated walking time between venues using the floor map data, and suggested buffer periods. All schedule and exhibitor data was pre-loaded during app launch and stored in Core Data, so the whole thing worked offline."
       ],
       "challenges": [
         "Indoor positioning at the scale of the Las Vegas Convention Center was extremely challenging. GPS was unreliable indoors, and Bluetooth beacon coverage was inconsistent across halls. I implemented a hybrid approach combining Wi-Fi fingerprinting, beacon triangulation, and dead reckoning from the accelerometer to provide approximate user location with a 10-meter accuracy — good enough for hall-level navigation.",
-        "The data model was complex and dynamic. Exhibitors changed booth locations, sessions were rescheduled, and new events were added daily during the show week. I designed a differential sync system that checked for updates every 15 minutes over the network but only downloaded changed records, keeping bandwidth usage minimal in the congested venue Wi-Fi environment."
+        "The data model was complex and dynamic. Exhibitors changed booth locations, sessions were rescheduled, and new events were added daily during the show week. I designed a differential sync system that checked for updates every 15 minutes over the network but only downloaded records that had changed, which mattered on the congested venue Wi-Fi."
       ],
       "results": [
         "The app was used by over 120,000 unique attendees during CES week, with an average of 8 sessions per day per user. The interactive floor map became the most-used feature, with 2.3 million map interactions over the 4-day event. Indoor navigation accuracy of 10 meters proved sufficient for attendees to locate specific booths.",
-        "The offline-first architecture proved critical — during peak hours when venue Wi-Fi was effectively unusable, the app continued to function seamlessly. The smart scheduling feature reduced reported session conflicts by 60% compared to the previous year, and attendees rated the app 4.4 stars on the App Store."
+        "The offline-first architecture mattered most at peak hours, when the venue Wi-Fi was unusable and the app carried on working. The smart scheduling feature reduced reported session conflicts by 60% compared to the previous year, and attendees rated the app 4.4 stars on the App Store."
       ]
     },
     {
@@ -575,13 +691,13 @@
       "title": "Eventa",
       "category": "Events Management",
       "tools": "iOS, Swift, UIKit, Firebase, REST APIs, Push Notifications",
-      "image": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/e9/2e/74e92e0c-3950-f49f-9a7f-76cc08e2c03c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
+      "image": "/images/projects/eventa.png",
       "problem": [
-        "Event organizers were juggling multiple disconnected tools — Google Forms for RSVPs, spreadsheets for attendee tracking, email for communication, and manual check-ins at the door. Eventa aimed to consolidate the entire event lifecycle into a single mobile platform, but the initial product concept was too broad, trying to serve everything from small meetups to large conferences without a clear UX hierarchy.",
+        "Event organizers were juggling multiple disconnected tools — Google Forms for RSVPs, spreadsheets for attendee tracking, email for communication, and manual check-ins at the door. Eventa aimed to consolidate the entire event lifecycle into a single mobile platform, but the initial concept was too broad. It tried to cover small meetups and large conferences at once, with no clear hierarchy in the UX.",
         "The attendee-facing experience also needed work. Users who downloaded the app for a specific event found it difficult to discover other relevant events nearby, the RSVP flow required too many steps, and there was no real-time coordination during events — attendees couldn't see live schedule changes, venue updates, or connect with other participants."
       ],
       "approach": [
-        "I designed and built the iOS app with two distinct user modes: Organizer and Attendee. The Organizer mode featured a step-by-step event creation wizard that guided users through venue setup, ticket tiers, schedule building, and communication templates. Smart defaults and templates reduced event creation time dramatically. The Attendee mode focused on discovery, with a location-based feed and category filtering.",
+        "I designed and built the iOS app with two distinct user modes: Organizer and Attendee. The Organizer mode featured a step-by-step event creation wizard that guided users through venue setup, ticket tiers, schedule building, and communication templates. Smart defaults and templates took most of the setup work out of creating an event. The Attendee mode focused on discovery, with a location-based feed and category filtering.",
         "For real-time event coordination, I integrated Firebase Realtime Database for live updates — schedule changes, venue announcements, and attendee count updates all pushed instantly to connected devices. The check-in system used QR code scanning with offline fallback, storing scans locally and reconciling when connectivity resumed. I also built a lightweight in-app messaging feature for attendee networking."
       ],
       "challenges": [
@@ -595,32 +711,48 @@
     }
   ],
   "services": {
-    "headline": "Let's Build Something Together",
-    "intro": "14+ years of experience building mobile and web products — available for your next project.",
+    "headline": "Available for Project Work",
+    "intro": "14+ years building mobile and web products. I take on a small number of projects at a time.",
     "offerings": [
       {
         "icon": "smartphone",
         "title": "Mobile App Development",
-        "description": "Native iOS, Flutter, and React Native apps from concept to App Store.",
-        "deliverables": ["New app development", "Existing app improvements", "App Store optimization"]
+        "description": "Native iOS, Flutter and React Native apps, from idea to App Store.",
+        "deliverables": [
+          "New app development",
+          "Existing app improvements",
+          "App Store optimization"
+        ]
       },
       {
         "icon": "globe",
         "title": "Web App Development",
-        "description": "React and Next.js applications with modern UI and performance.",
-        "deliverables": ["Full-stack web apps", "Landing pages", "Admin dashboards"]
+        "description": "React and Next.js apps that stay quick once real traffic hits them.",
+        "deliverables": [
+          "Full-stack web apps",
+          "Landing pages",
+          "Admin dashboards"
+        ]
       },
       {
         "icon": "server",
         "title": "Backend & API Development",
-        "description": "Node.js, .NET Core, and GraphQL APIs built for scale.",
-        "deliverables": ["REST & GraphQL APIs", "Database design", "Third-party integrations"]
+        "description": "APIs in Node.js, .NET Core and GraphQL that hold up under load.",
+        "deliverables": [
+          "REST & GraphQL APIs",
+          "Database design",
+          "Third-party integrations"
+        ]
       },
       {
         "icon": "users",
         "title": "Technical Consulting",
-        "description": "Architecture reviews, code audits, and tech stack guidance.",
-        "deliverables": ["Architecture reviews", "Code audits", "Team mentoring"]
+        "description": "Architecture reviews, code audits, and help picking a stack you won't regret.",
+        "deliverables": [
+          "Architecture reviews",
+          "Code audits",
+          "Team mentoring"
+        ]
       }
     ],
     "pricing": {
@@ -628,10 +760,75 @@
       "note": "Project-based quotes available for defined scopes"
     },
     "process": [
-      { "step": "Discovery", "description": "Understand your goals and requirements" },
-      { "step": "Proposal", "description": "Scope, timeline, and cost estimate" },
-      { "step": "Build", "description": "Iterative development with regular updates" },
-      { "step": "Deliver", "description": "Launch, handoff, and support" }
+      {
+        "step": "Discovery",
+        "description": "Understand your goals and requirements"
+      },
+      {
+        "step": "Proposal",
+        "description": "Scope, timeline, and cost estimate"
+      },
+      {
+        "step": "Build",
+        "description": "Iterative development with regular updates"
+      },
+      {
+        "step": "Deliver",
+        "description": "Launch, handoff, and support"
+      }
     ]
-  }
+  },
+  "products": [
+    {
+      "number": "01",
+      "name": "GateShell",
+      "tagline": "SSH client & server command center for iPhone, iPad and Mac",
+      "description": "An SSH client with no backend at all. Your keys never leave the device. SSH, SFTP, port forwarding, and dashboards for 20+ services, on iPhone, iPad and Mac.",
+      "status": "Shipped",
+      "model": "$1.99/month · $19.99/year",
+      "stack": "iOS · iPadOS · macOS",
+      "url": "https://gateshell.com",
+      "storeUrl": "https://apps.apple.com/app/id6785287621"
+    },
+    {
+      "number": "02",
+      "name": "QEHS Ethos",
+      "tagline": "No-code QEHS platform for quality, environment, health & safety teams",
+      "description": "Inspections, audits and ISO compliance without writing code. Safety teams build their own forms and approval chains instead of waiting on a vendor release.",
+      "status": "Live",
+      "model": "B2B SaaS",
+      "stack": "Next.js · No-code workflow engine",
+      "url": "https://qehsethos.com",
+      "storeUrl": null
+    },
+    {
+      "number": "03",
+      "name": "Vaanicall",
+      "tagline": "India-first AI voice calling platform and CRM",
+      "description": "Outbound and inbound voice campaigns for India, with the TRAI, DND, DPDP and DLT rules handled for you. Prepaid wallet billing, and you can swap the voice engine without rebuilding a campaign.",
+      "status": "In progress",
+      "model": "Usage-based, prepaid wallet",
+      "stack": "AI voice (Bolna · ElevenLabs · self-hosted) · CRM",
+      "url": "https://vaanicall.com",
+      "storeUrl": null
+    }
+  ],
+  "initiatives": [
+    {
+      "name": "RiaLingo",
+      "context": "Proposed & built at Euronet Worldwide",
+      "description": "Localization platform for shipping in 100+ languages. Multi-engine AI translation, translation memory, a branch-and-release workflow, and a compliance gate so nothing goes live unchecked.",
+      "stack": "Next.js · TypeScript · AI translation engines",
+      "status": "In production",
+      "url": "https://rialingo.cloud"
+    },
+    {
+      "name": "RIA Autotest",
+      "context": "Proposed & built at Euronet Worldwide",
+      "description": "QA was hand-writing regression tests for a 10-step registration flow, twice, once per web app. This records a tester clicking through it and writes the Playwright spec for them, with sensible selectors and real-looking data for 8 markets.",
+      "stack": "Chrome MV3 · Playwright · TypeScript · Firestore",
+      "status": "Internal tool",
+      "url": null
+    }
+  ]
 }

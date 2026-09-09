@@ -16,9 +16,22 @@
 - **Backend** — .NET Core, Node.js, GraphQL APIs powering production systems
 - **AI/LLMs** — Building with Claude AI, MCP Servers, RAG pipelines, and prompt engineering
 
+### Products I build and ship
+
+| Product | What it is |
+|---|---|
+| **[GateShell](https://gateshell.com)** · [App Store](https://apps.apple.com/app/id6785287621) | SSH client & server command center for iPhone, iPad and Mac. Zero backend — keys never leave the device |
+| **[QEHS Ethos](https://qehsethos.com)** | No-code QEHS platform — inspections, audits and ISO-compliance workflows for safety teams |
+| **[Vaanicall](https://vaanicall.com)** | India-first AI voice calling platform & CRM — TRAI/DND/DPDP/DLT compliance, provider-agnostic voice |
+
+### Built inside the job
+
+- **[RiaLingo](https://rialingo.cloud)** — proposed and built a localization platform now in production: multi-engine AI translation, translation memory, branch-and-release workflow, compliance gate
+- **RIA Autotest** — proposed and built a Chrome extension that records QA walkthroughs and generates runnable Playwright regression specs across two web apps
+
 ### Highlights
 
-- Co-founded a startup that scaled to **200k+ active users**
+- Co-founded a mobile-first startup and built its engineering team
 - Led engineering teams of up to **14 developers**
 - Shipped apps for **Ria Money Transfer**, **1-800-Flowers**, and **CES**
 - Currently building Flutter & React apps at **Euronet Worldwide**

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { availability, navLinks, siteConfig } from "@/data/portfolio";
 import { HoverLinks } from "./HoverLinks";
@@ -9,6 +9,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,10 +21,24 @@ export function Navbar() {
   const handleNavClick = (href: string, type: string) => {
     if (type === "page") {
       router.push(href);
-    } else {
-      const el = document.querySelector(href);
-      el?.scrollIntoView({ behavior: "smooth" });
+      return;
     }
+
+    if (pathname !== "/") {
+      router.push(`/${href}`);
+      return;
+    }
+
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLogoClick = () => {
+    if (pathname !== "/") {
+      router.push("/");
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -43,7 +58,7 @@ export function Navbar() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              handleLogoClick();
             }}
             className="text-sm font-bold uppercase tracking-widest"
           >

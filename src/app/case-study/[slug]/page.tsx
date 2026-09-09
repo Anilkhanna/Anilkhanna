@@ -90,11 +90,11 @@ export default async function CaseStudyPage({ params }: Props) {
             </h1>
 
             {study.image && (
-              <div className="mb-10 overflow-hidden rounded-xl border border-border">
+              <div className="mb-10 flex justify-center overflow-hidden rounded-xl border border-border bg-[#111827] p-10">
                 <img
                   src={study.image}
                   alt={study.title}
-                  className="h-auto w-full object-cover"
+                  className="max-h-[320px] w-auto max-w-full object-contain"
                 />
               </div>
             )}
@@ -115,11 +115,11 @@ export default async function CaseStudyPage({ params }: Props) {
         <section className="border-t border-border bg-surface px-6 py-16 md:px-[120px]">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="mb-4 text-2xl font-bold text-foreground">
-              Interested in working together?
+              Want to work together?
             </h2>
             <p className="mb-8 text-muted">
-              I&apos;m available for senior and lead roles, freelance projects,
-              and technical consulting.
+              I&apos;m open to senior and lead roles, and I take on a few freelance
+              projects.
             </p>
             <a
               href={`mailto:${siteConfig.email}`}

@@ -7,6 +7,7 @@ import { siteConfig, availability } from "@/data/portfolio";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: `Blog | ${siteConfig.name}`,
   description:
     "Thoughts on software engineering, system design, and building great products.",

@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest) {
     const requiredKeys = [
       "siteConfig", "navLinks", "socialLinks", "sectionHeadings",
       "aboutData", "trendingSkills", "techStack", "techCategories",
-      "whatIDo", "careerData", "projectsData", "educationData",
+      "whatIDo", "careerData", "projectsData", "products", "initiatives", "educationData",
       "certifications", "availability", "testimonials", "caseStudies", "services",
     ];
 

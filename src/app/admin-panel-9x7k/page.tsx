@@ -43,7 +43,9 @@ interface SectionHeading { label: string; title: string; }
 interface SectionHeadings {
   about: SectionHeading;
   whatIDo: SectionHeading;
+  products: SectionHeading;
   career: SectionHeading;
+  initiatives: SectionHeading;
   projects: SectionHeading;
   techStack: SectionHeading;
   contact: SectionHeading;
@@ -1246,9 +1248,10 @@ function TailorResumeEditor({ portfolioData, onPortfolioUpdate }: { portfolioDat
 }
 
 function SectionHeadingsEditor({ data, onChange }: { data: SectionHeadings; onChange: (d: SectionHeadings) => void }) {
-  const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "career", "projects", "techStack", "contact"];
+  const keys: (keyof SectionHeadings)[] = ["about", "whatIDo", "products", "career", "initiatives", "projects", "techStack", "contact"];
   const labels: Record<keyof SectionHeadings, string> = {
     about: "About", whatIDo: "What I Do", career: "Career",
+    products: "Products", initiatives: "Initiatives",
     projects: "Projects", techStack: "Tech Stack", contact: "Contact",
   };
   const update = (section: keyof SectionHeadings, field: keyof SectionHeading, val: string) => {

@@ -23,11 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      priority: 0.7,
-    },
     ...caseStudies.map((cs) => ({
       url: `${baseUrl}/case-study/${cs.slug}`,
       lastModified: new Date(),

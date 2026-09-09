@@ -58,6 +58,17 @@ export function About() {
               {paragraph}
             </p>
           ))}
+
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border pt-8 sm:grid-cols-4">
+            {aboutData.facts.map((fact) => (
+              <div key={fact.label} className="flex flex-col gap-1">
+                <span className="text-3xl font-bold text-accent">{fact.value}</span>
+                <span className="font-mono text-[11px] uppercase leading-snug tracking-wider text-muted">
+                  {fact.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
