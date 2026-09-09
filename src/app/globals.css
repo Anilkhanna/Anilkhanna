@@ -56,7 +56,7 @@ body {
 
 /* Hide default cursor on desktop (except admin pages) */
 @media (pointer: fine) {
-  body:not(.admin-page) * {
+  html[data-cursor="custom"] body:not(.admin-page) * {
     cursor: none !important;
   }
 }

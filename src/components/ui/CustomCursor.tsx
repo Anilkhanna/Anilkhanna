@@ -59,6 +59,18 @@ export function CustomCursor() {
     };
   }, [cursorX, cursorY, ringX, ringY]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (visible) {
+      root.dataset.cursor = "custom";
+    } else {
+      delete root.dataset.cursor;
+    }
+    return () => {
+      delete root.dataset.cursor;
+    };
+  }, [visible]);
+
   if (!visible) return null;
 
   return (
